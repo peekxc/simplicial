@@ -33,7 +33,7 @@ void vector_handler(SimplexTree& st, const py::array_t< idx_t >& simplices, Lamb
     const size_t n = s_buffer.shape[0]; 
     idx_t* s = static_cast< idx_t* >(s_buffer.ptr); 
     for (size_t i = 0; i < n; ++i){
-      f(s, s+1);
+      f(s+i, s+i+1);
     }
     // st.insert_it< true >(s, s+s_buffer.shape[0], st.root.get(), 0);
   } else if (s_buffer.ndim == 2) {
