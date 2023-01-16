@@ -1,0 +1,18 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: index
+options: 
+  titlesonly: False
+  numbered: False
+parts: 
+- caption: Part I 
+  numbered: False 
+  chapters:
+    - file: overview
+    - file: functions
+- caption: Part II 
+  numbered: False 
+  chapters:
+    - file: representations
