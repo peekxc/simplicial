@@ -510,15 +510,59 @@ using param_pack = typename std::tuple< SimplexTree*, node_ptr, TRAVERSAL_TYPE >
 //   return(std::make_tuple(static_cast< SimplexTree* >(st), init, static_cast< TRAVERSAL_TYPE >(tt)));
 // }
 
-void traverse_(SimplexTree& stree, std::string type, py::function f){
-  // st::preorder< true >(st);
-  auto tr = st::preorder< true >(&stree);
-  traverse(tr, [&f](node_ptr cn, idx_t depth, simplex_t s){
+void traverse_(SimplexTree& stree, const size_t order, py::function f, simplex_t init = simplex_t(), const size_t k = 0){
+  node_ptr base = init.size() == 0 ? stree.root.get() : stree.find(init);
+  const auto apply_f = [&f](node_ptr cn, idx_t depth, simplex_t s){
     f(py::cast(s));
     return true; 
-  });
-  // const auto run_Rf = [&f](node_ptr cn, idx_t depth, simplex_t tau){ f(tau); return true; };
-  // traverse_switch(validate_params(args), args, run_Rf);
+  };
+  switch(order){
+    case PREORDER: {
+      auto tr = st::preorder< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case LEVEL_ORDER: {
+      auto tr = st::level_order< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case FACES: {
+      auto tr = st::faces< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case COFACES: {
+      auto tr = st::cofaces< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case COFACE_ROOTS: {
+      auto tr = st::coface_roots< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case K_SKELETON: {
+      auto tr = st::k_skeleton< true >(&stree, base, k);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case K_SIMPLICES: {
+      auto tr = st::k_simplices< true >(&stree, base, k);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case MAXIMAL: {
+      auto tr = st::maximal< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+    case LINK: {
+      auto tr = st::link< true >(&stree, base);
+      traverse(tr, apply_f);
+      break; 
+    }
+  }
 }
 
 // // [[Rcpp::export]]
@@ -534,12 +578,17 @@ void traverse_(SimplexTree& stree, std::string type, py::function f){
 
 
 
-
+void insert_list(SimplexTree& st, std::list< simplex_t > L){
+  for (auto s: L){ 
+    st.insert(simplex_t(s)); 
+  }
+  return; 
+}
 
 // pip install --no-deps --no-build-isolation --editable .
 // clang -Wall -fPIC -c src/simplicial/simplextree_module.cpp -std=c++17 -I/Users/mpiekenbrock/pbsig/extern/pybind11/include -I/Users/mpiekenbrock/simplicial/src/simplicial/include -I/Users/mpiekenbrock/opt/miniconda3/envs/pbsig/include/python3.9 
 PYBIND11_MODULE(_simplextree, m) {
-
+  
   py::class_<SimplexTree>(m, "SimplexTree")
     .def(py::init<>())
     .def_property_readonly("n_simplices", &simplex_counts)
@@ -553,22 +602,23 @@ PYBIND11_MODULE(_simplextree, m) {
     .def( "print_tree", &print_tree )
     .def( "print_cousins", &print_cousins )
     .def( "clear", &SimplexTree::clear)
-    .def( "degree", &degree_)
-    // .def( "degree", static_cast< py::array_t< idx_t >(SimplexTree::*)()>(&degree_default), "degree")
+    .def( "_degree", &degree_)
+    .def( "_degree_default", &degree_default)
     // .def( "degree", static_cast< py::array_t< idx_t >(SimplexTree::*)() >(&degree_default), "degree")
-    .def("insert", &insert_)
+    .def("_insert", &insert_)
+    .def("_insert_list", &insert_list)
     // .def( "insert_lex", &insert_lex)
-    .def( "remove",  &remove_)
-    .def( "find", &find_)
-    .def( "adjacent", &adjacent_)
-    .def( "collapse", &collapse_)
+    .def( "_remove",  &remove_)
+    .def( "_find", &find_)
+    .def( "_adjacent", &adjacent_)
+    .def( "_collapse", &collapse_)
     .def( "generate_ids", &SimplexTree::generate_ids)
-    .def( "reindex", &SimplexTree::reindex)
-    .def( "expand", &SimplexTree::expansion )
-    .def( "vertex_collapse", (bool (SimplexTree::*)(idx_t, idx_t, idx_t))(&SimplexTree::vertex_collapse))
-    .def( "contract", &SimplexTree::contract)
+    .def( "_reindex", &SimplexTree::reindex)
+    .def( "_expand", &SimplexTree::expansion )
+    .def( "_vertex_collapse", (bool (SimplexTree::*)(idx_t, idx_t, idx_t))(&SimplexTree::vertex_collapse))
+    .def( "_contract", &SimplexTree::contract)
     .def( "is_tree", &SimplexTree::is_tree)
-    .def( "traverse", &traverse_)
+    .def( "_traverse", &traverse_)
     // .def( "as_adjacency_matrix", &as_adjacency_matrix)
     ;
 }

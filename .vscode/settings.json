@@ -93,6 +93,9 @@
     "numbers": "cpp",
     "semaphore": "cpp",
     "stop_token": "cpp",
-    "cinttypes": "cpp"
-  }
+    "cinttypes": "cpp",
+    "future": "cpp"
+  },
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": false
 }

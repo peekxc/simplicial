@@ -3,11 +3,12 @@
 ## space of abstract simplicial complexes and on simplicial filtrations
 
 import numpy as np 
-import networkx as nx
+# import networkx as nx
 from .meta import *   # typing utilities for meta-programming
 from sortedcontainers import SortedDict, SortedSet
 from dataclasses import dataclass
 from numbers import Integral
+
 
 ## --- GENERICS --- 
 def dim(s: SimplexLike) -> int:
