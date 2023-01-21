@@ -27,14 +27,6 @@ ext_modules = [
   )
 ]
 
-
-# ext_modules = [
-# 	Pybind11Extension(
-# 	"boundary",
-# 		sorted(glob("boundary.cpp")),
-# 	)
-# ]
-
 setup(
   name="simplicial",
   author="Matt Piekenbrock",

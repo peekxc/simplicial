@@ -1,15 +1,18 @@
 import numpy as np 
 from typing import *
 from numpy.typing import ArrayLike
-
-import _simplextree as st
+import _simplextree
 from _simplextree import SimplexTree as SimplexTreeCpp
 from .simplicial import *
 
 class SimplexTree(SimplexTreeCpp):
+  """ 
+  Simplex Tree class 
+  """    
   def __init__(self):
     SimplexTreeCpp.__init__(self)
     pass 
+
   def insert(self, simplices: Iterable):
     ## TODO: figure out to interface to underlying st object
     if isinstance(simplices, np.ndarray):
@@ -21,8 +24,20 @@ class SimplexTree(SimplexTreeCpp):
       self._insert_list(simplices)
     else: 
       raise ValueError("Invalid type given")
+  
+  def remove(self, simplices: Iterable):
+    pass 
 
-  def degree(vertices: Optional[ArrayLike] = None) -> Union[ArrayLike, int]:
+  def find(self, simplices: Iterable):
+    pass 
+
+  def adjacent(self, simplices: Iterable):
+    pass
+
+  def collapse(self, sigma, tau):
+    pass 
+
+  def degree(self, vertices: Optional[ArrayLike] = None) -> Union[ArrayLike, int]:
     if vertices is None: 
       return self._degree_default()
     elif isinstance(vertices, Iterable): 
@@ -30,8 +45,10 @@ class SimplexTree(SimplexTreeCpp):
       assert vertices.ndim == 1, "Invalid shape given; Must be flattened array of vertex ids"
       self._degree(vertices)
     else: 
-      raise ValueError("Invalid type given")
+      raise ValueError(f"Invalid type {type(vertices)} given")
 
+  # PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, 
+  # K_SKELETON = 5, K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
   def traverse(order: str = "preorder"):
     assert isinstance(order, str)
     order = order.lower() 
@@ -56,13 +73,28 @@ class SimplexTree(SimplexTreeCpp):
     else: 
       raise ValueError(f"Unknown order '{order}' specified")
 
-    #   order = 0
-    # elif order == 1
-    #   PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, K_SKELETON = 5, 
-    # K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
-  # def remove():
-  #   .def( "_remove",  &remove_)
-  #   .def( "_find", &find_)
-  #   .def( "_adjacent", &adjacent_)
-  #   .def( "_collapse", &collapse_)
+  def cofaces(p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+    F = []
+    self._traverse(3, lambda s: F.append(s), [], p) # order, f, init, k
+    return F
+
+  def skeleton(p: int = None) -> Iterable['SimplexLike']:
+    F = []
+    self._traverse(5, lambda s: F.append(s), sigma, self.dimension)
+    return F 
+
+  def simplices(p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+    F = []
+    self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
+    return F
+  
+  def maximal() -> Iterable['SimplexLike']:
+    F = []
+    self._traverse(7, lambda s: F.append(s), p)
+    return F
+
+  def link(sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+    F = []
+    self._traverse(8, lambda s: F.append(s), sigma, 0)
+    return F
 

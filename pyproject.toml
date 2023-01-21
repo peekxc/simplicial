@@ -1,7 +1,6 @@
 [build-system]
-requires = ["setuptools>=42", "wheel", "numpy", "pybind11"] # "setuptools", pybind11, "scikit-build>=0.13", "cmake", "ninja"
+requires = ["setuptools>=42", "wheel", "numpy", "pybind11"] 
 build-backend = "setuptools.build_meta"
-# build-backend = "hatchling.build"
 
 # Validate with: validate-pyproject pyproject.toml 
 [project]
