@@ -1,0 +1,1 @@
+.. autoclass:: simplicial.simplicial.Simplex 

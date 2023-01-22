@@ -4,6 +4,7 @@
 # re-generate this one.
 ###############################################################################
 add_module_names = True
+always_document_param_types = False
 author = 'Matt Piekenbrock'
 autodoc_type_aliases = {'ArrayLike': 'ArrayLike'}
 autodoc_typehints_format = 'short'
@@ -16,7 +17,7 @@ execution_allow_errors = False
 execution_excludepatterns = []
 execution_in_temp = False
 execution_timeout = 30
-extensions = ['sphinx_togglebutton', 'sphinx_copybutton', 'myst_nb', 'jupyter_book', 'sphinx_thebe', 'sphinx_comments', 'sphinx_external_toc', 'sphinx.ext.intersphinx', 'sphinx_design', 'sphinx_book_theme', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode', 'sphinx.ext.autosummary', 'sphinx_autodoc_typehints', 'sphinxcontrib.bibtex', 'sphinx_jupyterbook_latex']
+extensions = ['sphinx_togglebutton', 'sphinx_copybutton', 'myst_nb', 'jupyter_book', 'sphinx_thebe', 'sphinx_comments', 'sphinx_external_toc', 'sphinx.ext.intersphinx', 'sphinx_design', 'sphinx_book_theme', 'sphinx.ext.autodoc', 'sphinx.ext.napoleon', 'sphinx.ext.viewcode', 'sphinx.ext.autosummary', 'sphinx_autodoc_typehints', 'sphinxcontrib.katex', 'sphinxcontrib.bibtex', 'sphinx_jupyterbook_latex']
 external_toc_exclude_missing = False
 external_toc_path = '_toc.yml'
 html_baseurl = ''
@@ -32,14 +33,19 @@ katex_prerender = True
 latex_engine = 'pdflatex'
 myst_enable_extensions = ['colon_fence', 'dollarmath', 'linkify', 'substitution', 'tasklist']
 myst_url_schemes = ['mailto', 'http', 'https']
-napoleon_attr_annotations = True
+napoleon_attr_annotations = False
+napoleon_custom_sections = ['Properties', 'Fields']
 napoleon_preprocess_types = True
 napoleon_type_aliases = {'array-like': ':term:`array-like <array_like>`', 'array_like': ':term:`array_like`', 'ArrayLike': 'ArrayLike'}
+napoleon_use_ivar = False
 napoleon_use_param = True
+napoleon_use_rtype = True
 nb_output_stderr = 'show'
 numfig = True
 pygments_style = 'sphinx'
 python_use_unqualified_type_names = True
+simplify_optional_unions = True
 suppress_warnings = ['myst.domains']
+typehints_use_signature = False
 use_jupyterbook_latex = True
 use_multitoc_numbering = True

@@ -3,7 +3,13 @@ root: index
 defaults: 
   titlesonly: True
   numbered: False
+  maxdepth: 2
 chapters:
 - file: overview
 - file: design
-- file: api.rst
+- file: simplextree_ds
+- file: API
+  sections:
+  - file: simplex.rst
+  - file: simplicialcomplex.rst
+  - file: simplextree.rst

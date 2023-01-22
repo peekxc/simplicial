@@ -1,5 +1,9 @@
 # Simplicial Design Philosophy
 
+```{contents}
+:local:
+```
+
 Suppose you wanted to represent a [combinatorial n-simplex](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). Why not use a built-in [sequence](https://docs.python.org/3/glossary.html#term-sequence) type?
 
 ```python
@@ -42,14 +46,14 @@ There's no *technical* reason not use non-type-homogenous vertex sets---however,
 
 Indeed, it seems the Python data model [doesn't have an immutable, homogenous, set-like container](https://stackoverflow.com/questions/66874287/python-data-model-type-protocols-magic-methods). 
 
-- lists are mutable, non-homogenous, and non-hashable
-- tuples are comparable and immutable, but they are not _set like_
-- frozensets are comparable, immutable, and set-like, but are neither homogenous nor ordered
-- the (non-standard) _SortedSet_ is comparable, set-like, and ordered, but it is neither _immutable_ nor _hashable_.
-- array & np.array are homogeous collections, but they are mutable and not _set like_
-- bytes are comparable, immutable, and homogenous, lacking only _set like_, functionality---however their values are limited to [0, 255]
+- [lists](https://docs.python.org/3/library/stdtypes.html#lists) are mutable, non-homogenous, and non-hashable
+- [tuples](https://docs.python.org/3/library/stdtypes.html#tuples) are comparable and immutable, but they are not _set like_
+- [frozensets](https://docs.python.org/3/library/stdtypes.html#frozenset) are comparable, immutable, and set-like, but are neither homogenous nor ordered
+- [SortedSet](https://grantjenks.com/docs/sortedcontainers/sortedset.html) comes close, but is neither _immutable_ nor _hashable_.
+- [array](https://docs.python.org/3/library/array.html) & [np.array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) are homogenous but not immutable and not _set like_
+- [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) lack only _set like_ functionality---however their values are limited to [0, 255]
 
-One concludes there is no off-the-shelf Python class that is completely appropriate for a simplex. So, let's make our own!
+There seems to be no built-in Python sequence appropriate for a _simplex_. So, why not make our own! 
 
 ## The Simplex Class
 

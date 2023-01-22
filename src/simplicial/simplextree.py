@@ -9,7 +9,27 @@ from .simplicial import *
 
 class SimplexTree(SimplexTreeCpp):
   """ 
-  Simplex Tree class 
+  SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
+  This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
+
+  The Simplex Tree was originally introduced in the following paper:
+
+    Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
+
+  Fields: 
+    n_simplices: tuple of simplex counts per dimension 
+    n_simplices: tuple of simplex counts per dimension 
+
+  **n_simplices** (tuple): tuple of simplex counts per dimension \n
+  **dimension** (int): highest dimension of any simplex in the tree \n
+  **id_policy** (str): policy regarding vertex id generation (see generate_ids) \n 
+
+  Properties: 
+    **vertices**: 0-simplices in the complex \n
+    **edges**: 1-simplices in the complex \n
+    **triangles**: 1-simplices in the complex \n
+    **quads**: 1-simplices in the complex \n
+    **connected_components**: partition of the complex induced by the path-connected relation \n
   """    
   def __init__(self):
     SimplexTreeCpp.__init__(self)
@@ -64,7 +84,13 @@ class SimplexTree(SimplexTreeCpp):
 
   # PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, 
   # K_SKELETON = 5, K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
-  def traverse(order: str = "preorder", f: Callable[SimplexLike, Any] = print, **kargs):
+  def traverse(order: str = "preorder", f: Callable = print, **kargs) -> None:
+    """
+    Parameters:
+      order : the type of traversal to do 
+      f : a function to evaluate on every simplex in the traversal. Defaults to print. 
+      **kwargs : additional arguments to the specific traversal. 
+    """
     # todo: handle kwargs
     assert isinstance(order, str)
     order = order.lower() 
@@ -88,9 +114,18 @@ class SimplexTree(SimplexTreeCpp):
       order = 8
     else: 
       raise ValueError(f"Unknown order '{order}' specified")
-    self._traverse(3, lambda s: F.append(s), [], p) # order, f, init, k
+    self._traverse(3, lambda s: f(s), [], p) # order, f, init, k
 
-  def cofaces(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+  def cofaces(self, p: int = None, sigma: SimplexLike = []) -> list['SimplexLike']:
+    """
+    Parameters:
+      p : coface dimension to restrict to 
+      sigma : the simplex to obtain cofaces of
+
+    
+    Returns: 
+      list: the p-cofaces of sigma
+    """
     F = []
     self._traverse(3, lambda s: F.append(s), [], p) # order, f, init, k
     return F
