@@ -1,11 +1,12 @@
-# Overview 
+# Overview
 
-Here is a "note" directive:
+A _simplicial complex_ $S = (V, \Sigma)$ is a collection of simplices $s \in \Sigma$ satisfying: 
+
+1. Each $v \in V$ is in $S$
+2. If $\tau \subset \sigma$ and $\sigma \in S$, then $\tau \in S$
 
 ```{note}
-Here is a note
+Though highly related, this package is structured for representing _abstract simplicial complexes_, the purely combinatorial analog to the topological space obtained by 'gluing' together simplices. 
 ```
 
-It will be rendered in a special box when you build your book.
-
-Here is an inline directive to refer to a document: {doc}`index`.
+$$ \Delta = \{\sigma \}$$

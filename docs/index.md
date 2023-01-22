@@ -14,11 +14,13 @@ kernelspec:
 ---
 # Simplicial
 
-_Simplicial_ is an experimental Python package aimed at simplifying programming algorithms that deal with simplicial complexes.
-
+_Simplicial_ is an experimental Python package aimed at simplifying computation with simplicial complexes. 
 
 ```{tableofcontents}
-
 ```
 
 ## Quick start 
+
+```{code-block}
+import simplicial 
+```

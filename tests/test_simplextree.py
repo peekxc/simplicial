@@ -24,8 +24,8 @@ def test_insert():
 
 def test_SimplexTree():
   st = SimplexTree()
-  st.insert([[0,1,2,3,4,5]])
-  st.n_simplices
+  st.insert([[0,1,2], [0,1], [4,5]])
+
   # t order, py::function f, simplex_t init = simplex_t(), const size_t k = 0
   # stree._traverse(0, lambda s: print(Simplex(s)), [], 0)
   # stree._traverse(1, lambda s: print(s), [], 0)

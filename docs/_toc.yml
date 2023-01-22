@@ -1,18 +1,9 @@
-# Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
-
-format: jb-book
+format: jb-book # chapters and parts
 root: index
-options: 
-  titlesonly: False
+defaults: 
+  titlesonly: True
   numbered: False
-parts: 
-- caption: Part I 
-  numbered: False 
-  chapters:
-    - file: overview
-    - file: functions
-- caption: Part II 
-  numbered: False 
-  chapters:
-    - file: representations
+chapters:
+- file: overview
+- file: design
+- file: api.rst
