@@ -10,6 +10,6 @@ chapters:
 - file: simplextree_ds
 - file: API
   sections:
-  - file: simplex.rst
-  - file: simplicialcomplex.rst
+  - file: meta.rst
+  - file: simplicial_ds.rst
   - file: simplextree.rst

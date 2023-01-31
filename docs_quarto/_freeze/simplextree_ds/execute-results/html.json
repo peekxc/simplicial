@@ -1,0 +1,11 @@
+{
+  "hash": "8855eb31a1eb6397b95a81edb1c78bd9",
+  "result": {
+    "markdown": "---\nformat:\n  html:\n    code-fold: true\nfreeze: true\n---\n\n# Simplex Tree \n\nThe simplex tree is...\n\n![simplextree](simplextree_pic.png){.preview-image}\n\n",
+    "supporting": [
+      "simplextree_ds_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

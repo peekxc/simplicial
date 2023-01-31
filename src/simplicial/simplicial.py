@@ -5,17 +5,7 @@
 import numpy as np 
 # import networkx as nx
 from .meta import *   # typing utilities for meta-programming
-from sortedcontainers import SortedDict, SortedSet
-from dataclasses import dataclass
-from numbers import Integral
-
-
-## --- GENERICS --- 
-def dim(s: SimplexLike) -> int:
-  return len(s) - 1
-
-def boundary(s: SimplexLike) -> Iterable['SimplexLike']:
-  return combinations(s, len(s)-1)
+from .generics import * 
 
 @dataclass(frozen=True)
 class Simplex(Set, Hashable):
@@ -36,7 +26,6 @@ class Simplex(Set, Hashable):
   def __len__(self):
     return len(self.vertices)
   def __lt__(self, other: Collection[int]) -> bool:
-    ''' Returns whether self is a face of other '''
     if len(self) >= len(other): 
       return(False)
     else:
@@ -68,6 +57,17 @@ class Simplex(Set, Hashable):
   
   def __iter__(self) -> Iterable[int]:
     return iter(self.vertices)
+  def __repr__(self):
+    return str(self.vertices).replace(',','') if self.dimension() == 0 else str(self.vertices).replace(' ','')
+  def __getitem__(self, index: int) -> int:
+    return self.vertices[index] # auto handles IndexError exception 
+  def __sub__(self, other) -> 'Simplex':
+    return Simplex(set(self.vertices) - set(Simplex(other).vertices))
+  def __add__(self, other) -> 'Simplex':
+    return Simplex(set(self.vertices) | set(Simplex(other).vertices))
+  def __hash__(self) -> int:
+    # Because Python has no idea about mutability of an object.
+    return hash(self.vertices)
 
   def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
     dim = len(self.vertices)
@@ -81,19 +81,8 @@ class Simplex(Set, Hashable):
       return self.vertices
     yield from map(Simplex, combinations(self.vertices, len(self.vertices)-1))
 
-  def dimension(self) -> int: 
+  def dim(self) -> int: 
     return len(self.vertices)-1
-  def __repr__(self):
-    return str(self.vertices).replace(',','') if self.dimension() == 0 else str(self.vertices).replace(' ','')
-  def __getitem__(self, index: int) -> int:
-    return self.vertices[index] # auto handles IndexError exception 
-  def __sub__(self, other) -> 'Simplex':
-    return Simplex(set(self.vertices) - set(Simplex(other).vertices))
-  def __add__(self, other) -> 'Simplex':
-    return Simplex(set(self.vertices) | set(Simplex(other).vertices))
-  def __hash__(self) -> int:
-    # Because Python has no idea about mutability of an object.
-    return hash(self.vertices)
     
 
 
@@ -130,9 +119,6 @@ class SimplicialComplex(MutableSet):
           t = self.shape
           self.shape = tuple(t[i]+1 if i == (len(f)-1) else t[i] for i in range(len(t)))
         
-  def dim(self) -> int:
-    return len(self.shape) - 1
-  
   def remove(self, item: Collection[int]):
     self.data.difference_update(set(self.cofaces(item)))
     self._update_shape()
@@ -147,13 +133,6 @@ class SimplicialComplex(MutableSet):
 
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
-
-  def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
-    if p is None:
-      yield from iter(self)
-    else: 
-      assert isinstance(p, Number)
-      yield from filter(lambda s: len(s) == p + 1, iter(self))
 
   def __repr__(self) -> str:
     if self.data.__len__() <= 15:
@@ -186,6 +165,16 @@ class SimplicialComplex(MutableSet):
     for i, s in enumerate(SC): 
       ending = '\n' if i != (len(SC)-1) else ''
       print(s, sep='', end=ending, **kwargs)
+
+  def dim(self) -> int:
+    return len(self.shape) - 1
+
+  def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
+    if p is None:
+      yield from iter(self)
+    else: 
+      assert isinstance(p, Number)
+      yield from filter(lambda s: len(s) == p + 1, iter(self))
 
 # Pythonic version: https://grantjenks.com/docs/sortedcontainers/#features
 
@@ -376,56 +365,6 @@ class MutableFiltration(MutableMapping):
     s.close()
     return res
     
-
-# See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
-from scipy.sparse import coo_array
-def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = None):
-
-  ## Load faces. If not given, by definition, the given p-simplices contain their boundary faces.
-  if F is None: 
-    assert not(S is iter(S)), "Simplex iterable must be repeatable (a generator is not sufficient!)"
-    F = list(map(Simplex, set(chain.from_iterable([combinations(s, len(s)-1) for s in S]))))
-  
-  ## Ensure faces 'F' is indexable
-  assert isinstance(F, Sequence), "Faces must be a valid Sequence (supporting .index(*) with SimplexLike objects!)"
-
-  ## Build the boundary matrix from the sequence
-  m = 0
-  I,J,X = [],[],[] # row, col, data 
-  for (j,s) in enumerate(map(Simplex, S)):
-    if s.dimension() > 0:
-      I.extend([F.index(f) for f in s.faces(s.dimension()-1)])
-      J.extend(repeat(j, s.dimension()+1))
-      X.extend(islice(cycle([1,-1]), s.dimension()+1))
-    m += 1
-  D = coo_array((X, (I,J)), shape=(len(F), m)).tolil(copy=False)
-  return D 
-
-def boundary_matrix(K: Union[SimplicialComplex, MutableFiltration, Iterable[tuple]], p: Optional[Union[int, tuple]] = None):
-  """
-  Returns the ordered p-th boundary matrix of a simplicial complex 'K'
-
-  Return: 
-    D := sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)
-  """
-  from collections.abc import Sized
-  if isinstance(p, tuple):
-    return (boundary_matrix(K, pi) for pi in p)
-  else: 
-    assert p is None or isinstance(p, Integral), "p must be integer, or None"
-    if isinstance(K, SimplicialComplex) or isinstance(K, MutableFiltration):
-      if p is None:
-        simplices = list(K.values())
-        D = _boundary(simplices, simplices)
-      else:
-        p_simplices = K.faces(p=p)
-        p_faces = list(K.faces(p=p-1))
-        D = _boundary(p_simplices, p_faces)
-    else: 
-      raise ValueError("Invalid input")
-    return D
-
-
 ## TODO: make Filtration class that uses combinatorial number system for speed 
 # class StructuredFiltration():
 # self_dict.__init__(*args, **kwargs)

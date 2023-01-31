@@ -47,8 +47,8 @@ class SimplexLike(SetLike, Hashable, Protocol):
   Protocols: SetLike[Container, Comparable], Hashable, Immutable
   Abstract Methods: __hash__, __contains__, __len__, __iter__, __setitem__
   '''
-  def __setitem__(self, *args) -> None:
-    raise TypeError("'simplex' object does not support item assignment")
+  # def __setitem__(self, *args) -> None:
+  #   raise TypeError("'simplex' object does not support item assignment")
 
 @runtime_checkable
 class ComplexLike(Collection['SimplexLike'], Protocol):

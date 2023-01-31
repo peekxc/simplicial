@@ -1,0 +1,14 @@
+---
+format:
+  html:
+    code-fold: true
+jupyter: python3
+execute: 
+  freeze: true
+  enabled: false
+---
+# Simplex Tree 
+
+The simplex tree is...
+
+![simplextree](simplextree_pic.png){.preview-image}

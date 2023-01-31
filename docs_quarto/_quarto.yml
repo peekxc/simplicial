@@ -1,0 +1,43 @@
+project:
+  type: website
+
+website:
+  title: Simplicial
+  navbar:
+    background: light
+    right: 
+      - icon: github
+        href: https://github.com
+    pinned: false  
+    search: false       
+  sidebar:
+    style: "docked"
+    pinned: false
+    align: center 
+    search: true
+    border: true 
+    collapse-level: 2
+    contents: 
+      - text: Overview 
+        href: overview.qmd
+      - text: Design 
+        href: design.qmd
+      - text: Simplex Tree
+        href: simplextree_ds.qmd
+      - section: API
+        contents: 
+          - meta.rst
+          - simplicial_ds.rst
+          - simplextree.rst
+  page-navigation: true
+  reader-mode: true
+  page-footer: 
+    center: "Copyright 2023, Matthew Piekenbrock" 
+    border: true
+
+execute:
+  cache: true
+
+theme: 
+  light: flatly
+  dark: darkly
