@@ -4,7 +4,7 @@
     "href": "overview.html",
     "title": "Simplicial",
     "section": "",
-    "text": "A simplicial complex \\[S = (V, \\Sigma)\\] is a collection of simplices \\[s \\in \\Sigma\\] satisfying:\n\nEach \\[v \\in V\\] is in \\[S\\]\nIf \\(\\tau \\subset \\sigma\\) and \\(\\sigma \\in S\\), then \\(\\tau \\in S\\)\n\nThough highly related, this package is structured for representing _abstract simplicial complexes_, the purely combinatorial analog to the topological space obtained by 'gluing' together simplices. \n\\[ \\Delta = \\{\\sigma \\}\\]\n\n\nkjbakdaok"
+    "text": "A simplicial complex S = (V, \\Sigma) is a collection of simplices s \\in \\Sigma satisfying:\n\nEach v \\in V is in S\nIf \\tau \\subset \\sigma and \\sigma \\in S, then \\tau \\in S\n\n\n\n\n\n\n\nTip\n\n\n\nThough highly related, this package is structured for representing abstract simplicial complexes, the purely combinatorial analog to the topological space obtained by ‘gluing’ together simplices.\n\n\n \\Delta = \\{\\sigma \\}\n\n\nkjbakdaok"
   },
   {
     "objectID": "design.html",
@@ -33,5 +33,12 @@
     "title": "Simplicial",
     "section": "",
     "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree"
+  },
+  {
+    "objectID": "test.html",
+    "href": "test.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": ".. autoclass:: simplicial.simplicial.Simplex .. autoclass:: simplicial.simplicial.SimplicialComplex .. autoclass:: simplicial.simplicial.MutableFiltration"
   }
 ]

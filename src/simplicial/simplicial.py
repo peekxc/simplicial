@@ -204,7 +204,7 @@ class MutableFiltration(MutableMapping):
     return SortedSet(None, key) if iterable is None else SortedSet(iter(map(Simplex, iterable)), key)
   
   # simplices: Sequence[SimplexLike], I: Optional[Collection] = None
-  def __init__(self, iterable: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
+  def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
     self.data = SortedDict()
     self.shape = tuple()
     if isinstance(iterable, SimplicialComplex):
@@ -364,17 +364,4 @@ class MutableFiltration(MutableMapping):
     res = s.getvalue()
     s.close()
     return res
-    
-## TODO: make Filtration class that uses combinatorial number system for speed 
-# class StructuredFiltration():
-# self_dict.__init__(*args, **kwargs)
-# np.fromiter(zip(), self.dtype)
-# self.simplices = simplices
-# self.indices = range(len(simplices)) if I is None else I
-# assert all([isinstance(s, SimplexLike) for s in simplices]), "Must all be simplex-like"
-# if I is not None: assert len(simplices) == len(I)
-# self.simplices = [Simplex(s) for s in simplices]
-# self.index_set = np.arange(0, len(simplices)) if I is None else np.asarray(I)
-# self.dtype = [('s', Simplex), ('index', I.dtype)]
-
   

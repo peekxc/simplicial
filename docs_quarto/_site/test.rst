@@ -1,0 +1,3 @@
+.. autoclass:: simplicial.simplicial.Simplex 
+.. autoclass:: simplicial.simplicial.SimplicialComplex 
+.. autoclass:: simplicial.simplicial.MutableFiltration 

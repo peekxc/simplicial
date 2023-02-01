@@ -3,6 +3,9 @@ project:
 
 website:
   title: Simplicial
+  search: 
+    location: sidebar
+    type: textbox
   navbar:
     background: light
     right: 
@@ -24,6 +27,8 @@ website:
         href: design.qmd
       - text: Simplex Tree
         href: simplextree_ds.qmd
+      - text: Test
+        href: test.qmd
       - section: API
         contents: 
           - meta.rst
@@ -35,9 +40,25 @@ website:
     center: "Copyright 2023, Matthew Piekenbrock" 
     border: true
 
+format:
+  html: 
+    anchor-selections: true 
+    code-fold: false
+    smooth-scroll: true
+    html-math-method: katex
+    code-overflow: wrap 
+    highlight-style: printing 
+    fontsize: 18px
+    linestretch: 1.2
+    margin-top: "0px" 
+    css: styles.css
+
+latex-auto-install: true 
+
 execute:
   cache: true
 
 theme: 
   light: flatly
   dark: darkly
+  
