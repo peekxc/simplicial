@@ -1,6 +1,8 @@
 project:
   type: website
 
+# sphinx-build . ./_build/html -b html
+
 website:
   title: Simplicial
   search: 
@@ -52,6 +54,30 @@ format:
     linestretch: 1.2
     margin-top: "0px" 
     css: styles.css
+
+# metadata-files:
+#   - _sidebar.yml
+
+quartodoc: 
+  title: API Reference
+  # sidebar: "_sidebar.yml"
+  display_name: full
+  style: single-page
+  dir: reference
+  package: simplicial
+  sections:
+    - title: Explicit classes 
+      desc: Classes which represent simplicial complexes explicitly
+      contents:
+        - MutableFiltration
+        - SimplicialComplex
+        - SimplexTree
+    - title: Protocols 
+      desc: Structural subtypes for various types of simplicial complexes. 
+      contents: 
+        - SimplexLike 
+        - ComplexLike 
+        - FiltrationLike
 
 latex-auto-install: true 
 

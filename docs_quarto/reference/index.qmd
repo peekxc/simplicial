@@ -1,0 +1,72 @@
+## MutableFiltration { #MutableFiltration }
+
+`MutableFiltration(self, simplices=None, f=None)`
+
+Simplicial Filtration 
+
+Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
+
+## SimplicialComplex { #SimplicialComplex }
+
+`SimplicialComplex(self, iterable=None)`
+
+Abstract Simplicial Complex
+
+## SimplexTree { #SimplexTree }
+
+`SimplexTree(self)`
+
+SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
+This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
+
+The Simplex Tree was originally introduced in the following paper:
+
+  Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
+
+Fields: 
+  n_simplices: tuple of simplex counts per dimension 
+  n_simplices: tuple of simplex counts per dimension 
+
+**n_simplices** (tuple): tuple of simplex counts per dimension 
+
+**dimension** (int): highest dimension of any simplex in the tree 
+
+**id_policy** (str): policy regarding vertex id generation (see generate_ids) 
+
+
+Properties: 
+  **vertices**: 0-simplices in the complex 
+
+  **edges**: 1-simplices in the complex 
+
+  **triangles**: 1-simplices in the complex 
+
+  **quads**: 1-simplices in the complex 
+
+  **connected_components**: partition of the complex induced by the path-connected relation
+
+## SimplexLike { #SimplexLike }
+
+`SimplexLike()`
+
+An object is SimplexLike if it is Immutable, Hashable, and SetLike
+
+By definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex __contains__ queries)
+
+Protocols: SetLike[Container, Comparable], Hashable, Immutable
+Abstract Methods: __hash__, __contains__, __len__, __iter__, __setitem__
+
+## ComplexLike { #ComplexLike }
+
+`ComplexLike()`
+
+An object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.
+
+Protocols: Collection[Sized, Iterable, Container]
+Methods: __contains__, __iter__, __len__
+
+## FiltrationLike { #FiltrationLike }
+
+`FiltrationLike()`
+
+An object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects.

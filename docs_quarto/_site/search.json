@@ -35,10 +35,45 @@
     "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree"
   },
   {
-    "objectID": "test.html",
-    "href": "test.html",
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
     "title": "Simplicial",
     "section": "",
-    "text": ".. autoclass:: simplicial.simplicial.Simplex .. autoclass:: simplicial.simplicial.SimplicialComplex .. autoclass:: simplicial.simplicial.MutableFiltration"
+    "text": "MutableFiltration(self, simplices=None, f=None)\nSimplicial Filtration\nImplements: getitem, iter, len, contains, keys, items, values, get, eq, and ne"
+  },
+  {
+    "objectID": "reference/index.html#SimplicialComplex",
+    "href": "reference/index.html#SimplicialComplex",
+    "title": "Simplicial",
+    "section": "SimplicialComplex",
+    "text": "SimplicialComplex\nSimplicialComplex(self, iterable=None)\nAbstract Simplicial Complex"
+  },
+  {
+    "objectID": "reference/index.html#SimplexTree",
+    "href": "reference/index.html#SimplexTree",
+    "title": "Simplicial",
+    "section": "SimplexTree",
+    "text": "SimplexTree\nSimplexTree(self)\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\nThe Simplex Tree was originally introduced in the following paper:\nBoissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.\nFields: n_simplices: tuple of simplex counts per dimension n_simplices: tuple of simplex counts per dimension\nn_simplices (tuple): tuple of simplex counts per dimension\ndimension (int): highest dimension of any simplex in the tree\nid_policy (str): policy regarding vertex id generation (see generate_ids)\nProperties: vertices: 0-simplices in the complex\nedges: 1-simplices in the complex\ntriangles: 1-simplices in the complex\nquads: 1-simplices in the complex\nconnected_components: partition of the complex induced by the path-connected relation"
+  },
+  {
+    "objectID": "reference/index.html#SimplexLike",
+    "href": "reference/index.html#SimplexLike",
+    "title": "Simplicial",
+    "section": "SimplexLike",
+    "text": "SimplexLike\nSimplexLike()\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
+  },
+  {
+    "objectID": "reference/index.html#ComplexLike",
+    "href": "reference/index.html#ComplexLike",
+    "title": "Simplicial",
+    "section": "ComplexLike",
+    "text": "ComplexLike\nComplexLike()\nAn object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len"
+  },
+  {
+    "objectID": "reference/index.html#FiltrationLike",
+    "href": "reference/index.html#FiltrationLike",
+    "title": "Simplicial",
+    "section": "FiltrationLike",
+    "text": "FiltrationLike\nFiltrationLike()\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects."
   }
 ]
