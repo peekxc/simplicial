@@ -7,7 +7,6 @@ from sortedcontainers import SortedDict, SortedSet
 from dataclasses import dataclass
 from numbers import Integral
 
-
 # See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
 def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = None):
 
