@@ -15,21 +15,6 @@ class SimplexTree(SimplexTreeCpp):
   The Simplex Tree was originally introduced in the following paper:
 
     Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
-
-  Fields: 
-    n_simplices: tuple of simplex counts per dimension 
-    n_simplices: tuple of simplex counts per dimension 
-
-  **n_simplices** (tuple): tuple of simplex counts per dimension \n
-  **dimension** (int): highest dimension of any simplex in the tree \n
-  **id_policy** (str): policy regarding vertex id generation (see generate_ids) \n 
-
-  Properties: 
-    **vertices**: 0-simplices in the complex \n
-    **edges**: 1-simplices in the complex \n
-    **triangles**: 1-simplices in the complex \n
-    **quads**: 1-simplices in the complex \n
-    **connected_components**: partition of the complex induced by the path-connected relation \n
   """    
   def __init__(self):
     SimplexTreeCpp.__init__(self)
@@ -37,10 +22,14 @@ class SimplexTree(SimplexTreeCpp):
 
   def insert(self, simplices: Iterable[SimplexLike]) -> None:
     """
+    Inserts simplices into the Simplex Tree. 
+
     Parameters:
-      simplices: Inserts simplices into the simplex tree 
-        If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
-        Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
+      simplices: Iterable of simplices to insert
+
+    Note: 
+      If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
+      Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
     """
     if isinstance(simplices, np.ndarray):
       simplices = np.array(simplices, dtype=np.int8)

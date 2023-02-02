@@ -1,0 +1,10 @@
+## SimplexTree { #SimplexTree }
+
+`SimplexTree(self)`
+
+SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
+This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
+
+The Simplex Tree was originally introduced in the following paper:
+
+  Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.

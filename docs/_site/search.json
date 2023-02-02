@@ -1,0 +1,723 @@
+[
+  {
+    "objectID": "overview.html",
+    "href": "overview.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "A simplicial complex S = (V, \\Sigma) is a collection of simplices s \\in \\Sigma satisfying:\n\nEach v \\in V is in S\nIf \\tau \\subset \\sigma and \\sigma \\in S, then \\tau \\in S\n\n\n\n\n\n\n\nTip\n\n\n\nThough highly related, this package is structured for representing abstract simplicial complexes, the purely combinatorial analog to the topological space obtained by ‘gluing’ together simplices.\n\n\n \\Delta = \\{\\sigma \\}\n\n\nkjbakdaok"
+  },
+  {
+    "objectID": "design.html",
+    "href": "design.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Suppose you wanted to represent a combinatorial n-simplex. Why not use a built-in sequence type?\nsimplex = [0,1,2] # why note use a list? \nBut wait, simplices are simple value objects, just like strings ('abc') or integers (123), which are immutable and hashable. Perhaps a tuple then?\nsimplex = (0,1,2)\nBut wait, simplices are set-like: they have unique entries and are comparable. But (0,1,1,1,1,2) is clearly not a simplex, though it is immutable. How about a set?\nsimplex = set([0,1,2])\nSets actually are naturally comparable and have unique entries:\nface = set([1,2])\nface <= simplex # True\nset([2,1,0,1]) == simplex # True \nBut ahhh, they are also mutable! How about frozenset?\nsimplex = frozenset([0,1,2])\nImmutable, comparable, unique… this seems fine. Except it’s elements are not homogenous\nsimplex = frozenset([0,1,'a',2,'b'])\nThere’s no technical reason not use non-type-homogenous vertex sets—however, mixing types may imply different per-element memory layouts, and comparability between elements becomes muddled.\nIndeed, it seems the Python data model doesn’t have an immutable, homogenous, set-like container.\n\nlists are mutable, non-homogenous, and non-hashable\ntuples are comparable and immutable, but they are not set like\nfrozensets are comparable, immutable, and set-like, but are neither homogenous nor ordered\nSortedSet comes close, but is neither immutable nor hashable.\narray & np.array are homogenous but not immutable and not set like\nbytes lack only set like functionality—however their values are limited to [0, 255]\n\nThere seems to be no built-in Python sequence appropriate for a simplex. So, why not make our own!\n\n\nclass Simplex(Hashable):\n  pass\nAs an aside, Python affectuionados may point to the fact that most of the above process of designing a class can be heavily side-stepped using various decorators patterns, like Python’s dataclasses. For example, here’s a very similar class to the one above.\n@dataclass(frozen=True)\nclass Simplex(Collection[int]):\n  vertices = field(default_factory=SortedSet, compare=True) \n\n\n\nNow that we have a ‘nice’ representation of a Simplex, let’s build a simplicial complex.\n\n\n\nAnd now onto the elephant in the room: let’s see how performant our types are.\n\ns = Simplex([0,1,2])\n\nNow suppose, we replace this with a simple numpy-based solution.\n\nAfter all this effort, our class design of a simplex is at best complex and at worst monolithic. Although it seems elegant and natural to use, its simply not a very practical from a performance perspective. Indeed, if we’re going to be operating on 1e8+ simplices at a time, it’s far more efficient to simply stream operations with a [numpy] array!\nOf course, with the numpy solution, it seems we lose all the structure we built into the classes. Searching takes… This is a seemingly fundamental tradeoff. Why can’t we have the best of both worlds?\nAn entirely different structure, such as a numpy array, may be more performant in some settings… but in others, perhaps a memory efficient solution using the combinatorial number system makes sense.\n\n\n\nWith all of these types, its clear there are going to be memory and time complexity tradeoffs associated with each type. Searcing might take longer in one, but shorter in the other… One representation might be extremely compact and great for read-only streaming…. another might be more suitable for a time-varying setting, where the underlying complex is constantly changing via simplex insertions, deletions, and reorderings.\nIt would be nice to have a interface to unify all of these sturctures, such that primitive operations on them are carried out in a DRY-manner. Ideally, the interface should be minimal—requiring only what is strictly necessary—but also performant, taking advantage of structure wherever it exists. Moreover, the interface should ideally be easily extensible, type flexible, and open source fruendly."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Simplicial is an experimental Python package aimed at simplifying computation with simplicial complexes.\n\n\n\n\nimport simplicial"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "simplextree_ds.html",
+    "href": "simplextree_ds.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree"
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Classes which represent simplicial complexes explicitly\n\n\n\nMutableFiltration\nSimplicial Filtration\n\n\nSimplicialComplex\nAbstract Simplicial Complex\n\n\nSimplexTree\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex.\n\n\n\n\n\n\nStructural subtypes for various types of simplicial complexes.\n\n\n\nSimplexLike\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\n\n\nComplexLike\nAn object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.\n\n\nFiltrationLike\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects."
+  },
+  {
+    "objectID": "reference/index.html#SimplicialComplex",
+    "href": "reference/index.html#SimplicialComplex",
+    "title": "Simplicial",
+    "section": "SimplicialComplex",
+    "text": "SimplicialComplex\nSimplicialComplex(self, iterable=None)\nAbstract Simplicial Complex"
+  },
+  {
+    "objectID": "reference/index.html#SimplexTree",
+    "href": "reference/index.html#SimplexTree",
+    "title": "Simplicial",
+    "section": "SimplexTree",
+    "text": "SimplexTree\nSimplexTree(self)\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\nThe Simplex Tree was originally introduced in the following paper:\nBoissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.\nFields: n_simplices: tuple of simplex counts per dimension n_simplices: tuple of simplex counts per dimension\nn_simplices (tuple): tuple of simplex counts per dimension\ndimension (int): highest dimension of any simplex in the tree\nid_policy (str): policy regarding vertex id generation (see generate_ids)\nProperties: vertices: 0-simplices in the complex\nedges: 1-simplices in the complex\ntriangles: 1-simplices in the complex\nquads: 1-simplices in the complex\nconnected_components: partition of the complex induced by the path-connected relation"
+  },
+  {
+    "objectID": "reference/index.html#SimplexLike",
+    "href": "reference/index.html#SimplexLike",
+    "title": "Simplicial",
+    "section": "SimplexLike",
+    "text": "SimplexLike\nSimplexLike()\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
+  },
+  {
+    "objectID": "reference/index.html#ComplexLike",
+    "href": "reference/index.html#ComplexLike",
+    "title": "Simplicial",
+    "section": "ComplexLike",
+    "text": "ComplexLike\nComplexLike()\nAn object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len"
+  },
+  {
+    "objectID": "reference/index.html#FiltrationLike",
+    "href": "reference/index.html#FiltrationLike",
+    "title": "Simplicial",
+    "section": "FiltrationLike",
+    "text": "FiltrationLike\nFiltrationLike()\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects."
+  },
+  {
+    "objectID": "reference/ComplexLike.html",
+    "href": "reference/ComplexLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "ComplexLike()\nAn object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len"
+  },
+  {
+    "objectID": "reference/SimplexTree.html",
+    "href": "reference/SimplexTree.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "SimplexTree(self)\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\nThe Simplex Tree was originally introduced in the following paper:\nBoissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427."
+  },
+  {
+    "objectID": "reference/MutableFiltration.html",
+    "href": "reference/MutableFiltration.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "MutableFiltration(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None)\nSimplicial Filtration\nImplements: getitem, iter, len, contains, keys, items, values, get, eq, and ne"
+  },
+  {
+    "objectID": "reference/SimplicialComplex.html",
+    "href": "reference/SimplicialComplex.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "SimplicialComplex(self, iterable)\nAbstract Simplicial Complex"
+  },
+  {
+    "objectID": "reference/FiltrationLike.html",
+    "href": "reference/FiltrationLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "FiltrationLike()\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects."
+  },
+  {
+    "objectID": "reference/SimplexLike.html",
+    "href": "reference/SimplexLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "SimplexLike()\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
+  },
+  {
+    "objectID": "API/Simplex.html",
+    "href": "API/Simplex.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Implements: contains(self, v: int) <=> Returns whether integer ‘v’ is a vertex in ‘self’\n\n\n\nfaces(self, p: Optional[int] = None)\n\n\n\n\nboundary(self)\n\n\n\n\ndim(self)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html",
+    "href": "API/SimplicialComplex.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Abstract Simplicial Complex\n\n\n\nupdate(self, iterable)\n\n\n\n\nadd(self, item: Collection[int])\n\n\n\n\nremove(self, item: Collection[int])\n\n\n\n\ndiscard(self, item: Collection[int])\n\n\n\n\ncofaces(self, item: Collection[int])\n\n\n\n\nprint(self, kwargs)\n\n\n\n\ndim(self)\n\n\n\n\nfaces(self, p: Optional[int] = None)"
+  },
+  {
+    "objectID": "API/generics.html",
+    "href": "API/generics.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "dim(sigma: Union[SimplexLike, ComplexLike])"
+  },
+  {
+    "objectID": "API/ComplexLike.html",
+    "href": "API/ComplexLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "An object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len\n\n\n\ndim(self)\n\n\n\n\nfaces(self, p: int)"
+  },
+  {
+    "objectID": "API/SimplexTree.html",
+    "href": "API/SimplexTree.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\n\n\n\ninsert(self, simplices: Iterable[SimplexLike])\nInserts simplices into the Simplex Tree.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsimplices\nIterable[SimplexLike]\nIterable of simplices to insert\nrequired\n\n\n\nNote: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\n\n\n\n\n\nremove(self, simplices: Iterable)\n\n\n\n\nfind(self, simplices: Iterable)\n\n\n\n\nadjacent(self, simplices: Iterable)\n\n\n\n\ncollapse(self, sigma: SimplexLike, tau: SimplexLike)\n\n\n\n\ndegree(self, vertices: Optional[ArrayLike] = None)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvertices\nnumpy.typing.ArrayLike\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\nNone\n\n\n\nReturns: list: degree of each vertex id given in ‘vertices’\n\n\n\n\n\ntraverse(order: str = 'preorder', f: Callable = print, kargs)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\norder\n\nthe type of traversal to do\n'preorder'\n\n\nf\n\na function to evaluate on every simplex in the traversal. Defaults to print.\nprint\n\n\n**kwargs\n\nadditional arguments to the specific traversal.\nrequired\n\n\n\n\n\n\n\n\ncofaces(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\np\n\ncoface dimension to restrict to\nNone\n\n\nsigma\n\nthe simplex to obtain cofaces of\n[]\n\n\n\nReturns: list: the p-cofaces of sigma\n\n\n\n\n\ncoface_roots(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nskeleton(self, p: int = None)\n\n\n\n\nsimplices(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nmaximal(self)\n\n\n\n\nlink(self, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.remove",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.remove",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.remove",
+    "text": "simplicial.simplextree.SimplexTree.remove\nsimplicial.simplextree.SimplexTree.remove(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.cofaces",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.cofaces",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.cofaces",
+    "text": "simplicial.simplextree.SimplexTree.cofaces\nsimplicial.simplextree.SimplexTree.cofaces(self, p: int = None, sigma: SimplexLike = [])\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\np\n\ncoface dimension to restrict to\nNone\n\n\nsigma\n\nthe simplex to obtain cofaces of\n[]\n\n\n\nReturns: list: the p-cofaces of sigma"
+  },
+  {
+    "objectID": "API/MutableFiltration.html",
+    "href": "API/MutableFiltration.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Simplicial Filtration\nImplements: getitem, iter, len, contains, keys, items, values, get, eq, and ne\n\n\n\nupdate(self, other: Iterable[Tuple[Any, Collection[Integral]]])\n\n\n\n\nsetdefault(self, key, default)\n\n\n\n\ncopy(self)\n\n\n\n\nkeys(self)\n\n\n\n\nvalues(self)\n\n\n\n\nitems(self)\n\n\n\n\nreindex_keys(self, index_set: Iterable)\nGiven a totally ordered key set of the same length of the filtation, reindexes\n\n\n\n\nfaces(self, p: int = None)\n\n\n\n\nprint(self, kwargs)\n\n\n\n\nvalidate(self, light: bool = True)"
+  },
+  {
+    "objectID": "API/FiltrationLike.html",
+    "href": "API/FiltrationLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "simplicial.meta.FiltrationLike.index(self, other: SimplexLike)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.find",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.find",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.find",
+    "text": "simplicial.simplextree.SimplexTree.find\nsimplicial.simplextree.SimplexTree.find(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.adjacent",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.adjacent",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.adjacent",
+    "text": "simplicial.simplextree.SimplexTree.adjacent\nsimplicial.simplextree.SimplexTree.adjacent(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.collapse",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.collapse",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.collapse",
+    "text": "simplicial.simplextree.SimplexTree.collapse\nsimplicial.simplextree.SimplexTree.collapse(self, sigma: SimplexLike, tau: SimplexLike)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.degree",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.degree",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.degree",
+    "text": "simplicial.simplextree.SimplexTree.degree\nsimplicial.simplextree.SimplexTree.degree(self, vertices: Optional[ArrayLike] = None)\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvertices\nnumpy.typing.ArrayLike\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\nNone\n\n\n\nReturns: list: degree of each vertex id given in ‘vertices’"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.traverse",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.traverse",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.traverse",
+    "text": "simplicial.simplextree.SimplexTree.traverse\nsimplicial.simplextree.SimplexTree.traverse(order: str = 'preorder', f: Callable = print, kargs)\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\norder\n\nthe type of traversal to do\n'preorder'\n\n\nf\n\na function to evaluate on every simplex in the traversal. Defaults to print.\nprint\n\n\n**kwargs\n\nadditional arguments to the specific traversal.\nrequired"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.coface_roots",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.coface_roots",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.coface_roots",
+    "text": "simplicial.simplextree.SimplexTree.coface_roots\nsimplicial.simplextree.SimplexTree.coface_roots(self, p: int = None, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.skeleton",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.skeleton",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.skeleton",
+    "text": "simplicial.simplextree.SimplexTree.skeleton\nsimplicial.simplextree.SimplexTree.skeleton(self, p: int = None)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.simplices",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.simplices",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.simplices",
+    "text": "simplicial.simplextree.SimplexTree.simplices\nsimplicial.simplextree.SimplexTree.simplices(self, p: int = None, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.maximal",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.maximal",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.maximal",
+    "text": "simplicial.simplextree.SimplexTree.maximal\nsimplicial.simplextree.SimplexTree.maximal(self)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.link",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.link",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.link",
+    "text": "simplicial.simplextree.SimplexTree.link\nsimplicial.simplextree.SimplexTree.link(self, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/Simplex.html#simplicial.simplicial.Simplex.boundary",
+    "href": "API/Simplex.html#simplicial.simplicial.Simplex.boundary",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.Simplex.boundary",
+    "text": "simplicial.simplicial.Simplex.boundary\nsimplicial.simplicial.Simplex.boundary(self)"
+  },
+  {
+    "objectID": "API/Simplex.html#simplicial.simplicial.Simplex.dim",
+    "href": "API/Simplex.html#simplicial.simplicial.Simplex.dim",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.Simplex.dim",
+    "text": "simplicial.simplicial.Simplex.dim\nsimplicial.simplicial.Simplex.dim(self)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.add",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.add",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.add",
+    "text": "simplicial.simplicial.SimplicialComplex.add\nsimplicial.simplicial.SimplicialComplex.add(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.remove",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.remove",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.remove",
+    "text": "simplicial.simplicial.SimplicialComplex.remove\nsimplicial.simplicial.SimplicialComplex.remove(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.discard",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.discard",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.discard",
+    "text": "simplicial.simplicial.SimplicialComplex.discard\nsimplicial.simplicial.SimplicialComplex.discard(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.cofaces",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.cofaces",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.cofaces",
+    "text": "simplicial.simplicial.SimplicialComplex.cofaces\nsimplicial.simplicial.SimplicialComplex.cofaces(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.print",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.print",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.print",
+    "text": "simplicial.simplicial.SimplicialComplex.print\nsimplicial.simplicial.SimplicialComplex.print(self, kwargs)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.dim",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.dim",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.dim",
+    "text": "simplicial.simplicial.SimplicialComplex.dim\nsimplicial.simplicial.SimplicialComplex.dim(self)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.faces",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.faces",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.faces",
+    "text": "simplicial.simplicial.SimplicialComplex.faces\nsimplicial.simplicial.SimplicialComplex.faces(self, p: Optional[int] = None)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.setdefault",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.setdefault",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.setdefault",
+    "text": "simplicial.simplicial.MutableFiltration.setdefault\nsimplicial.simplicial.MutableFiltration.setdefault(self, key, default)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.copy",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.copy",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.copy",
+    "text": "simplicial.simplicial.MutableFiltration.copy\nsimplicial.simplicial.MutableFiltration.copy(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.keys",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.keys",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.keys",
+    "text": "simplicial.simplicial.MutableFiltration.keys\nsimplicial.simplicial.MutableFiltration.keys(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.values",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.values",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.values",
+    "text": "simplicial.simplicial.MutableFiltration.values\nsimplicial.simplicial.MutableFiltration.values(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.items",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.items",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.items",
+    "text": "simplicial.simplicial.MutableFiltration.items\nsimplicial.simplicial.MutableFiltration.items(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.reindex_keys",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.reindex_keys",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.reindex_keys",
+    "text": "simplicial.simplicial.MutableFiltration.reindex_keys\nsimplicial.simplicial.MutableFiltration.reindex_keys(self, index_set: Iterable)\nGiven a totally ordered key set of the same length of the filtation, reindexes"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.faces",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.faces",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.faces",
+    "text": "simplicial.simplicial.MutableFiltration.faces\nsimplicial.simplicial.MutableFiltration.faces(self, p: int = None)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.print",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.print",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.print",
+    "text": "simplicial.simplicial.MutableFiltration.print\nsimplicial.simplicial.MutableFiltration.print(self, kwargs)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.validate",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.validate",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.validate",
+    "text": "simplicial.simplicial.MutableFiltration.validate\nsimplicial.simplicial.MutableFiltration.validate(self, light: bool = True)"
+  },
+  {
+    "objectID": "API/generics.html#simplicial.generics.boundary",
+    "href": "API/generics.html#simplicial.generics.boundary",
+    "title": "Simplicial",
+    "section": "simplicial.generics.boundary",
+    "text": "simplicial.generics.boundary\nsimplicial.generics.boundary(s: Union[SimplexLike, ComplexLike])"
+  },
+  {
+    "objectID": "API/ComplexLike.html#simplicial.meta.ComplexLike.faces",
+    "href": "API/ComplexLike.html#simplicial.meta.ComplexLike.faces",
+    "title": "Simplicial",
+    "section": "simplicial.meta.ComplexLike.faces",
+    "text": "simplicial.meta.ComplexLike.faces\nsimplicial.meta.ComplexLike.faces(self, p: int)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.insert",
+    "href": "API/SimplexTree.html#simplicial.simplextree.SimplexTree.insert",
+    "title": "Simplicial",
+    "section": "simplicial.simplextree.SimplexTree.insert",
+    "text": "simplicial.simplextree.SimplexTree.insert\nsimplicial.simplextree.SimplexTree.insert(self, simplices: Iterable[SimplexLike])\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsimplices\nIterable[SimplexLike]\nInserts simplices into the simplex tree If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\nrequired"
+  },
+  {
+    "objectID": "API/Simplex.html#simplicial.simplicial.Simplex.faces",
+    "href": "API/Simplex.html#simplicial.simplicial.Simplex.faces",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.Simplex.faces",
+    "text": "simplicial.simplicial.Simplex.faces\nsimplicial.simplicial.Simplex.faces(self, p: Optional[int] = None)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.update",
+    "href": "API/SimplicialComplex.html#simplicial.simplicial.SimplicialComplex.update",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.SimplicialComplex.update",
+    "text": "simplicial.simplicial.SimplicialComplex.update\nsimplicial.simplicial.SimplicialComplex.update(self, iterable)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.update",
+    "href": "API/MutableFiltration.html#simplicial.simplicial.MutableFiltration.update",
+    "title": "Simplicial",
+    "section": "simplicial.simplicial.MutableFiltration.update",
+    "text": "simplicial.simplicial.MutableFiltration.update\nsimplicial.simplicial.MutableFiltration.update(self, other: Iterable[Tuple[Any, Collection[Integral]]])"
+  },
+  {
+    "objectID": "API/Comparable.html",
+    "href": "API/Comparable.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Comparable\n\nProtocol for annotating comparable types."
+  },
+  {
+    "objectID": "API/SetLike.html",
+    "href": "API/SetLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "SetLike\n\nProtocol for annotating set-like types."
+  },
+  {
+    "objectID": "API/SimplexLike.html",
+    "href": "API/SimplexLike.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "An object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
+  },
+  {
+    "objectID": "API/ComplexLike.html#simplicial.meta.ComplexLike.dim",
+    "href": "API/ComplexLike.html#simplicial.meta.ComplexLike.dim",
+    "title": "Simplicial",
+    "section": "simplicial.meta.ComplexLike.dim",
+    "text": "simplicial.meta.ComplexLike.dim\nsimplicial.meta.ComplexLike.dim(self)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#insert",
+    "href": "API/SimplexTree.html#insert",
+    "title": "Simplicial",
+    "section": "insert",
+    "text": "insert\ninsert(self, simplices: Iterable[SimplexLike])\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsimplices\nIterable[SimplexLike]\nInserts simplices into the simplex tree If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\nrequired"
+  },
+  {
+    "objectID": "API/SimplexTree.html#remove",
+    "href": "API/SimplexTree.html#remove",
+    "title": "Simplicial",
+    "section": "remove",
+    "text": "remove\nremove(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#find",
+    "href": "API/SimplexTree.html#find",
+    "title": "Simplicial",
+    "section": "find",
+    "text": "find\nfind(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#adjacent",
+    "href": "API/SimplexTree.html#adjacent",
+    "title": "Simplicial",
+    "section": "adjacent",
+    "text": "adjacent\nadjacent(self, simplices: Iterable)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#collapse",
+    "href": "API/SimplexTree.html#collapse",
+    "title": "Simplicial",
+    "section": "collapse",
+    "text": "collapse\ncollapse(self, sigma: SimplexLike, tau: SimplexLike)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#degree",
+    "href": "API/SimplexTree.html#degree",
+    "title": "Simplicial",
+    "section": "degree",
+    "text": "degree\ndegree(self, vertices: Optional[ArrayLike] = None)\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvertices\nnumpy.typing.ArrayLike\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\nNone\n\n\n\nReturns: list: degree of each vertex id given in ‘vertices’"
+  },
+  {
+    "objectID": "API/SimplexTree.html#traverse",
+    "href": "API/SimplexTree.html#traverse",
+    "title": "Simplicial",
+    "section": "traverse",
+    "text": "traverse\ntraverse(order: str = 'preorder', f: Callable = print, kargs)\n\nParameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\norder\n\nthe type of traversal to do\n'preorder'\n\n\nf\n\na function to evaluate on every simplex in the traversal. Defaults to print.\nprint\n\n\n**kwargs\n\nadditional arguments to the specific traversal.\nrequired"
+  },
+  {
+    "objectID": "API/SimplexTree.html#cofaces",
+    "href": "API/SimplexTree.html#cofaces",
+    "title": "Simplicial",
+    "section": "cofaces",
+    "text": "cofaces\ncofaces(self, p: int = None, sigma: SimplexLike = [])\n\nParameters\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\np\n\ncoface dimension to restrict to\nNone\n\n\nsigma\n\nthe simplex to obtain cofaces of\n[]\n\n\n\nReturns: list: the p-cofaces of sigma"
+  },
+  {
+    "objectID": "API/SimplexTree.html#coface_roots",
+    "href": "API/SimplexTree.html#coface_roots",
+    "title": "Simplicial",
+    "section": "coface_roots",
+    "text": "coface_roots\ncoface_roots(self, p: int = None, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/SimplexTree.html#skeleton",
+    "href": "API/SimplexTree.html#skeleton",
+    "title": "Simplicial",
+    "section": "skeleton",
+    "text": "skeleton\nskeleton(self, p: int = None)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#simplices",
+    "href": "API/SimplexTree.html#simplices",
+    "title": "Simplicial",
+    "section": "simplices",
+    "text": "simplices\nsimplices(self, p: int = None, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/SimplexTree.html#maximal",
+    "href": "API/SimplexTree.html#maximal",
+    "title": "Simplicial",
+    "section": "maximal",
+    "text": "maximal\nmaximal(self)"
+  },
+  {
+    "objectID": "API/SimplexTree.html#link",
+    "href": "API/SimplexTree.html#link",
+    "title": "Simplicial",
+    "section": "link",
+    "text": "link\nlink(self, sigma: SimplexLike = [])"
+  },
+  {
+    "objectID": "API/Simplex.html#faces",
+    "href": "API/Simplex.html#faces",
+    "title": "Simplicial",
+    "section": "faces",
+    "text": "faces\nfaces(self, p: Optional[int] = None)"
+  },
+  {
+    "objectID": "API/Simplex.html#boundary",
+    "href": "API/Simplex.html#boundary",
+    "title": "Simplicial",
+    "section": "boundary",
+    "text": "boundary\nboundary(self)"
+  },
+  {
+    "objectID": "API/Simplex.html#dim",
+    "href": "API/Simplex.html#dim",
+    "title": "Simplicial",
+    "section": "dim",
+    "text": "dim\ndim(self)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#update",
+    "href": "API/SimplicialComplex.html#update",
+    "title": "Simplicial",
+    "section": "update",
+    "text": "update\nupdate(self, iterable)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#add",
+    "href": "API/SimplicialComplex.html#add",
+    "title": "Simplicial",
+    "section": "add",
+    "text": "add\nadd(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#remove",
+    "href": "API/SimplicialComplex.html#remove",
+    "title": "Simplicial",
+    "section": "remove",
+    "text": "remove\nremove(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#discard",
+    "href": "API/SimplicialComplex.html#discard",
+    "title": "Simplicial",
+    "section": "discard",
+    "text": "discard\ndiscard(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#cofaces",
+    "href": "API/SimplicialComplex.html#cofaces",
+    "title": "Simplicial",
+    "section": "cofaces",
+    "text": "cofaces\ncofaces(self, item: Collection[int])"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#print",
+    "href": "API/SimplicialComplex.html#print",
+    "title": "Simplicial",
+    "section": "print",
+    "text": "print\nprint(self, kwargs)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#dim",
+    "href": "API/SimplicialComplex.html#dim",
+    "title": "Simplicial",
+    "section": "dim",
+    "text": "dim\ndim(self)"
+  },
+  {
+    "objectID": "API/SimplicialComplex.html#faces",
+    "href": "API/SimplicialComplex.html#faces",
+    "title": "Simplicial",
+    "section": "faces",
+    "text": "faces\nfaces(self, p: Optional[int] = None)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#update",
+    "href": "API/MutableFiltration.html#update",
+    "title": "Simplicial",
+    "section": "update",
+    "text": "update\nupdate(self, other: Iterable[Tuple[Any, Collection[Integral]]])"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#setdefault",
+    "href": "API/MutableFiltration.html#setdefault",
+    "title": "Simplicial",
+    "section": "setdefault",
+    "text": "setdefault\nsetdefault(self, key, default)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#copy",
+    "href": "API/MutableFiltration.html#copy",
+    "title": "Simplicial",
+    "section": "copy",
+    "text": "copy\ncopy(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#keys",
+    "href": "API/MutableFiltration.html#keys",
+    "title": "Simplicial",
+    "section": "keys",
+    "text": "keys\nkeys(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#values",
+    "href": "API/MutableFiltration.html#values",
+    "title": "Simplicial",
+    "section": "values",
+    "text": "values\nvalues(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#items",
+    "href": "API/MutableFiltration.html#items",
+    "title": "Simplicial",
+    "section": "items",
+    "text": "items\nitems(self)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#reindex_keys",
+    "href": "API/MutableFiltration.html#reindex_keys",
+    "title": "Simplicial",
+    "section": "reindex_keys",
+    "text": "reindex_keys\nreindex_keys(self, index_set: Iterable)\nGiven a totally ordered key set of the same length of the filtation, reindexes"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#faces",
+    "href": "API/MutableFiltration.html#faces",
+    "title": "Simplicial",
+    "section": "faces",
+    "text": "faces\nfaces(self, p: int = None)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#print",
+    "href": "API/MutableFiltration.html#print",
+    "title": "Simplicial",
+    "section": "print",
+    "text": "print\nprint(self, kwargs)"
+  },
+  {
+    "objectID": "API/MutableFiltration.html#validate",
+    "href": "API/MutableFiltration.html#validate",
+    "title": "Simplicial",
+    "section": "validate",
+    "text": "validate\nvalidate(self, light: bool = True)"
+  },
+  {
+    "objectID": "API/generics.html#boundary",
+    "href": "API/generics.html#boundary",
+    "title": "Simplicial",
+    "section": "boundary",
+    "text": "boundary\nboundary(s: Union[SimplexLike, ComplexLike])"
+  },
+  {
+    "objectID": "API/ComplexLike.html#dim",
+    "href": "API/ComplexLike.html#dim",
+    "title": "Simplicial",
+    "section": "dim",
+    "text": "dim\ndim(self)"
+  },
+  {
+    "objectID": "API/ComplexLike.html#faces",
+    "href": "API/ComplexLike.html#faces",
+    "title": "Simplicial",
+    "section": "faces",
+    "text": "faces\nfaces(self, p: int)"
+  },
+  {
+    "objectID": "API/CombinatorialFiltration.html",
+    "href": "API/CombinatorialFiltration.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "CombinatorialFiltration"
+  },
+  {
+    "objectID": "API/Sequence.html",
+    "href": "API/Sequence.html",
+    "title": "Simplicial",
+    "section": "",
+    "text": "Sequence"
+  }
+]

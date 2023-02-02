@@ -1,3 +1,7 @@
+## Build the docs by cd'ing into docs and doing: 
+## quarto render .
+## python -m quartodoc build
+## python gen_api_custom.py
 project:
   type: website
 
@@ -29,13 +33,15 @@ website:
         href: design.qmd
       - text: Simplex Tree
         href: simplextree_ds.qmd
-      - text: Test
-        href: test.qmd
-      - section: API
+      - text: API Overview
+        href: reference/index.qmd
+      - section: Reference
         contents: 
-          - meta.rst
-          - simplicial_ds.rst
-          - simplextree.rst
+          - text: SimplexTree
+            href: API/SimplexTree.md
+          # - text: ComplexLike
+          #   href: API/ComplexLike.md
+
   page-navigation: true
   reader-mode: true
   page-footer: 
@@ -60,11 +66,15 @@ format:
 
 quartodoc: 
   title: API Reference
-  # sidebar: "_sidebar.yml"
-  display_name: full
-  style: single-page
-  dir: reference
   package: simplicial
+  dir: reference
+  renderer: 
+    style: markdown
+    show_signature: true
+    show_signature_annotations: true
+    display_name: name 
+  # sidebar: "_sidebar.yml"
+  style: pkgdown
   sections:
     - title: Explicit classes 
       desc: Classes which represent simplicial complexes explicitly
@@ -78,6 +88,7 @@ quartodoc:
         - SimplexLike 
         - ComplexLike 
         - FiltrationLike
+        
 
 latex-auto-install: true 
 

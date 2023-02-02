@@ -1,0 +1,7 @@
+## MutableFiltration { #MutableFiltration }
+
+`MutableFiltration(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None)`
+
+Simplicial Filtration 
+
+Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
