@@ -105,6 +105,12 @@ An entirely different structure, such as a numpy array, may be more performant i
 
 ## Structural Subtyping & Generics
 
+
+This is a common pattern that exists in other languages. In Haskell, they're called _typeclasses_. In Rust, they're _traits_. In Swift, they're called _protocols_. In D, a related thing is called _type constraints_. These appear over and over in other languages. Swift celebrates itself as a _protocol_-oriented language. 
+https://www.youtube.com/watch?v=E-2y1qHQvTg
+
+Wadler, Philip, and Stephen Blott. "How to make ad-hoc polymorphism less ad hoc." Proceedings of the 16th ACM SIGPLAN-SIGACT symposium on Principles of programming languages. 1989.
+
 With all of these types, its clear there are going to be memory and time complexity tradeoffs associated with each type. Searcing might take longer in one, but shorter in the other... One representation might be extremely compact and great for read-only streaming.... another might be more suitable for a time-varying setting, where the underlying complex is constantly changing via simplex insertions, deletions, and reorderings. 
 
 It would be nice to have a interface to unify all of these sturctures, such that primitive operations on them are carried out in a DRY-manner. Ideally, the interface should be minimal---requiring only what is strictly necessary---but also performant, taking advantage of structure wherever it exists. Moreover, the interface should ideally be easily extensible, type flexible, and open source fruendly. 

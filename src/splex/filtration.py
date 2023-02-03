@@ -1,16 +1,17 @@
 import numpy as np 
 from .meta import *
 from .splex import * 
+from .combinatorial import * 
 
 # TODO: make Filtration class that uses combinatorial number system for speed 
-class CombinatorialFiltration(MutableMapping):
+class CombinatorialComplex(ComplexLike):
   @classmethod
   def _key_dim_lex_poset(cls, s: Simplex) -> bool:
     return (len(s), tuple(s), s)
 
   # simplices: Sequence[SimplexLike], I: Optional[Collection] = None
   def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
-    if isinstance(obj, SimplicialComplex):
+    if isinstance(simplices, SimplicialComplex):
       self.simplices = simplices
       self.indices = range(len(simplices)) if I is None else I
       assert all([isinstance(s, SimplexLike) for s in simplices]), "Must all be simplex-like"
@@ -18,6 +19,15 @@ class CombinatorialFiltration(MutableMapping):
       self.simplices = [Simplex(s) for s in simplices]
       self.index_set = np.arange(0, len(simplices)) if I is None else np.asarray(I)
       self.dtype = [('s', Simplex), ('index', I.dtype)]
+    elif isinstance(simplices, Iterable):
+      # assert simplices != iter(simplices)
+      d = np.array([len(s) for s in simplices], dtype=np.int8)
+      for s in simplices:
+        len(s), rank_comb(s, len(s), n)
+      rank_combs(C, k, n)
+    else: 
+      raise ValueError(f"Invalid input type '{type(simplices)}'")
+
 
 
     # self.data = SortedDict()

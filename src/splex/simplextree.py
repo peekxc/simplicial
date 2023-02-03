@@ -137,7 +137,12 @@ class SimplexTree(SimplexTreeCpp):
 
   def simplices(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
     F = []
-    self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
+    if p is None: 
+      for p in range(0, self.dimension+1):
+        self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
+    else: 
+      assert isinstance(int(p), int), f"Invalid argument type '{type(p)}', must be integral"
+      self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
     return F
   
   def maximal(self) -> Iterable['SimplexLike']:

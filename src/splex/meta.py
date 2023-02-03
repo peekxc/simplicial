@@ -53,7 +53,12 @@ class SimplexLike(SetLike, Hashable, Protocol):
 @runtime_checkable
 class ComplexLike(Collection['SimplexLike'], Protocol):
   ''' 
-  An object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.
+  Protocol interface for types that represent (abstract) simplicial complexes
+
+  An type _ComplexLike_ if it is a iterable collection of SimplexLike objects, and it the following methods:
+    - dim : None -> int
+    - faces : int -> Iterable[SimplexLike]
+
   
   Protocols: Collection[Sized, Iterable, Container]
   Methods: __contains__, __iter__, __len__
