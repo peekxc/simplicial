@@ -1,35 +1,97 @@
+
 import numpy as np 
+import numbers
+
 from .meta import *
 from .splex import * 
 from .combinatorial import * 
 
-# TODO: make Filtration class that uses combinatorial number system for speed 
 class CombinatorialComplex(ComplexLike):
-  @classmethod
-  def _key_dim_lex_poset(cls, s: Simplex) -> bool:
-    return (len(s), tuple(s), s)
+  """
+  Simplicial Complex represented via the combinatorial number system
+  """
+  def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None) -> None:
+    simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
+    s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
+    if simplices is not None:
+      assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
+      self.simplices = np.unique(np.array([(rank_colex(s), len(s)) for s in simplices], dtype=s_dtype))
+      self._i = 0
+    else:
+      self.simplices = np.empty(dtype=s_dtype)
+      self._i = 0
 
-  # simplices: Sequence[SimplexLike], I: Optional[Collection] = None
-  def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
-    if isinstance(simplices, SimplicialComplex):
-      self.simplices = simplices
-      self.indices = range(len(simplices)) if I is None else I
-      assert all([isinstance(s, SimplexLike) for s in simplices]), "Must all be simplex-like"
-      if I is not None: assert len(simplices) == len(I)
-      self.simplices = [Simplex(s) for s in simplices]
-      self.index_set = np.arange(0, len(simplices)) if I is None else np.asarray(I)
-      self.dtype = [('s', Simplex), ('index', I.dtype)]
-    elif isinstance(simplices, Iterable):
-      # assert simplices != iter(simplices)
-      d = np.array([len(s) for s in simplices], dtype=np.int8)
-      for s in simplices:
-        len(s), rank_comb(s, len(s), n)
-      rank_combs(C, k, n)
+  def __len__(self) -> int: 
+    return len(self.simplices)
+  
+  def __contains__(self, x: SimplexLike) -> bool:
+    return rank_colex(x) in self.simplices['rank']
+    
+  def __iter__(self) -> Iterable[SimplexLike]:
+    self._i = 0
+    return self 
+
+  def __next__(self) -> SimplexLike:
+    if self._i < len(self.simplices):
+      self._i += 1
+      return unrank_colex(*self.simplices[i])
+    else:
+      raise StopIteration
+
+  def dim(self) -> int: 
+    return max(self.simplices['d'])-1
+
+  def faces(self, p: int = None) -> Iterable['SimplexLike']:
+    if p is not None: 
+      assert isinstance(p, numbers.Integral)
+      yield from unrank_combs(self.simplices['rank'][self.simplices['d'] == (p+1)], k=p+1)
+    else:
+      yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
+
+  
+class CombinatorialFiltration(CombinatorialComplex, Mapping):
+  def __init__(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None):
+    simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
+    assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
+    if f is not None:
+      s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.float64)])
+      self.simplices = np.array([(rank_colex(s), len(s), f(s)) for s in simplices], dtype=s_dtype)
     else: 
-      raise ValueError(f"Invalid input type '{type(simplices)}'")
+      s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.uint32)])
+      self.simplices = np.array([(rank_colex(s), len(s), i) for i, s in enumerate(simplices)], dtype=s_dtype)
+  
+  def reindex(self, f: Callable['SimplexLike', Any]) -> None:
+    # self.w = np.array([f(s) for s in iter(self)])
+    ind = np.argsort(self.w, order=('f', 'd', 'r'))
+    self.simplices = self.simplices[ind]
+
+  ## Mapping interface
+  __iter__ = lambda self: iter(self.simplices['f'])
+  def __getitem__(self, k) -> SimplexLike: 
+    i = np.searchsorted(self.simplices['f'])
+    r,d,f = self.simplices[i][:2]
+    return unrank_colex(r, d)
+  
+  ## Mapping mixins
+  keys = lambda self: iter(self.simplices['f'])
+  values = lambda self: self.faces()
+  items = lambda self: zip(self.keys(), self.values())
+  __eq__ = lambda self, other: all(self.simplices == other.simplices) if len(self.simplices) == len(other.simplices) else False
+  __ne__ = lambda self, other: any(self.simplices != other.simplices) if len(self.simplices) == len(other.simplices) else False
 
 
+  ## MutableMapping Interface 
+  # __setitem__, __delitem__, pop, popitem, clear, update, setdefault
 
+# class MutableCombinatorialFiltration(CombinatorialComplex, Mapping):
+
+    #   self.simplices = simplices
+    #   self.indices = range(len(simplices)) if I is None else I
+    #   assert all([isinstance(s, SimplexLike) for s in simplices]), "Must all be simplex-like"
+    #   if I is not None: assert len(simplices) == len(I)
+    #   self.simplices = [Simplex(s) for s in simplices]
+    #   self.index_set = np.arange(0, len(simplices)) if I is None else np.asarray(I)
+    #   self.dtype = [('s', Simplex), ('index', I.dtype)]
     # self.data = SortedDict()
     # self.shape = tuple()
     # if isinstance(iterable, SimplicialComplex):

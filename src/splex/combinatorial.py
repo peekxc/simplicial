@@ -59,7 +59,7 @@ def rank_combs(C: Iterable[tuple], n: int = None, order: str = ["colex", "lex"])
     order : the bijection to use
   
   Returns: 
-    ndarray: unsigned integers ranks in the chosen order.
+    list : unsigned integers ranks in the chosen order.
   """
   if (isinstance(order, list) and order == ["colex", "lex"]) or order == "colex":
     return [rank_colex(c) for c in C]
