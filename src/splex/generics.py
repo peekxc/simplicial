@@ -32,12 +32,30 @@ def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = Non
 
 
 def dim(sigma: Union[SimplexLike, ComplexLike]) -> int:
-  if isinstance(sigma, ComplexLike):
+  """
+  Returns the dimension of a simplicial object, suitably defined 
+  """
+  if isinstance(sigma, ComplexLike): # hasattr(s, "boundary")
     return sigma.dim()
   return len(s) - 1
 
 def boundary(s: Union[SimplexLike, ComplexLike]) -> Iterable['SimplexLike']:
+  """
+  Returns the _boundary_ of a simplicial object, suitably defined 
+  """
+  if hasattr(s, "boundary"):
+    return s.boundary()
   return combinations(s, len(s)-1)
+  
+def faces(s: Union[SimplexLike, ComplexLike]) -> Iterable['SimplexLike']:
+  """
+  Returns the _boundary_ of a simplicial object, suitably defined 
+  """
+  if hasattr(s, "faces"):
+    return s.faces()
+  assert isinstance(s, SimplexLike)
+  k = len(s)
+  return(combinations(s, k-i) for i in reversed(range(1, k)))
 
 
 # def boundary_matrix(K: Union[SimplicialComplex, MutableFiltration, Iterable[tuple]], p: Optional[Union[int, tuple]] = None):

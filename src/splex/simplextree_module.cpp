@@ -577,6 +577,27 @@ void traverse_(SimplexTree& stree, const size_t order, py::function f, simplex_t
 // }
 
 
+#include <chrono>
+#include <random>
+
+// void expand_f_bernoulli(SimplexTree& stx, const size_t k, const double p){
+//   SimplexTree& st = *(Rcpp::XPtr< SimplexTree >(stx));  
+  
+//   // Random number generator
+//   std::random_device random_device;
+//   std::mt19937 random_engine(random_device());
+//   std::uniform_real_distribution< double > bernoulli(0.0, 1.0);
+  
+//   // Perform Bernoulli trials for given k, with success probability p
+//   st.expansion_f(k, [&](node_ptr parent, idx_t depth, idx_t label){
+//     double q = bernoulli(random_engine);
+//     if (p == 1.0 | q < p){ // if successful trial
+//       std::array< idx_t, 1 > int_label = { label };
+//       st.insert_it(begin(int_label), end(int_label), parent, depth);
+//     }
+//   });
+// }
+
 
 void insert_list(SimplexTree& st, std::list< simplex_t > L){
   for (auto s: L){ 
@@ -584,6 +605,17 @@ void insert_list(SimplexTree& st, std::list< simplex_t > L){
   }
   return; 
 }
+
+
+// Expands st conditionally based on f
+// void expansion_f(SimplexTree& st, const size_t k, py::function f){
+//   const auto do_expand = [&](node_ptr np, auto depth, auto label){
+//     // get simplex
+//     return true; 
+//   };
+//   st.expansion_f(k, f);
+// }
+
 
 // pip install --no-deps --no-build-isolation --editable .
 // clang -Wall -fPIC -c src/simplicial/simplextree_module.cpp -std=c++17 -I/Users/mpiekenbrock/pbsig/extern/pybind11/include -I/Users/mpiekenbrock/simplicial/src/simplicial/include -I/Users/mpiekenbrock/opt/miniconda3/envs/pbsig/include/python3.9 

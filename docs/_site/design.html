@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Simplicial – design</title>
+<title>Splex – design</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -139,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">Simplicial</span>
+    <span class="navbar-title">Splex</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -201,9 +201,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
+  <a href="./reference/index.html" class="sidebar-item-text sidebar-link">API Overview</a>
   </div>
 </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./API/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -214,8 +229,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="simplicial-design-philosophy" class="level1">
-<h1>Simplicial Design Philosophy</h1>
+<section id="design-philosophy" class="level1">
+<h1>Design Philosophy</h1>
 <p>Suppose you wanted to represent a <a href="https://en.wikipedia.org/wiki/Abstract_simplicial_complex">combinatorial n-simplex</a>. Why not use a built-in <a href="https://docs.python.org/3/glossary.html#term-sequence">sequence</a> type?</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>simplex <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>] <span class="co"># why note use a list? </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>But wait, simplices are simple value objects, just like strings (<code>'abc'</code>) or integers (<code>123</code>), which are <a href="https://docs.python.org/3/faq/design.html#why-are-python-strings-immutable">immutable</a> and <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Hashable">hashable</a>. Perhaps a <code>tuple</code> then?</p>

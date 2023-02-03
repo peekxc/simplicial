@@ -5,7 +5,7 @@ from numpy.typing import ArrayLike
 import numpy as np 
 import _simplextree
 from _simplextree import SimplexTree as SimplexTreeCpp
-from .simplicial import *
+from .splex import *
 
 class SimplexTree(SimplexTreeCpp):
   """ 
@@ -16,16 +16,20 @@ class SimplexTree(SimplexTreeCpp):
 
     Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
   """    
-  def __init__(self):
+  def __init__(self, simplices: Iterable[SimplexLike] = None) -> None:
     SimplexTreeCpp.__init__(self)
-    pass 
+    if simplices is not None: 
+      self.insert(simplices)
+    return None
 
   def insert(self, simplices: Iterable[SimplexLike]) -> None:
     """
     Inserts simplices into the Simplex Tree. 
 
+    Note inserting a simplex by definition also inserts all of its faces. If the simplex exists, the tree is not modified. 
+
     Parameters:
-      simplices: Iterable of simplices to insert
+      simplices: Iterable of simplices to insert (each of which are SimplexLike)
 
     Note: 
       If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
@@ -55,6 +59,8 @@ class SimplexTree(SimplexTreeCpp):
 
   def degree(self, vertices: Optional[ArrayLike] = None) -> Union[ArrayLike, int]:
     """
+    Computes the degree of select vertices in the trie.
+
     Parameters:
       vertices (ArrayLike): Retrieves vertex degrees
         If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0. 
@@ -144,5 +150,16 @@ class SimplexTree(SimplexTreeCpp):
     self._traverse(8, lambda s: F.append(s), sigma, 0)
     return F
 
+  def expand(self, k: int) -> None:
+    """ 
+    Performs a k-expansion of the tree.
+    
+    Parameters: 
+      k : maximum dimension to expand to. 
+    """
+    assert int(k) >= 0, f"Invalid expansion dimension k={k} given"
+    self._expand(int(k))
+
+
   def __repr__(self) -> str:
-    return f"Simplex Tree with {tuple(self.n_simplices)} {tuple(range(0,st.dimension+1))}-simplices"
+    return f"Simplex Tree with {tuple(self.n_simplices)} {tuple(range(0,self.dimension+1))}-simplices"

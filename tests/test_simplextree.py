@@ -22,6 +22,22 @@ def test_insert():
   assert st.dimension == 4
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
 
+def test_expand():
+  from itertools import combinations
+  st = SimplexTree()
+  simplex = np.array([0,1,2,3,4], dtype=np.int8)
+  st.insert([(i,j) for i,j in combinations(simplex, 2)])
+  st.expand(k=1)
+  assert all(st.n_simplices == np.array([5,10]))
+  st.expand(k=2)
+  assert all(st.n_simplices == np.array([5,10,10]))
+  st.expand(k=5)
+  assert all(st.n_simplices == np.array([5,10,10,5,1]))
+  assert st.insert([simplex]) is None 
+  assert all(st.n_simplices == np.array([5,10,10,5,1]))
+  assert st.dimension == 4
+
+
 def test_SimplexTree():
   st = SimplexTree()
   st.insert([[0,1,2], [0,1], [4,5]])

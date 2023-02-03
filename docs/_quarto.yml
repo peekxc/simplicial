@@ -8,7 +8,7 @@ project:
 # sphinx-build . ./_build/html -b html
 
 website:
-  title: Simplicial
+  title: Splex
   search: 
     location: sidebar
     type: textbox

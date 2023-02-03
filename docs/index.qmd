@@ -8,7 +8,7 @@ execute:
   enabled: false
 ---
 
-# Simplicial
+# Splex
 
 _Simplicial_ is an experimental Python package aimed at simplifying computation with simplicial complexes. 
 

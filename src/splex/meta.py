@@ -68,7 +68,7 @@ class ComplexLike(Collection['SimplexLike'], Protocol):
     raise NotImplementedError
 
 @runtime_checkable
-class FiltrationLike(ComplexLike, Sequence['SimplexLike'], Protocol):
+class FiltrationLike(MutableMapping, Protocol):
   """ An object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects. """
   def __reversed__(self) -> Iterable['SimplexLike']:
     raise NotImplementedError

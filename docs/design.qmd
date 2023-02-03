@@ -8,7 +8,7 @@ execute:
   enabled: false
 ---
 
-# Simplicial Design Philosophy
+# Design Philosophy
 
 Suppose you wanted to represent a [combinatorial n-simplex](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). Why not use a built-in [sequence](https://docs.python.org/3/glossary.html#term-sequence) type?
 

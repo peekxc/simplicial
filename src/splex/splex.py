@@ -1,4 +1,4 @@
-## simplicial.py
+## splex.py
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
 
@@ -58,7 +58,7 @@ class Simplex(Set, Hashable):
   def __iter__(self) -> Iterable[int]:
     return iter(self.vertices)
   def __repr__(self):
-    return str(self.vertices).replace(',','') if self.dimension() == 0 else str(self.vertices).replace(' ','')
+    return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
   def __getitem__(self, index: int) -> int:
     return self.vertices[index] # auto handles IndexError exception 
   def __sub__(self, other) -> 'Simplex':

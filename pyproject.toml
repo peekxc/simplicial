@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 # Validate with: validate-pyproject pyproject.toml 
 [project]
-name = "simplicial"
+name = "splex"
 authors = [
 	{ name = "Matt Piekenbrock", email = "matt.piekenbrock@gmail.com" }
 ]
