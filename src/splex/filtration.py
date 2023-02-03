@@ -1,6 +1,6 @@
 import numpy as np 
 from .meta import *
-from .simplicial import * 
+from .splex import * 
 
 # TODO: make Filtration class that uses combinatorial number system for speed 
 class CombinatorialFiltration(MutableMapping):

@@ -3,7 +3,6 @@
 ## space of abstract simplicial complexes and on simplicial filtrations
 
 import numpy as np 
-# import networkx as nx
 from .meta import *   # typing utilities for meta-programming
 from .generics import * 
 

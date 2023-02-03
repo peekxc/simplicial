@@ -1,11 +1,12 @@
 import numpy as np
+from scipy.spatial.distance import pdist
 
 from .meta import *
 from .generics import * 
 from .splex import * 
 from .simplextree import * 
 from .combinatorial import rank_combs, unrank_combs
-from scipy.spatial.distance import pdist
+
 
 def rips_filtration(X: ArrayLike, radius: float) -> MutableFiltration:
   X = np.random.uniform(size=(30,2))
