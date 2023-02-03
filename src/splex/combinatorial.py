@@ -15,7 +15,7 @@ def unrank_C2(x: int, n: int) -> tuple:
   return(i,j) 
 
 def unrank_lex(r: int, k: int, n: int):
-  result = np.zeros(k, dtype=np.uint16)
+  result = [0]*k
   x = 1
   for i in range(1, k+1):
     while(r >= comb(n-x, k-i)):
@@ -23,17 +23,16 @@ def unrank_lex(r: int, k: int, n: int):
       x += 1
     result[i-1] = (x - 1)
     x += 1
-  return(result)
+  return tuple(result)
 
-def rank_lex(c: Iterable, n: int) -> np.uint64:
-  c = np.sort(np.fromiter(c, dtype=np.uint16))
-  index = sum([comb(cc, kk) for cc,kk in zip((n-1)-c, np.flip(range(1, len(c)+1)))])
-  return np.uint64((comb(n, len(c))-1) - int(index))
+def rank_lex(c: Iterable, n: int) -> int:
+  c = tuple(sorted(c))
+  index = sum([comb((n-1)-cc, kk) for cc,kk in zip(c, reversed(range(1, len(c)+1)))])
+  return int((comb(n, len(c))-1) - int(index))
 
 def rank_colex(c: Iterable) -> int:
-  c = np.sort(np.fromiter(c, dtype=np.uint16))
+  c = tuple(sorted(c))
   return sum([comb(ci, i+1) for i,ci in zip(reversed(range(len(c))), reversed(c))])
-
 
 def unrank_colex(r: int, k: int) -> np.ndarray:
   """
@@ -41,14 +40,14 @@ def unrank_colex(r: int, k: int) -> np.ndarray:
   
   From: Unranking Small Combinations of a Large Set in Co-Lexicographic Order
   """
-  c = np.zeros(k, dtype=np.uint16)
+  c = [0]*k
   for i in reversed(range(1, k+1)):
     m = i
     while r >= comb(m,i):
       m += 1
     c[i-1] = m-1
     r -= comb(m-1,i)
-  return c
+  return tuple(c)
 
 def rank_combs(C: Iterable[tuple], n: int = None, order: str = ["colex", "lex"]):
   """
@@ -63,10 +62,10 @@ def rank_combs(C: Iterable[tuple], n: int = None, order: str = ["colex", "lex"])
     ndarray: unsigned integers ranks in the chosen order.
   """
   if (isinstance(order, list) and order == ["colex", "lex"]) or order == "colex":
-    return np.array([rank_colex(c) for c in C], dtype = np.uint64)
+    return [rank_colex(c) for c in C]
   else:
     assert n is not None, "Cardinality of set must be supplied for lexicographical ranking"
-    return(np.array([rank_comb(c, len(c), n) for c in C], dtype=np.uint64))
+    return [rank_comb(c, len(c), n) for c in C]
 
 def unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ["colex", "lex"]):
   """
@@ -78,11 +77,11 @@ def unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order
     order : the bijection to use
   
   Returns: 
-    Union[ndarray, list] : k-combinations, as a list if k is Iterable, otherwise as an array if k is fixed
+    list : k-combinations derived from R
   """
   if (isinstance(order, list) and order == ["colex", "lex"]) or order == "colex":
     if isinstance(k, Integral):
-      return np.array([unrank_colex(r, k) for r in R], dtype = np.int64)
+      return [unrank_colex(r, k) for r in R]
     else: 
       assert len(k) == len(R), "If 'k' is an iterable it must match the size of 'R'"
       return [unrank_colex(r, l) for l, r in zip(k,R)]
@@ -90,9 +89,9 @@ def unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order
     assert n is not None, "Cardinality of set must be supplied for lexicographical ranking"
     if isinstance(k, Integral):
       if k == 2: 
-        return(np.array([unrank_C2(r, n) for r in R], dtype=np.uint16))
+        return [unrank_C2(r, n) for r in R]
       else: 
-        return(np.array([unrank_lex(r, k, n) for r in R], dtype=np.uint16))
+        return [unrank_lex(r, k, n) for r in R]
     else:
       assert len(k) == len(R), "If 'k' is an iterable it must match the size of 'R'"
       return [unrank_lex(r, l) for l, r in zip(k,R)]
