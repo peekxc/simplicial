@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Simplicial – simplexlike</title>
+<title>Splex – simplexlike</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Simplicial</span>
+    <span class="navbar-title">Splex</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -134,11 +134,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Overview</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
@@ -149,12 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../API/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../API/ComplexLike.html" class="sidebar-item-text sidebar-link">ComplexLike</a>
+  <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
   </div>
 </li>
       </ul>
@@ -169,9 +159,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="SimplexLike" class="level2">
-<h2 class="anchored" data-anchor-id="SimplexLike">SimplexLike</h2>
-<p><code>SimplexLike()</code></p>
+<section id="simplexlike" class="level1">
+<h1>SimplexLike</h1>
+<hr>
 <p>An object is SimplexLike if it is Immutable, Hashable, and SetLike</p>
 <p>By definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex <strong>contains</strong> queries)</p>
 <p>Protocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: <strong>hash</strong>, <strong>contains</strong>, <strong>len</strong>, <strong>iter</strong>, <strong>setitem</strong></p>

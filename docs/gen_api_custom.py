@@ -2,6 +2,7 @@
 # jupyter: python3
 # ---
 
+import os 
 from griffe import dataclasses as dc
 from griffe.docstrings import dataclasses as ds
 from griffe.loader import GriffeLoader
@@ -11,7 +12,7 @@ from plum import dispatch
 from quartodoc import MdRenderer
 
 griffe = GriffeLoader(docstring_parser=Parser("google"))
-mod = griffe.load_module("simplicial")
+mod = griffe.load_module("splex")
 renderer = MdRenderer(show_signature=True, show_signature_annotations=True, display_name="name")
 auto_summaries = {}
 class_summaries = {}
@@ -97,7 +98,7 @@ class AutoSummary:
     print(f"ATTR: {self.full_name(el)}")
 
 ## Create the files
-output_dir = "API"
+output_dir = os.path.dirname(__file__) + '/reference'
 auto = AutoSummary(output_dir)
 auto.visit(mod)
 p_root = Path(auto.dir_name)

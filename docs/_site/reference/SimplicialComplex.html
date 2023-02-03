@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Simplicial – simplicialcomplex</title>
+<title>Splex – simplicialcomplex</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Simplicial</span>
+    <span class="navbar-title">Splex</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -134,11 +134,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Overview</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
@@ -149,12 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../API/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../API/ComplexLike.html" class="sidebar-item-text sidebar-link">ComplexLike</a>
+  <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
   </div>
 </li>
       </ul>
@@ -169,12 +159,52 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="SimplicialComplex" class="level2">
-<h2 class="anchored" data-anchor-id="SimplicialComplex">SimplicialComplex</h2>
-<p><code>SimplicialComplex(self, iterable)</code></p>
+<section id="simplicialcomplex" class="level1">
+<h1>SimplicialComplex</h1>
+<hr>
 <p>Abstract Simplicial Complex</p>
+<hr>
+<section id="dim" class="level2">
+<h2 class="anchored" data-anchor-id="dim">dim</h2>
+<p><code>dim(self)</code></p>
+<hr>
+</section>
+<section id="faces" class="level2">
+<h2 class="anchored" data-anchor-id="faces">faces</h2>
+<p><code>faces(self, p: Optional[int] = None)</code></p>
+<hr>
+</section>
+<section id="update" class="level2">
+<h2 class="anchored" data-anchor-id="update">update</h2>
+<p><code>update(self, simplices: Iterable[SimplexLike])</code></p>
+<hr>
+</section>
+<section id="add" class="level2">
+<h2 class="anchored" data-anchor-id="add">add</h2>
+<p><code>add(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="remove" class="level2">
+<h2 class="anchored" data-anchor-id="remove">remove</h2>
+<p><code>remove(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="discard" class="level2">
+<h2 class="anchored" data-anchor-id="discard">discard</h2>
+<p><code>discard(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="cofaces" class="level2">
+<h2 class="anchored" data-anchor-id="cofaces">cofaces</h2>
+<p><code>cofaces(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="print" class="level2">
+<h2 class="anchored" data-anchor-id="print">print</h2>
+<p><code>print(self, kwargs)</code></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -13,11 +13,13 @@ This class exposes a native extension module wrapping a simplex tree implemented
 
 Inserts simplices into the Simplex Tree. 
 
+Note inserting a simplex by definition also inserts all of its faces. If the simplex exists, the tree is not modified. 
+
 ### Parameters
 
-| Name        | Type                  | Description                     | Default   |
-|-------------|-----------------------|---------------------------------|-----------|
-| `simplices` | Iterable[SimplexLike] | Iterable of simplices to insert | required  |
+| Name        | Type                  | Description                                                     | Default   |
+|-------------|-----------------------|-----------------------------------------------------------------|-----------|
+| `simplices` | Iterable[SimplexLike] | Iterable of simplices to insert (each of which are SimplexLike) | required  |
 
 Note: 
   If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
@@ -52,6 +54,8 @@ Note:
 ## degree { #degree }
 
 `degree(self, vertices: Optional[ArrayLike] = None)`
+
+Computes the degree of select vertices in the trie.
 
 ### Parameters
 
@@ -121,3 +125,14 @@ Returns:
 ## link { #link }
 
 `link(self, sigma: SimplexLike = [])`
+
+ --- 
+
+## expand { #expand }
+
+`expand(self, k: int)`
+
+Performs a k-expansion of the tree.
+
+Parameters: 
+  k : maximum dimension to expand to.

@@ -1,5 +1,0 @@
-## SimplicialComplex { #SimplicialComplex }
-
-`SimplicialComplex(self, iterable)`
-
-Abstract Simplicial Complex

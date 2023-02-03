@@ -6,9 +6,21 @@ Abstract Simplicial Complex
 
  --- 
 
+## dim { #dim }
+
+`dim(self)`
+
+ --- 
+
+## faces { #faces }
+
+`faces(self, p: Optional[int] = None)`
+
+ --- 
+
 ## update { #update }
 
-`update(self, iterable)`
+`update(self, simplices: Iterable[SimplexLike])`
 
  --- 
 
@@ -39,15 +51,3 @@ Abstract Simplicial Complex
 ## print { #print }
 
 `print(self, kwargs)`
-
- --- 
-
-## dim { #dim }
-
-`dim(self)`
-
- --- 
-
-## faces { #faces }
-
-`faces(self, p: Optional[int] = None)`

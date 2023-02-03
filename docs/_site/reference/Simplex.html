@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Simplicial – simplextree</title>
+<title>Splex – simplex</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../API/ComplexLike.html" rel="next">
-<link href="../reference/index.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -76,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Simplicial</span>
+    <span class="navbar-title">Splex</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -136,11 +134,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Overview</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
@@ -151,12 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../API/SimplexTree.html" class="sidebar-item-text sidebar-link active">SimplexTree</a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../API/ComplexLike.html" class="sidebar-item-text sidebar-link">ComplexLike</a>
+  <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
   </div>
 </li>
       </ul>
@@ -171,198 +159,24 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="simplextree" class="level1">
-<h1>SimplexTree</h1>
+<section id="simplex" class="level1">
+<h1>Simplex</h1>
 <hr>
-<p>SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.</p>
+<p>Implements: <strong>contains</strong>(self, v: int) &lt;=&gt; Returns whether integer ‘v’ is a vertex in ‘self’</p>
 <hr>
-<section id="insert" class="level2">
-<h2 class="anchored" data-anchor-id="insert">insert</h2>
-<p><code>insert(self, simplices: Iterable[SimplexLike])</code></p>
-<p>Inserts simplices into the Simplex Tree.</p>
-<section id="parameters" class="level3">
-<h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
-<table class="table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 28%">
-<col style="width: 41%">
-<col style="width: 13%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>simplices</code></td>
-<td>Iterable[SimplexLike]</td>
-<td>Iterable of simplices to insert</td>
-<td>required</td>
-</tr>
-</tbody>
-</table>
-<p>Note: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.</p>
+<section id="faces" class="level2">
+<h2 class="anchored" data-anchor-id="faces">faces</h2>
+<p><code>faces(self, p: Optional[int] = None)</code></p>
 <hr>
 </section>
-</section>
-<section id="remove" class="level2">
-<h2 class="anchored" data-anchor-id="remove">remove</h2>
-<p><code>remove(self, simplices: Iterable)</code></p>
+<section id="boundary" class="level2">
+<h2 class="anchored" data-anchor-id="boundary">boundary</h2>
+<p><code>boundary(self)</code></p>
 <hr>
 </section>
-<section id="find" class="level2">
-<h2 class="anchored" data-anchor-id="find">find</h2>
-<p><code>find(self, simplices: Iterable)</code></p>
-<hr>
-</section>
-<section id="adjacent" class="level2">
-<h2 class="anchored" data-anchor-id="adjacent">adjacent</h2>
-<p><code>adjacent(self, simplices: Iterable)</code></p>
-<hr>
-</section>
-<section id="collapse" class="level2">
-<h2 class="anchored" data-anchor-id="collapse">collapse</h2>
-<p><code>collapse(self, sigma: SimplexLike, tau: SimplexLike)</code></p>
-<hr>
-</section>
-<section id="degree" class="level2">
-<h2 class="anchored" data-anchor-id="degree">degree</h2>
-<p><code>degree(self, vertices: Optional[ArrayLike] = None)</code></p>
-<section id="parameters-1" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-1">Parameters</h3>
-<table class="table">
-<colgroup>
-<col style="width: 6%">
-<col style="width: 13%">
-<col style="width: 73%">
-<col style="width: 6%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>vertices</code></td>
-<td>numpy.typing.ArrayLike</td>
-<td>Retrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.</td>
-<td><code>None</code></td>
-</tr>
-</tbody>
-</table>
-<p>Returns: list: degree of each vertex id given in ‘vertices’</p>
-<hr>
-</section>
-</section>
-<section id="traverse" class="level2">
-<h2 class="anchored" data-anchor-id="traverse">traverse</h2>
-<p><code>traverse(order: str = 'preorder', f: Callable = print, kargs)</code></p>
-<section id="parameters-2" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-2">Parameters</h3>
-<table class="table">
-<colgroup>
-<col style="width: 10%">
-<col style="width: 7%">
-<col style="width: 69%">
-<col style="width: 12%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>order</code></td>
-<td></td>
-<td>the type of traversal to do</td>
-<td><code>'preorder'</code></td>
-</tr>
-<tr class="even">
-<td><code>f</code></td>
-<td></td>
-<td>a function to evaluate on every simplex in the traversal. Defaults to print.</td>
-<td><code>print</code></td>
-</tr>
-<tr class="odd">
-<td><code>**kwargs</code></td>
-<td></td>
-<td>additional arguments to the specific traversal.</td>
-<td>required</td>
-</tr>
-</tbody>
-</table>
-<hr>
-</section>
-</section>
-<section id="cofaces" class="level2">
-<h2 class="anchored" data-anchor-id="cofaces">cofaces</h2>
-<p><code>cofaces(self, p: int = None, sigma: SimplexLike = [])</code></p>
-<section id="parameters-3" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-3">Parameters</h3>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>p</code></td>
-<td></td>
-<td>coface dimension to restrict to</td>
-<td><code>None</code></td>
-</tr>
-<tr class="even">
-<td><code>sigma</code></td>
-<td></td>
-<td>the simplex to obtain cofaces of</td>
-<td><code>[]</code></td>
-</tr>
-</tbody>
-</table>
-<p>Returns: list: the p-cofaces of sigma</p>
-<hr>
-</section>
-</section>
-<section id="coface_roots" class="level2">
-<h2 class="anchored" data-anchor-id="coface_roots">coface_roots</h2>
-<p><code>coface_roots(self, p: int = None, sigma: SimplexLike = [])</code></p>
-<hr>
-</section>
-<section id="skeleton" class="level2">
-<h2 class="anchored" data-anchor-id="skeleton">skeleton</h2>
-<p><code>skeleton(self, p: int = None)</code></p>
-<hr>
-</section>
-<section id="simplices" class="level2">
-<h2 class="anchored" data-anchor-id="simplices">simplices</h2>
-<p><code>simplices(self, p: int = None, sigma: SimplexLike = [])</code></p>
-<hr>
-</section>
-<section id="maximal" class="level2">
-<h2 class="anchored" data-anchor-id="maximal">maximal</h2>
-<p><code>maximal(self)</code></p>
-<hr>
-</section>
-<section id="link" class="level2">
-<h2 class="anchored" data-anchor-id="link">link</h2>
-<p><code>link(self, sigma: SimplexLike = [])</code></p>
+<section id="dim" class="level2">
+<h2 class="anchored" data-anchor-id="dim">dim</h2>
+<p><code>dim(self)</code></p>
 
 
 </section>
@@ -617,18 +431,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../reference/index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">API Overview</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../API/ComplexLike.html" class="pagination-link">
-        <span class="nav-page-text">ComplexLike</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

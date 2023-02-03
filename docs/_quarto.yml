@@ -33,12 +33,12 @@ website:
         href: design.qmd
       - text: Simplex Tree
         href: simplextree_ds.qmd
-      - text: API Overview
-        href: reference/index.qmd
+      # - text: API Overview
+      #   href: reference/index.qmd
       - section: Reference
         contents: 
           - text: SimplexTree
-            href: API/SimplexTree.md
+            href: reference/SimplexTree.md
           # - text: ComplexLike
           #   href: API/ComplexLike.md
 
@@ -66,7 +66,7 @@ format:
 
 quartodoc: 
   title: API Reference
-  package: simplicial
+  package: splex
   dir: reference
   renderer: 
     style: markdown

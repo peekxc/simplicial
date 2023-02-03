@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Simplicial – complexlike</title>
+<title>Splex – constructions</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">Simplicial</span>
+    <span class="navbar-title">Splex</span>
     </a>
   </div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -134,11 +134,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Overview</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
@@ -149,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../API/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
+  <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
   </div>
 </li>
       </ul>
@@ -164,23 +159,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="complexlike" class="level1">
-<h1>ComplexLike</h1>
-<hr>
-<p>An object is ComplexLike if it is a iterable collection of SimplexLike objects and it has dim() and faces() methods.</p>
-<p>Protocols: Collection[Sized, Iterable, Container] Methods: <strong>contains</strong>, <strong>iter</strong>, <strong>len</strong></p>
-<hr>
-<section id="dim" class="level2">
-<h2 class="anchored" data-anchor-id="dim">dim</h2>
-<p><code>dim(self)</code></p>
-<hr>
-</section>
-<section id="faces" class="level2">
-<h2 class="anchored" data-anchor-id="faces">faces</h2>
-<p><code>faces(self, p: int)</code></p>
+<section id="rips_filtration" class="level2">
+<h2 class="anchored" data-anchor-id="rips_filtration">rips_filtration</h2>
+<p><code>rips_filtration(X: ArrayLike, radius: float)</code></p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
