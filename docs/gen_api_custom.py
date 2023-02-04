@@ -10,12 +10,15 @@ from griffe.docstrings.parsers import Parser, parse
 from pathlib import Path
 from plum import dispatch
 from quartodoc import MdRenderer
+# from MdRendererExt import MdRendererNumpyStyle
+from types import MethodType
+from typing import *
+
 
 griffe = GriffeLoader(docstring_parser=Parser("google"))
 mod = griffe.load_module("splex")
-renderer = MdRenderer(show_signature=True, show_signature_annotations=True, display_name="name")
 auto_summaries = {}
-class_summaries = {}
+ds_elements = {}
 
 def filter_invalid_ds(docstrings):
   if docstrings is None: return []
@@ -23,8 +26,56 @@ def filter_invalid_ds(docstrings):
   parsed = list(filter(lambda dso: type(dso) != ds.DocstringSectionAdmonition, parsed))
   return parsed
 
-## TODO: Create a new renderer! 
-# class MdRendererExtended(MdRenderer):
+## Choose the extended renderer
+# renderer = MdRendererNumpyStyle(show_signature=True, show_signature_annotations=True, display_name="name")
+renderer = MdRenderer(show_signature=True, show_signature_annotations=True, display_name="name")
+
+# DocstringSectionParameters: name, annotation, description, default
+from griffe.expressions import Name, Expression
+# EL = []#EL.append(d)
+def render_params(self, el: ds.DocstringSectionParameters) -> str:
+  params_str = []
+  for ds_param in el.value:
+    d = ds_param.as_dict()
+    pn, pa, pd = [d.get(k) for k in ("name", "annotation", "description")]
+    sec_md = f"**{pn}** : "
+    if isinstance(pa, Name) or isinstance(pa, Expression):
+      sec_md += f"<span class='type_annotation'> {pa.full}, </span>"
+    else: 
+      sec_md += "" if pa is None or len(str(pa)) == 0 else str(pa)+", "
+    sec_md += f"optional (default={ d.get('value') })" if "value" in d.keys() else "required"
+    sec_md += f"<p> {pd} </p>" #style='margin-top: 10px;margin-left: 2.5em;
+    params_str.append(sec_md)
+  return "\n\n".join(params_str)
+
+def render_returns(self, el: ds.DocstringSectionReturns) -> str:
+  params_str = []
+  for ds_param in el.value:
+    d = ds_param.as_dict()
+    pn, pa, pd = [d.get(k) for k in ("name", "annotation", "description")]
+    sec_md = f"**{pn}** : "
+    if isinstance(pa, Name) or isinstance(pa, Expression):
+      sec_md += f"<span class='type_annotation'> {pa.full}, </span>"
+    else: 
+      sec_md += "" if pa is None or len(str(pa)) == 0 else str(pa)+", "
+    sec_md += f"<p> {pd} </p>" #style='margin-top: 10px;margin-left: 2.5em;
+    params_str.append(sec_md)
+  return "\n\n".join(params_str)
+
+#render_overload = MethodType(f, renderer) # doesn't work
+def overload_render(renderer, ds_type, f: Callable):
+  sigs = list(renderer.render.methods.keys())
+  extract_types = lambda T: T.get_types()
+  for sig in sigs:
+    if len(sig.types) > 1 and ds_type in extract_types(sig.types[1]):
+      disp_tup = renderer.render.methods[sig]
+      renderer.render.methods[sig] = f, disp_tup[1]
+      break 
+
+overload_render(renderer, ds.DocstringSectionParameters, render_params)
+overload_render(renderer, ds.DocstringSectionReturns, render_returns)
+
+
 
 class AutoSummary:
   def __init__(self, dir_name: str):
@@ -51,23 +102,25 @@ class AutoSummary:
 
   @dispatch
   def visit(self, el: dc.Module):
-    print(f"MOD: {el.canonical_path}")
+    #print(f"MOD: {el.canonical_path}")
     for name, class_ in el.classes.items():
-        self.visit(class_)
+      ds_elements.setdefault("MOD", []).append(el)
+      self.visit(class_)
 
     for name, func in el.functions.items():
-        self.visit(func)
+      self.visit(func)
 
     for name, mod in el.modules.items():
-        self.visit(mod)
+      self.visit(mod)
 
   @dispatch
   def visit(self, el: dc.Class):
     if el.name.startswith("_"):
       return
     
-    print(f"CLASS: {self.full_name(el)}")
-    class_summaries[el.name] = el
+    #print(f"CLASS: {self.full_name(el)}")
+    ds_elements.setdefault("CLASS", []).append(el)
+    
     parsed = filter_invalid_ds(el.docstring)
     class_summary = '\n\n'.join([renderer.render(p) for p in parsed])
     auto_summaries.setdefault(el.name, [f"# {el.name}"]).append(class_summary)
@@ -76,26 +129,34 @@ class AutoSummary:
 
   @dispatch
   def visit(self, el: dc.Alias):
+    #print(f"ALIAS: {self.full_name(el)}")
     return None
+
+  # @dispatch
+  # def visit(self, el: dc.Parameter):
+  #   print(f"PARAMETER: {self.full_name(el)}")
+  #   ds_elements.setdefault("PARAMETER", []).append(el)
+  #   return None 
 
   @dispatch
   def visit(self, el: dc.Function):
     if el.name.startswith("_"):
       return
     full_name = self.full_name(el)
-    print(f"FUNCTION: {full_name}")
+    print(f"FUNCTION: {full_name}, base_name: {self.base_name(el)}")
+    ds_elements.setdefault("FUNCTION", []).append(el)
     
     ## Accumulate the auto summaries per basename
     auto_summaries.setdefault(self.parent_name(el), []).append(renderer.render(el))
     
-
   @dispatch
   def visit(self, el: dc.Attribute):
     if el.name.startswith("_"):
       return
+    ds_elements.setdefault("ATTR", []).append(el)
 
     # a class attribute
-    print(f"ATTR: {self.full_name(el)}")
+    #print(f"ATTR: {self.full_name(el)}")
 
 ## Create the files
 output_dir = os.path.dirname(__file__) + '/reference'
@@ -108,3 +169,19 @@ for fn in auto_summaries.keys():
   p_func.write_text("\n\n --- \n\n".join(auto_summaries[fn]))
 
 
+## Example Parameters 
+# el = ds_elements["FUNCTION"][11]
+# # p.annotation.full
+# print(renderer.render(ds_elements["FUNCTION"][11]))
+
+# from MdRendererExt import GLOBAL_TABS
+# header = ["Name", "Type", "Description", "Default"]
+# rows, header = GLOBAL_TABS[11]
+
+# from tabulate import tabulate
+# print(tabulate(rows, header, tablefmt="github"))
+
+# params = GLOBAL_TABS[11][0]
+
+# for param_name, param_type, param_descr, is_req in params:
+#   print(f"{param_name} : _{param_type}_ ({is_req}) \n &nbsp;&nbsp;&nbsp;&nbsp; {param_descr}")

@@ -7,22 +7,6 @@ using namespace pybind11::literals;
 
 #include "include/simplextree.h"
 using simplex_t = SimplexTree::simplex_t; 
-// using py::array_t< idx_t >;
-
-  // py::buffer_info s_buffer = simplices.request();
-  // if (s_buffer.ndim == 1){
-  //   idx_t* s = static_cast< idx_t* >(s_buffer.ptr); 
-  //   st.insert_it< true >(s, s+s_buffer.shape[0], st.root.get(), 0);
-  // }
-  // else if (s_buffer.ndim == 2){
-  //   // const size_t d = static_cast< size_t >(s_buffer.shape[1]);
-  //   if (s_buffer.strides[0] <= 0){ return; }
-  //   const size_t d = static_cast< size_t >(s_buffer.strides[0]);
-  //   idx_t* s = static_cast< idx_t* >(s_buffer.ptr); 
-  //   for (size_t i = 0; i < size_t(s_buffer.size); ++i){
-  //     st.insert_it< true >(s+(d*i), s+(d*i)+1, st.root.get(), 0);
-  //   }
-  // }
 
 // Generic function to handle various vector types
 template < typename Lambda >
@@ -48,23 +32,6 @@ void vector_handler(SimplexTree& st, const py::array_t< idx_t >& simplices, Lamb
       // st.insert_it< true >(s+(d*i), s+(d*i)+1, st.root.get(), 0);
     }
   }
-  //   IntegerMatrix m = as< IntegerMatrix >(sigma);
-  //   const size_t n = m.ncol();
-  //   for (size_t i = 0; i < n; ++i){
-  //     if (i % 1000 == 0){ Rcpp::checkUserInterrupt(); }
-  //     IntegerMatrix::Column cc = m(_,i);
-  //     f(simplex_t(cc.begin(), cc.end()));
-  //   }
-  // } else if (s_type == INTSXP || s_type == REALSXP){
-  //   f(as< simplex_t >(sigma));
-  // } else if (s_type == LISTSXP || s_type == VECSXP){
-  //   List simplices = List(sigma);
-  //   const size_t n = simplices.size();
-  //   for (size_t i = 0; i < n; ++i){
-  //     if (i % 1000 == 0){ Rcpp::checkUserInterrupt(); }
-  //     f(as< simplex_t >(simplices[i]));
-  //   }
-  // } else { stop("Unknown type passed, must be list type or vector type."); }
 }
 
 // TODO: accept py::buffer?
@@ -74,69 +41,17 @@ void insert_(SimplexTree& st, const py::array_t< idx_t >& simplices){
     st.insert_it< true >(b, e, st.root.get(), 0);
   });
 }
-
-// // R-facing Inserter for lexicographically-sorted column matrix
-// void insert_lex(SimplexTree* st, const IntegerMatrix& simplices){
-//   SimplexTree& st_ref = *st;
-//   const size_t m = simplices.ncol();
-//   for (size_t i = 0; i < m; ++i){
-//     IntegerMatrix::ConstColumn cc = simplices(_,i);
-//     st_ref.insert_it< true >(cc.begin(), cc.end(), st_ref.root.get(), 0);
-//   }
-// }
-// void insert_lex(SimplexTree* st, const IntegerMatrix& simplices){
-//   SimplexTree& st_ref = *st;
-//   const size_t m = simplices.ncol();
-//   const size_t d = simplices.nrow();
-//   
-//   splex_alloc_t a; 
-//   splex_t k_simplex{ a };
-//   k_simplex.resize(d);
-//   
-//   // Start the search 
-//   IntegerMatrix::ConstColumn cc = simplices(_,0);
-//   // node_ptr np = st_ref.find_it(cc.begin(), cc.end(), st_ref.root.get());
-//   
-//   // Get the initial simplex
-//   st_ref.full_simplex_out(st_ref.root.get(), d-1, begin(cc)));
-//   // std::copy(k_simplex.begin(), k_simplex.end(), k_p1_simplex.begin());
-//   
-//   while(std::equal(begin(cc), end(cc), begin(cc)) && i < m){
-//     if (np != nullptr){
-//       auto new_it = np->children.emplace_hint(np->children.end(), std::make_unique< node >(label, np));
-//       auto child_np = (*new_it).get();
-//       if (d > 1){ // keep track of nodes which share ids at the same depth
-//         if (depth_index(d+1) >= level_map.size()){ level_map.resize(depth_index(d+1) + 1); }
-// 	      auto& label_map = level_map[depth_index(d+1)][child_np->label];
-//   	    label_map.push_back(child_np);
-//       }
-//       record_new_simplexes(d, 1);
-//     }
-//     cc = simplices(_,++i);
-//     
-//   }
-//   
-//       
-//   for (size_t i = 1; i < m; ++i){
-//     
-//     
-//     if (np != nullptr){
-//       auto new_it = np->children.emplace_hint(np->children.end(), std::make_unique< node >(label, np));
-//       auto child_np = (*new_it).get();
-//       if (d > 1){ // keep track of nodes which share ids at the same depth
-//         if (depth_index(d+1) >= level_map.size()){ level_map.resize(depth_index(d+1) + 1); }
-// 	      auto& label_map = level_map[depth_index(d+1)][child_np->label];
-//   	    label_map.push_back(child_np);
-//       }
-//       record_new_simplexes(d, 1);
-//     }
-//   }
-// }
+void insert_list(SimplexTree& st, std::list< simplex_t > L){
+  for (auto s: L){ st.insert(simplex_t(s)); }
+}
 
 void remove_(SimplexTree& st, const py::array_t< idx_t >& simplices){
   vector_handler(st, simplices, [&st](idx_t* b, idx_t* e){ 
     st.remove(st.find(simplex_t(b, e))); 
   });
+}
+void remove_list(SimplexTree& st, std::list< simplex_t > L){
+  for (auto s: L){ st.remove(simplex_t(s)); }
 }
 
 // Vectorized find 
@@ -149,6 +64,16 @@ auto find_(SimplexTree& st, const py::array_t< idx_t >& simplices) noexcept -> p
   });
   return(py::cast(v));
 }
+
+[[nodiscard]]
+auto find_list(SimplexTree& st, std::list< simplex_t > L) -> py::array_t< bool > {
+  std::vector< bool > v;
+  for (auto s: L){ 
+    v.push_back(st.find(simplex_t(s))); 
+  }
+  return py::cast(v);
+}
+
 
 bool collapse_(SimplexTree& st, const vector< idx_t >& tau, const vector< idx_t >& sigma){
   return st.collapse(st.find(tau), st.find(sigma));
@@ -249,19 +174,6 @@ auto simplex_counts(const SimplexTree& st) -> py::array_t< size_t >  {
   return(py::cast(ne));
 }
 
-// typedef bool (*ValidConstructor)(SEXP*,int);
-
-// void init_filtration(Filtration* filt, SEXP st) {
-//   Rcpp::XPtr< SimplexTree > st_ptr(st);
-//   filt->initialize(*st_ptr);
-// }
-
-// List get_simplices(Filtration* st){
-//   auto si = st->simplices(); 
-//   List results = List();
-//   for (auto& sigma: si){ results.push_back(sigma); }
-//   return results;
-// }
 
 // void make_flag_filtration(Filtration* st, const NumericVector& D){
 //   if (st->n_simplexes.size() <= 1){ return; }
@@ -599,13 +511,6 @@ void traverse_(SimplexTree& stree, const size_t order, py::function f, simplex_t
 // }
 
 
-void insert_list(SimplexTree& st, std::list< simplex_t > L){
-  for (auto s: L){ 
-    st.insert(simplex_t(s)); 
-  }
-  return; 
-}
-
 
 // Expands st conditionally based on f
 // void expansion_f(SimplexTree& st, const size_t k, py::function f){
@@ -641,7 +546,9 @@ PYBIND11_MODULE(_simplextree, m) {
     .def("_insert_list", &insert_list)
     // .def( "insert_lex", &insert_lex)
     .def( "_remove",  &remove_)
+    .def( "_remove_list",  &remove_list)
     .def( "_find", &find_)
+    .def( "_find_list", &remove_list)
     .def( "_adjacent", &adjacent_)
     .def( "_collapse", &collapse_)
     .def( "generate_ids", &SimplexTree::generate_ids)

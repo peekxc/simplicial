@@ -123,7 +123,7 @@
     "href": "reference/SimplexTree.html",
     "title": "Splex",
     "section": "",
-    "text": "SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\n\n\n\ninsert(self, simplices: Iterable[SimplexLike])\nInserts simplices into the Simplex Tree.\nNote inserting a simplex by definition also inserts all of its faces. If the simplex exists, the tree is not modified.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nsimplices\nIterable[SimplexLike]\nIterable of simplices to insert (each of which are SimplexLike)\nrequired\n\n\n\nNote: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\n\n\n\n\n\nremove(self, simplices: Iterable)\n\n\n\n\nfind(self, simplices: Iterable)\n\n\n\n\nadjacent(self, simplices: Iterable)\n\n\n\n\ncollapse(self, sigma: SimplexLike, tau: SimplexLike)\n\n\n\n\ndegree(self, vertices: Optional[ArrayLike] = None)\nComputes the degree of select vertices in the trie.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nvertices\nnumpy.typing.ArrayLike\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\nNone\n\n\n\nReturns: list: degree of each vertex id given in ‘vertices’\n\n\n\n\n\ntraverse(order: str = 'preorder', f: Callable = print, kargs)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\norder\n\nthe type of traversal to do\n'preorder'\n\n\nf\n\na function to evaluate on every simplex in the traversal. Defaults to print.\nprint\n\n\n**kwargs\n\nadditional arguments to the specific traversal.\nrequired\n\n\n\n\n\n\n\n\ncofaces(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\np\n\ncoface dimension to restrict to\nNone\n\n\nsigma\n\nthe simplex to obtain cofaces of\n[]\n\n\n\nReturns: list: the p-cofaces of sigma\n\n\n\n\n\ncoface_roots(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nskeleton(self, p: int = None)\n\n\n\n\nsimplices(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nmaximal(self)\n\n\n\n\nlink(self, sigma: SimplexLike = [])\n\n\n\n\nexpand(self, k: int)\nPerforms a k-expansion of the tree.\nParameters: k : maximum dimension to expand to."
+    "text": "SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\n\n\n\nName\nType\nDescription\n\n\n\n\nn_simplices\nndarray\nnumber of simplices\n\n\ndimension\nint\nmaximal dimension of the complex\n\n\nid_policy\nstr\npolicy for generating new vertex ids\n\n\n\n\n\n\ninsert(self, simplices: Iterable[SimplexLike])\nInserts simplices into the Simplex Tree.\nBy definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\nNote: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\n\n\n\n\n\nremove(self, simplices: Iterable[SimplexLike])\nRemoves simplices into the Simplex Tree.\nBy definition, removing a face also removes all of its cofaces. If the simplex does not exist in the complex, the tree is not modified.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\nNote: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\n\n\n\n\n\nfind(self, simplices: Iterable[SimplexLike])\nFinds whether simplices exist in Simplex Tree.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\nNote: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.\nReturn: ndarray : boolean array for each simplex indicating whether it was found in the complex\n\n\n\n\n\nadjacent(self, simplices: Iterable)\n\n\n\n\ncollapse(self, tau: SimplexLike, sigma: SimplexLike)\nChecks whether its possible to collapse \\sigma through $ au$, and if so, both simplices are removed.\nA simplex \\sigma is said to be collapsible through one of its faces $ au$ if \\sigma is the only coface of $ au$ (excluding $ au$ itself).\nParameters: sigma : maximal simplex to collapse tau : face of sigma to collapse\n\n\nbool : None,\n\nwhether the pair was collapsed\n\nExample: >>> st = SimplexTree([[0,1,2]]) >>> print(st) Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices\n\n\n\nst.collapse([1,2], [0,1,2]) True\n\n\n\n\n\n\nprint(st) Simplex Tree with (3, 2) (0, 1)-simplices\n\n\n\n\n\n\n\n\nvertex_collapse(self, u: int, v: int, w: int)\nMaps a pair of vertices into a single vertex.\n\n\nu :  int, required\n\nthe first vertex in the free pair.\n\nv :  int, required\n\nthe second vertex in the free pair.\n\nw :  int, required\n\nthe target vertex to collapse to.\n\n\n\n\n\n\ndegree(self, vertices: Optional[ArrayLike] = None)\nComputes the degree of select vertices in the trie.\n\n\nvertices :  numpy.typing.ArrayLike, optional (default=None)\n\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\n\nReturns: list: degree of each vertex id given in ‘vertices’\n\n\n\n\n\ntraverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)\nTraverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered\nSupported traversals: - breadth-first (“bfs”)\n\n\norder : optional (default=‘preorder’)\n\nthe type of traversal to do\n\nf : optional (default=print)\n\na function to evaluate on every simplex in the traversal. Defaults to print.\n\nsigma : optional (default=[])\n\nsimplex to start the traversal at, where applicable. Defaults to the root node (empty set)\n\np : optional (default=0)\n\ndimension of simplices to restrict to, where applicable.\n\n\n\n\n\n\ncofaces(self, p: int = None, sigma: SimplexLike = [])\n\n\np : optional (default=None)\n\ncoface dimension to restrict to\n\nsigma : optional (default=[])\n\nthe simplex to obtain cofaces of\n\nReturns: list: the p-cofaces of sigma\n\n\n\n\n\ncoface_roots(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nskeleton(self, p: int = None)\n\n\n\n\nsimplices(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nmaximal(self)\n\n\n\n\nlink(self, sigma: SimplexLike = [])\n\n\n\n\nexpand(self, k: int)\nPerforms a k-expansion of the complex.\nThis function is particularly useful for expanding clique complexes beyond their 1-skeleton.\nParameters: k : maximum dimension to expand to.\n\n\n>>> st = SimplexTree(combinations(range(8), 2))\n>>> print(st)\n    Simplex Tree with (8, 28) (0, 1)-simplices\n>>> st.expand(k=2)\n>>> print(st)\n    Simplex Tree with (8, 28, 56) (0, 1, 2)-simplices"
   },
   {
     "objectID": "reference/CombinatorialComplex.html",
@@ -208,5 +208,117 @@
     "title": "Splex",
     "section": "unrank_combs",
     "text": "unrank_combs\nunrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ['colex', 'lex'])\nUnranks integer ranks to k-combinations in either lexicographic or colexicographical order\nParameters: R : Iterable of integer ranks n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : k-combinations derived from R"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.unrank_C2",
+    "href": "reference/combinatorial.html#combinatorial.unrank_C2",
+    "title": "Splex",
+    "section": "combinatorial.unrank_C2",
+    "text": "combinatorial.unrank_C2\ncombinatorial.unrank_C2(x: int, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.unrank_lex",
+    "href": "reference/combinatorial.html#combinatorial.unrank_lex",
+    "title": "Splex",
+    "section": "combinatorial.unrank_lex",
+    "text": "combinatorial.unrank_lex\ncombinatorial.unrank_lex(r: int, k: int, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.rank_lex",
+    "href": "reference/combinatorial.html#combinatorial.rank_lex",
+    "title": "Splex",
+    "section": "combinatorial.rank_lex",
+    "text": "combinatorial.rank_lex\ncombinatorial.rank_lex(c: Iterable, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.rank_colex",
+    "href": "reference/combinatorial.html#combinatorial.rank_colex",
+    "title": "Splex",
+    "section": "combinatorial.rank_colex",
+    "text": "combinatorial.rank_colex\ncombinatorial.rank_colex(c: Iterable)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.unrank_colex",
+    "href": "reference/combinatorial.html#combinatorial.unrank_colex",
+    "title": "Splex",
+    "section": "combinatorial.unrank_colex",
+    "text": "combinatorial.unrank_colex\ncombinatorial.unrank_colex(r: int, k: int)\nUnranks a k-combinations rank ‘r’ back into the original combination in colex order\nFrom: Unranking Small Combinations of a Large Set in Co-Lexicographic Order"
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.rank_combs",
+    "href": "reference/combinatorial.html#combinatorial.rank_combs",
+    "title": "Splex",
+    "section": "combinatorial.rank_combs",
+    "text": "combinatorial.rank_combs\ncombinatorial.rank_combs(C: Iterable[tuple], n: int = None, order: str = ['colex', 'lex'])\nRanks k-combinations to integer ranks in either lexicographic or colexicographical order\nParameters: C : Iterable of combinations n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : unsigned integers ranks in the chosen order."
+  },
+  {
+    "objectID": "reference/combinatorial.html#combinatorial.unrank_combs",
+    "href": "reference/combinatorial.html#combinatorial.unrank_combs",
+    "title": "Splex",
+    "section": "combinatorial.unrank_combs",
+    "text": "combinatorial.unrank_combs\ncombinatorial.unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ['colex', 'lex'])\nUnranks integer ranks to k-combinations in either lexicographic or colexicographical order\nParameters: R : Iterable of integer ranks n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : k-combinations derived from R"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.unrank_C2",
+    "href": "reference/combinatorial.html#splex.combinatorial.unrank_C2",
+    "title": "Splex",
+    "section": "splex.combinatorial.unrank_C2",
+    "text": "splex.combinatorial.unrank_C2\nsplex.combinatorial.unrank_C2(x: int, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.unrank_lex",
+    "href": "reference/combinatorial.html#splex.combinatorial.unrank_lex",
+    "title": "Splex",
+    "section": "splex.combinatorial.unrank_lex",
+    "text": "splex.combinatorial.unrank_lex\nsplex.combinatorial.unrank_lex(r: int, k: int, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.rank_lex",
+    "href": "reference/combinatorial.html#splex.combinatorial.rank_lex",
+    "title": "Splex",
+    "section": "splex.combinatorial.rank_lex",
+    "text": "splex.combinatorial.rank_lex\nsplex.combinatorial.rank_lex(c: Iterable, n: int)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.rank_colex",
+    "href": "reference/combinatorial.html#splex.combinatorial.rank_colex",
+    "title": "Splex",
+    "section": "splex.combinatorial.rank_colex",
+    "text": "splex.combinatorial.rank_colex\nsplex.combinatorial.rank_colex(c: Iterable)"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.unrank_colex",
+    "href": "reference/combinatorial.html#splex.combinatorial.unrank_colex",
+    "title": "Splex",
+    "section": "splex.combinatorial.unrank_colex",
+    "text": "splex.combinatorial.unrank_colex\nsplex.combinatorial.unrank_colex(r: int, k: int)\nUnranks a k-combinations rank ‘r’ back into the original combination in colex order\nFrom: Unranking Small Combinations of a Large Set in Co-Lexicographic Order"
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.rank_combs",
+    "href": "reference/combinatorial.html#splex.combinatorial.rank_combs",
+    "title": "Splex",
+    "section": "splex.combinatorial.rank_combs",
+    "text": "splex.combinatorial.rank_combs\nsplex.combinatorial.rank_combs(C: Iterable[tuple], n: int = None, order: str = ['colex', 'lex'])\nRanks k-combinations to integer ranks in either lexicographic or colexicographical order\nParameters: C : Iterable of combinations n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : unsigned integers ranks in the chosen order."
+  },
+  {
+    "objectID": "reference/combinatorial.html#splex.combinatorial.unrank_combs",
+    "href": "reference/combinatorial.html#splex.combinatorial.unrank_combs",
+    "title": "Splex",
+    "section": "splex.combinatorial.unrank_combs",
+    "text": "splex.combinatorial.unrank_combs\nsplex.combinatorial.unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ['colex', 'lex'])\nUnranks integer ranks to k-combinations in either lexicographic or colexicographical order\nParameters: R : Iterable of integer ranks n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : k-combinations derived from R"
+  },
+  {
+    "objectID": "reference/generics.html#splex.generics.boundary",
+    "href": "reference/generics.html#splex.generics.boundary",
+    "title": "Splex",
+    "section": "splex.generics.boundary",
+    "text": "splex.generics.boundary\nsplex.generics.boundary(s: Union[SimplexLike, ComplexLike])\nReturns the boundary of a simplicial object, suitably defined"
+  },
+  {
+    "objectID": "reference/generics.html#splex.generics.faces",
+    "href": "reference/generics.html#splex.generics.faces",
+    "title": "Splex",
+    "section": "splex.generics.faces",
+    "text": "splex.generics.faces\nsplex.generics.faces(s: Union[SimplexLike, ComplexLike])\nReturns the boundary of a simplicial object, suitably defined"
   }
 ]

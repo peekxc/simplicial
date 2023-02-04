@@ -4,6 +4,7 @@
 ## python gen_api_custom.py
 project:
   type: website
+  output-dir: _site
 
 # sphinx-build . ./_build/html -b html
 

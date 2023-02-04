@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import *
+from numbers import Integral
 from numpy.typing import ArrayLike
 
 import numpy as np 
@@ -13,8 +14,15 @@ class SimplexTree(SimplexTreeCpp):
   This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
 
   The Simplex Tree was originally introduced in the following paper:
+    - Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
 
-    Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
+  Attributes:
+    n_simplices (ndarray): number of simplices 
+    dimension (int): maximal dimension of the complex
+    id_policy (str): policy for generating new vertex ids 
+
+  Properties:
+    vertices (ndarray): vertices of the complex
   """    
   def __init__(self, simplices: Iterable[SimplexLike] = None) -> None:
     SimplexTreeCpp.__init__(self)
@@ -26,7 +34,7 @@ class SimplexTree(SimplexTreeCpp):
     """
     Inserts simplices into the Simplex Tree. 
 
-    Note inserting a simplex by definition also inserts all of its faces. If the simplex exists, the tree is not modified. 
+    By definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified. 
 
     Parameters:
       simplices: Iterable of simplices to insert (each of which are SimplexLike)
@@ -45,17 +53,97 @@ class SimplexTree(SimplexTreeCpp):
     else: 
       raise ValueError("Invalid type given")
   
-  def remove(self, simplices: Iterable):
-    pass 
+  def remove(self, simplices: Iterable[SimplexLike]):
+    """
+    Removes simplices into the Simplex Tree. 
 
-  def find(self, simplices: Iterable):
-    pass 
+    By definition, removing a face also removes all of its cofaces. If the simplex does not exist in the complex, the tree is not modified. 
+
+    Parameters:
+      simplices: Iterable of simplices to insert (each of which are SimplexLike)
+
+    Note: 
+      If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
+      Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
+    """
+    if isinstance(simplices, np.ndarray):
+      simplices = np.array(simplices, dtype=np.int8)
+      assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
+      self._remove(simplices)
+    elif isinstance(simplices, Iterable): 
+      simplices = [Simplex(s) for s in simplices]
+      self._remove_list(simplices)
+    else: 
+      raise ValueError("Invalid type given")
+
+  def find(self, simplices: Iterable[SimplexLike]):
+    """
+    Finds whether simplices exist in Simplex Tree. 
+
+    Parameters:
+      simplices: Iterable of simplices to insert (each of which are SimplexLike)
+
+    Note: 
+      If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
+      Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
+
+    Return: 
+      ndarray : boolean array for each simplex indicating whether it was found in the complex
+    """
+    if isinstance(simplices, np.ndarray):
+      simplices = np.array(simplices, dtype=np.int8)
+      assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
+      return self._find(simplices)
+    elif isinstance(simplices, Iterable): 
+      simplices = [Simplex(s) for s in simplices]
+      return self._find_list(simplices)
+    else: 
+      raise ValueError("Invalid type given")
 
   def adjacent(self, simplices: Iterable):
-    pass
+    return self._adjacent(list(map(Simplex, simplices)))
 
-  def collapse(self, sigma: SimplexLike, tau: SimplexLike):
-    pass 
+  def collapse(self, tau: SimplexLike, sigma: SimplexLike) -> None:
+    """
+    Checks whether its possible to collapse $\sigma$ through $\tau$, and if so, both simplices are removed.
+
+    A simplex $\sigma$ is said to be collapsible through one of its faces $\tau$ if $\sigma$ is the only coface of $\tau$ (excluding $\tau$ itself). 
+    
+    Parameters: 
+      sigma : maximal simplex to collapse
+      tau : face of sigma to collapse 
+
+    Returns:
+      bool: whether the pair was collapsed
+
+    Example: 
+      >>> st = SimplexTree([[0,1,2]])
+      >>> print(st)
+      Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices
+
+      >>> st.collapse([1,2], [0,1,2])
+      True 
+
+      >>> print(st)
+      Simplex Tree with (3, 2) (0, 1)-simplices
+    """
+    tau, sigma = Simplex(tau), Simplex(sigma)
+    assert tau in boundary(sigma), f"Simplex {tau} is not in the boundary of simplex {sigma}"
+    success = self._collapse(tau, sigma) 
+    return success 
+
+  def vertex_collapse(self, u: int, v: int, w: int):
+    """ 
+    Maps a pair of vertices into a single vertex. 
+    
+    Parameters:
+      u (int): the first vertex in the free pair.
+      v (int): the second vertex in the free pair. 
+      w (int): the target vertex to collapse to.
+    """
+    u,v,w = int(u), int(v), int(w)
+    assert all([isinstance(e, Integral) for e in [u,v,w]]), f"Unknown vertex types given; must be integral"
+    self._vertex_collapse(u,v,w)
 
   def degree(self, vertices: Optional[ArrayLike] = None) -> Union[ArrayLike, int]:
     """
@@ -79,12 +167,18 @@ class SimplexTree(SimplexTreeCpp):
 
   # PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, 
   # K_SKELETON = 5, K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
-  def traverse(order: str = "preorder", f: Callable = print, **kargs) -> None:
+  def traverse(order: str = "preorder", f: Callable = print, sigma: SimplexLike = [], p: int = 0) -> None:
     """
+    Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered
+
+    Supported traversals: 
+      - breadth-first ("bfs") 
+
     Parameters:
       order : the type of traversal to do 
       f : a function to evaluate on every simplex in the traversal. Defaults to print. 
-      **kwargs : additional arguments to the specific traversal. 
+      sigma : simplex to start the traversal at, where applicable. Defaults to the root node (empty set)
+      p : dimension of simplices to restrict to, where applicable.  
     """
     # todo: handle kwargs
     assert isinstance(order, str)
@@ -157,14 +251,24 @@ class SimplexTree(SimplexTreeCpp):
 
   def expand(self, k: int) -> None:
     """ 
-    Performs a k-expansion of the tree.
+    Performs a k-expansion of the complex.
+
+    This function is particularly useful for expanding clique complexes beyond their 1-skeleton. 
     
     Parameters: 
       k : maximum dimension to expand to. 
+
+    Examples:
+
+      >>> st = SimplexTree(combinations(range(8), 2))
+      >>> print(st)
+          Simplex Tree with (8, 28) (0, 1)-simplices
+      >>> st.expand(k=2)
+      >>> print(st)
+          Simplex Tree with (8, 28, 56) (0, 1, 2)-simplices
     """
     assert int(k) >= 0, f"Invalid expansion dimension k={k} given"
     self._expand(int(k))
-
 
   def __repr__(self) -> str:
     return f"Simplex Tree with {tuple(self.n_simplices)} {tuple(range(0,self.dimension+1))}-simplices"
