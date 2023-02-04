@@ -1,0 +1,21 @@
+## generics.dim { #generics.dim }
+
+`generics.dim(sigma: Union[SimplexLike, ComplexLike])`
+
+Returns the dimension of a simplicial object, suitably defined
+
+ --- 
+
+## generics.boundary { #generics.boundary }
+
+`generics.boundary(s: Union[SimplexLike, ComplexLike])`
+
+Returns the _boundary_ of a simplicial object, suitably defined
+
+ --- 
+
+## generics.faces { #generics.faces }
+
+`generics.faces(s: Union[SimplexLike, ComplexLike])`
+
+Returns the _boundary_ of a simplicial object, suitably defined

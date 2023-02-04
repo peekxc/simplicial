@@ -1,0 +1,15 @@
+# FiltrationLike
+
+ --- 
+
+## meta.FiltrationLike { #meta.FiltrationLike }
+
+`meta.FiltrationLike()`
+
+An object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects.
+
+ --- 
+
+## FiltrationLike.index { #FiltrationLike.index }
+
+`FiltrationLike.index(self, other: SimplexLike)`

@@ -2,4 +2,8 @@
 
  --- 
 
+## meta.Comparable { #meta.Comparable }
+
+`meta.Comparable()`
+
 Protocol for annotating comparable types.

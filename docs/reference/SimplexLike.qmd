@@ -2,6 +2,10 @@
 
  --- 
 
+## meta.SimplexLike { #meta.SimplexLike }
+
+`meta.SimplexLike()`
+
 An object is SimplexLike if it is Immutable, Hashable, and SetLike
 
 By definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex __contains__ queries)

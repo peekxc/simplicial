@@ -39,7 +39,7 @@ website:
       - section: Reference
         contents: 
           - text: SimplexTree
-            href: reference/SimplexTree.md
+            href: reference/SimplexTree.qmd
           # - text: ComplexLike
           #   href: API/ComplexLike.md
 

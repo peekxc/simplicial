@@ -1,0 +1,7 @@
+# MutableSequence
+
+ --- 
+
+## meta.MutableSequence { #meta.MutableSequence }
+
+`meta.MutableSequence()`

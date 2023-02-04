@@ -1,0 +1,28 @@
+# Simplex
+
+ --- 
+
+## splex.Simplex { #splex.Simplex }
+
+`splex.Simplex(self, v: Collection[Integral])`
+
+Implements: 
+  __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
+
+ --- 
+
+## Simplex.faces { #Simplex.faces }
+
+`Simplex.faces(self, p: Optional[int] = None)`
+
+ --- 
+
+## Simplex.boundary { #Simplex.boundary }
+
+`Simplex.boundary(self)`
+
+ --- 
+
+## Simplex.dim { #Simplex.dim }
+
+`Simplex.dim(self)`

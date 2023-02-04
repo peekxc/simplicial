@@ -125,6 +125,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   }
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+        <script type="text/javascript">
+        window.PlotlyConfig = {MathJaxConfig: 'local'};
+        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+        if (typeof require !== 'undefined') {
+        require.undef("plotly");
+        requirejs.config({
+            paths: {
+                'plotly': ['https://cdn.plot.ly/plotly-2.18.0.min']
+            }
+        });
+        require(['plotly'], function(Plotly) {
+            window._Plotly = Plotly;
+        });
+        }
+        </script>
+        
 
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
@@ -239,10 +258,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<section id="simplextree" class="level1">
-<h1>SimplexTree</h1>
-<hr>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> splex <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.express <span class="im">as</span> px</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> plotly.io <span class="im">as</span> pio</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pio.renderers.default <span class="op">=</span> <span class="st">"plotly_mimetype+notebook_connected"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> px.data.iris()</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> px.scatter(df, x<span class="op">=</span><span class="st">"sepal_width"</span>, y<span class="op">=</span><span class="st">"sepal_length"</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                 color<span class="op">=</span><span class="st">"species"</span>, </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 marginal_y<span class="op">=</span><span class="st">"violin"</span>, marginal_x<span class="op">=</span><span class="st">"box"</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 trendline<span class="op">=</span><span class="st">"ols"</span>, template<span class="op">=</span><span class="st">"simple_white"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>fig.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+
+<div>                            <div id="0e236514-542c-4326-a30c-1c7c05aa7f04" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("0e236514-542c-4326-a30c-1c7c05aa7f04")) {                    Plotly.newPlot(                        "0e236514-542c-4326-a30c-1c7c05aa7f04",                        [{"hovertemplate":"species=setosa<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>","legendgroup":"setosa","marker":{"color":"#1F77B4","symbol":"circle"},"mode":"markers","name":"setosa","orientation":"v","showlegend":true,"x":[3.5,3.0,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3.0,3.0,4.0,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3.0,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.1,3.0,3.4,3.5,2.3,3.2,3.5,3.8,3.0,3.8,3.2,3.7,3.3],"xaxis":"x","y":[5.1,4.9,4.7,4.6,5.0,5.4,4.6,5.0,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5.0,5.0,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5.0,5.5,4.9,4.4,5.1,5.0,4.5,4.4,5.0,5.1,4.8,5.1,4.6,5.3,5.0],"yaxis":"y","type":"scatter"},{"alignmentgroup":"True","hovertemplate":"species=setosa<br>sepal_width=%{x}<extra></extra>","legendgroup":"setosa","marker":{"color":"#1F77B4","symbol":"circle"},"name":"setosa","notched":true,"offsetgroup":"setosa","showlegend":false,"x":[3.5,3.0,3.2,3.1,3.6,3.9,3.4,3.4,2.9,3.1,3.7,3.4,3.0,3.0,4.0,4.4,3.9,3.5,3.8,3.8,3.4,3.7,3.6,3.3,3.4,3.0,3.4,3.5,3.4,3.2,3.1,3.4,4.1,4.2,3.1,3.2,3.5,3.1,3.0,3.4,3.5,2.3,3.2,3.5,3.8,3.0,3.8,3.2,3.7,3.3],"xaxis":"x3","yaxis":"y3","type":"box"},{"alignmentgroup":"True","hovertemplate":"species=setosa<br>sepal_length=%{y}<extra></extra>","legendgroup":"setosa","marker":{"color":"#1F77B4","symbol":"circle"},"name":"setosa","offsetgroup":"setosa","scalegroup":"y","showlegend":false,"xaxis":"x2","y":[5.1,4.9,4.7,4.6,5.0,5.4,4.6,5.0,4.4,4.9,5.4,4.8,4.8,4.3,5.8,5.7,5.4,5.1,5.7,5.1,5.4,5.1,4.6,5.1,4.8,5.0,5.0,5.2,5.2,4.7,4.8,5.4,5.2,5.5,4.9,5.0,5.5,4.9,4.4,5.1,5.0,4.5,4.4,5.0,5.1,4.8,5.1,4.6,5.3,5.0],"yaxis":"y2","type":"violin"},{"hovertemplate":"<b>OLS trendline</b><br>sepal_length = 0.690854 * sepal_width + 2.64466<br>R<sup>2</sup>=0.557681<br><br>species=setosa<br>sepal_width=%{x}<br>sepal_length=%{y} <b>(trend)</b><extra></extra>","legendgroup":"setosa","marker":{"color":"#1F77B4","symbol":"circle"},"mode":"lines","name":"setosa","showlegend":false,"x":[2.3,2.9,3.0,3.0,3.0,3.0,3.0,3.0,3.1,3.1,3.1,3.1,3.1,3.2,3.2,3.2,3.2,3.2,3.3,3.3,3.4,3.4,3.4,3.4,3.4,3.4,3.4,3.4,3.4,3.5,3.5,3.5,3.5,3.5,3.5,3.6,3.6,3.7,3.7,3.7,3.8,3.8,3.8,3.8,3.9,3.9,4.0,4.1,4.2,4.4],"xaxis":"x","y":[4.233624785627936,4.648137423036916,4.717222862605079,4.717222862605079,4.717222862605079,4.717222862605079,4.717222862605079,4.717222862605079,4.786308302173243,4.786308302173243,4.786308302173243,4.786308302173243,4.786308302173243,4.8553937417414055,4.8553937417414055,4.8553937417414055,4.8553937417414055,4.8553937417414055,4.92447918130957,4.92447918130957,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,4.9935646208777325,5.062650060445896,5.062650060445896,5.062650060445896,5.062650060445896,5.062650060445896,5.062650060445896,5.131735500014059,5.131735500014059,5.200820939582222,5.200820939582222,5.200820939582222,5.269906379150386,5.269906379150386,5.269906379150386,5.269906379150386,5.338991818718549,5.338991818718549,5.4080772582867125,5.477162697854876,5.546248137423039,5.6844190165593655],"yaxis":"y","type":"scatter"},{"hovertemplate":"species=versicolor<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>","legendgroup":"versicolor","marker":{"color":"#FF7F0E","symbol":"circle"},"mode":"markers","name":"versicolor","orientation":"v","showlegend":true,"x":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2.0,3.0,2.2,2.9,2.9,3.1,3.0,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3.0,2.8,3.0,2.9,2.6,2.4,2.4,2.7,2.7,3.0,3.4,3.1,2.3,3.0,2.5,2.6,3.0,2.6,2.3,2.7,3.0,2.9,2.9,2.5,2.8],"xaxis":"x","y":[7.0,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5.0,5.9,6.0,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6.0,5.7,5.5,5.5,5.8,6.0,5.4,6.0,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5.0,5.6,5.7,5.7,6.2,5.1,5.7],"yaxis":"y","type":"scatter"},{"alignmentgroup":"True","hovertemplate":"species=versicolor<br>sepal_width=%{x}<extra></extra>","legendgroup":"versicolor","marker":{"color":"#FF7F0E","symbol":"circle"},"name":"versicolor","notched":true,"offsetgroup":"versicolor","showlegend":false,"x":[3.2,3.2,3.1,2.3,2.8,2.8,3.3,2.4,2.9,2.7,2.0,3.0,2.2,2.9,2.9,3.1,3.0,2.7,2.2,2.5,3.2,2.8,2.5,2.8,2.9,3.0,2.8,3.0,2.9,2.6,2.4,2.4,2.7,2.7,3.0,3.4,3.1,2.3,3.0,2.5,2.6,3.0,2.6,2.3,2.7,3.0,2.9,2.9,2.5,2.8],"xaxis":"x3","yaxis":"y3","type":"box"},{"alignmentgroup":"True","hovertemplate":"species=versicolor<br>sepal_length=%{y}<extra></extra>","legendgroup":"versicolor","marker":{"color":"#FF7F0E","symbol":"circle"},"name":"versicolor","offsetgroup":"versicolor","scalegroup":"y","showlegend":false,"xaxis":"x2","y":[7.0,6.4,6.9,5.5,6.5,5.7,6.3,4.9,6.6,5.2,5.0,5.9,6.0,6.1,5.6,6.7,5.6,5.8,6.2,5.6,5.9,6.1,6.3,6.1,6.4,6.6,6.8,6.7,6.0,5.7,5.5,5.5,5.8,6.0,5.4,6.0,6.7,6.3,5.6,5.5,5.5,6.1,5.8,5.0,5.6,5.7,5.7,6.2,5.1,5.7],"yaxis":"y2","type":"violin"},{"hovertemplate":"<b>OLS trendline</b><br>sepal_length = 0.865078 * sepal_width + 3.53973<br>R<sup>2</sup>=0.276582<br><br>species=versicolor<br>sepal_width=%{x}<br>sepal_length=%{y} <b>(trend)</b><extra></extra>","legendgroup":"versicolor","marker":{"color":"#FF7F0E","symbol":"circle"},"mode":"lines","name":"versicolor","showlegend":false,"x":[2.0,2.2,2.2,2.3,2.3,2.3,2.4,2.4,2.4,2.5,2.5,2.5,2.5,2.6,2.6,2.6,2.7,2.7,2.7,2.7,2.7,2.8,2.8,2.8,2.8,2.8,2.8,2.9,2.9,2.9,2.9,2.9,2.9,2.9,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.1,3.1,3.1,3.2,3.2,3.2,3.3,3.4],"xaxis":"x","y":[5.26989015544041,5.4429056994818605,5.4429056994818605,5.529413471502586,5.529413471502586,5.529413471502586,5.615921243523311,5.615921243523311,5.615921243523311,5.702429015544037,5.702429015544037,5.702429015544037,5.702429015544037,5.7889367875647615,5.7889367875647615,5.7889367875647615,5.875444559585487,5.875444559585487,5.875444559585487,5.875444559585487,5.875444559585487,5.961952331606212,5.961952331606212,5.961952331606212,5.961952331606212,5.961952331606212,5.961952331606212,6.048460103626938,6.048460103626938,6.048460103626938,6.048460103626938,6.048460103626938,6.048460103626938,6.048460103626938,6.134967875647662,6.134967875647662,6.134967875647662,6.134967875647662,6.134967875647662,6.134967875647662,6.134967875647662,6.134967875647662,6.221475647668388,6.221475647668388,6.221475647668388,6.307983419689114,6.307983419689114,6.307983419689114,6.394491191709839,6.480998963730563],"yaxis":"y","type":"scatter"},{"hovertemplate":"species=virginica<br>sepal_width=%{x}<br>sepal_length=%{y}<extra></extra>","legendgroup":"virginica","marker":{"color":"#2CA02C","symbol":"circle"},"mode":"markers","name":"virginica","orientation":"v","showlegend":true,"x":[3.3,2.7,3.0,2.9,3.0,3.0,2.5,2.9,2.5,3.6,3.2,2.7,3.0,2.5,2.8,3.2,3.0,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3.0,2.8,3.0,2.8,3.8,2.8,2.8,2.6,3.0,3.4,3.1,3.0,3.1,3.1,3.1,2.7,3.2,3.3,3.0,2.5,3.0,3.4,3.0],"xaxis":"x","y":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6.0,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6.0,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"yaxis":"y","type":"scatter"},{"alignmentgroup":"True","hovertemplate":"species=virginica<br>sepal_width=%{x}<extra></extra>","legendgroup":"virginica","marker":{"color":"#2CA02C","symbol":"circle"},"name":"virginica","notched":true,"offsetgroup":"virginica","showlegend":false,"x":[3.3,2.7,3.0,2.9,3.0,3.0,2.5,2.9,2.5,3.6,3.2,2.7,3.0,2.5,2.8,3.2,3.0,3.8,2.6,2.2,3.2,2.8,2.8,2.7,3.3,3.2,2.8,3.0,2.8,3.0,2.8,3.8,2.8,2.8,2.6,3.0,3.4,3.1,3.0,3.1,3.1,3.1,2.7,3.2,3.3,3.0,2.5,3.0,3.4,3.0],"xaxis":"x3","yaxis":"y3","type":"box"},{"alignmentgroup":"True","hovertemplate":"species=virginica<br>sepal_length=%{y}<extra></extra>","legendgroup":"virginica","marker":{"color":"#2CA02C","symbol":"circle"},"name":"virginica","offsetgroup":"virginica","scalegroup":"y","showlegend":false,"xaxis":"x2","y":[6.3,5.8,7.1,6.3,6.5,7.6,4.9,7.3,6.7,7.2,6.5,6.4,6.8,5.7,5.8,6.4,6.5,7.7,7.7,6.0,6.9,5.6,7.7,6.3,6.7,7.2,6.2,6.1,6.4,7.2,7.4,7.9,6.4,6.3,6.1,7.7,6.3,6.4,6.0,6.9,6.7,6.9,5.8,6.8,6.7,6.7,6.3,6.5,6.2,5.9],"yaxis":"y2","type":"violin"},{"hovertemplate":"<b>OLS trendline</b><br>sepal_length = 0.901534 * sepal_width + 3.90684<br>R<sup>2</sup>=0.209057<br><br>species=virginica<br>sepal_width=%{x}<br>sepal_length=%{y} <b>(trend)</b><extra></extra>","legendgroup":"virginica","marker":{"color":"#2CA02C","symbol":"circle"},"mode":"lines","name":"virginica","showlegend":false,"x":[2.2,2.5,2.5,2.5,2.5,2.6,2.6,2.7,2.7,2.7,2.7,2.8,2.8,2.8,2.8,2.8,2.8,2.8,2.8,2.9,2.9,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.0,3.1,3.1,3.1,3.1,3.2,3.2,3.2,3.2,3.2,3.3,3.3,3.3,3.4,3.4,3.6,3.8,3.8],"xaxis":"x","y":[5.8902123150582755,6.160672658058943,6.160672658058943,6.160672658058943,6.160672658058943,6.250826105725833,6.250826105725833,6.340979553392723,6.340979553392723,6.340979553392723,6.340979553392723,6.431133001059611,6.431133001059611,6.431133001059611,6.431133001059611,6.431133001059611,6.431133001059611,6.431133001059611,6.431133001059611,6.521286448726501,6.521286448726501,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.6114398963933905,6.70159334406028,6.70159334406028,6.70159334406028,6.70159334406028,6.791746791727169,6.791746791727169,6.791746791727169,6.791746791727169,6.791746791727169,6.881900239394058,6.881900239394058,6.881900239394058,6.9720536870609475,6.9720536870609475,7.152360582394726,7.332667477728505,7.332667477728505],"yaxis":"y","type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"rgb(36,36,36)"},"error_y":{"color":"rgb(36,36,36)"},"marker":{"line":{"color":"white","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"baxis":{"endlinecolor":"rgb(36,36,36)","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"rgb(36,36,36)"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"contour"}],"heatmapgl":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmapgl"}],"heatmap":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"histogram2d"}],"histogram":[{"marker":{"line":{"color":"white","width":0.6}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergeo"}],"scattergl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scattermapbox"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterpolar"}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"},"colorscale":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"rgb(237,237,237)"},"line":{"color":"white"}},"header":{"fill":{"color":"rgb(217,217,217)"},"line":{"color":"white"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":1,"tickcolor":"rgb(36,36,36)","ticks":"outside"}},"colorscale":{"diverging":[[0.0,"rgb(103,0,31)"],[0.1,"rgb(178,24,43)"],[0.2,"rgb(214,96,77)"],[0.3,"rgb(244,165,130)"],[0.4,"rgb(253,219,199)"],[0.5,"rgb(247,247,247)"],[0.6,"rgb(209,229,240)"],[0.7,"rgb(146,197,222)"],[0.8,"rgb(67,147,195)"],[0.9,"rgb(33,102,172)"],[1.0,"rgb(5,48,97)"]],"sequential":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]],"sequentialminus":[[0.0,"#440154"],[0.1111111111111111,"#482878"],[0.2222222222222222,"#3e4989"],[0.3333333333333333,"#31688e"],[0.4444444444444444,"#26828e"],[0.5555555555555556,"#1f9e89"],[0.6666666666666666,"#35b779"],[0.7777777777777778,"#6ece58"],[0.8888888888888888,"#b5de2b"],[1.0,"#fde725"]]},"colorway":["#1F77B4","#FF7F0E","#2CA02C","#D62728","#9467BD","#8C564B","#E377C2","#7F7F7F","#BCBD22","#17BECF"],"font":{"color":"rgb(36,36,36)"},"geo":{"bgcolor":"white","lakecolor":"white","landcolor":"white","showlakes":true,"showland":true,"subunitcolor":"white"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"light"},"paper_bgcolor":"white","plot_bgcolor":"white","polar":{"angularaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","radialaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"scene":{"xaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"zaxis":{"backgroundcolor":"white","gridcolor":"rgb(232,232,232)","gridwidth":2,"linecolor":"rgb(36,36,36)","showbackground":true,"showgrid":false,"showline":true,"ticks":"outside","zeroline":false,"zerolinecolor":"rgb(36,36,36)"}},"shapedefaults":{"fillcolor":"black","line":{"width":0},"opacity":0.3},"ternary":{"aaxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"baxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"},"bgcolor":"white","caxis":{"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside"}},"title":{"x":0.05},"xaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"},"yaxis":{"automargin":true,"gridcolor":"rgb(232,232,232)","linecolor":"rgb(36,36,36)","showgrid":false,"showline":true,"ticks":"outside","title":{"standoff":15},"zeroline":false,"zerolinecolor":"rgb(36,36,36)"}}},"xaxis":{"anchor":"y","domain":[0.0,0.7363],"title":{"text":"sepal_width"}},"yaxis":{"anchor":"x","domain":[0.0,0.7326],"title":{"text":"sepal_length"}},"xaxis2":{"anchor":"y2","domain":[0.7413,1.0],"matches":"x2","showticklabels":false,"showline":false,"ticks":""},"yaxis2":{"anchor":"x2","domain":[0.0,0.7326],"matches":"y","showticklabels":false},"xaxis3":{"anchor":"y3","domain":[0.0,0.7363],"matches":"x","showticklabels":false},"yaxis3":{"anchor":"x3","domain":[0.7426,1.0],"matches":"y3","showticklabels":false,"showline":false,"ticks":""},"xaxis4":{"anchor":"y4","domain":[0.7413,1.0],"matches":"x2","showticklabels":false,"showline":false,"ticks":""},"yaxis4":{"anchor":"x4","domain":[0.7426,1.0],"matches":"y3","showticklabels":false,"showline":false,"ticks":""},"legend":{"title":{"text":"species"},"tracegroupgap":0},"margin":{"t":60}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('0e236514-542c-4326-a30c-1c7c05aa7f04');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };                });            </script>        </div>
+</div>
+</div>
+<section id="simplextree.SimplexTree" class="level2">
+<h2 class="anchored" data-anchor-id="simplextree.SimplexTree">simplextree.SimplexTree</h2>
+<p><code>simplextree.SimplexTree(self, simplices: Iterable[SimplexLike] = None)</code></p>
 <p>SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.</p>
+<p>The Simplex Tree was originally introduced in the paper</p>
+<blockquote class="blockquote">
+<p>Boissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.</p>
+</blockquote>
+<section id="attributes" class="level3">
+<h3 class="anchored" data-anchor-id="attributes">Attributes</h3>
 <table class="table">
 <thead>
 <tr class="header">
@@ -269,10 +336,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </tr>
 </tbody>
 </table>
+</section>
+<section id="properties" class="level3">
+<h3 class="anchored" data-anchor-id="properties">Properties:</h3>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>vertices</td>
+<td>ndarray</td>
+<td>vertices of the complex</td>
+</tr>
+</tbody>
+</table>
 <hr>
-<section id="insert" class="level2">
-<h2 class="anchored" data-anchor-id="insert">insert</h2>
-<p><code>insert(self, simplices: Iterable[SimplexLike])</code></p>
+</section>
+</section>
+<section id="SimplexTree.insert" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.insert">SimplexTree.insert</h2>
+<p><code>SimplexTree.insert(self, simplices: Iterable[SimplexLike])</code></p>
 <p>Inserts simplices into the Simplex Tree.</p>
 <p>By definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified.</p>
 <section id="parameters" class="level3">
@@ -281,28 +369,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>
 Iterable of simplices to insert (each of which are SimplexLike)
 </p>
-<p>Note: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that there are five types of callouts, including: <code>note</code>, <code>tip</code>, <code>warning</code>, <code>caution</code>, and <code>important</code>.</p>
+</div>
+</div>
 <hr>
 </section>
 </section>
-<section id="remove" class="level2">
-<h2 class="anchored" data-anchor-id="remove">remove</h2>
-<p><code>remove(self, simplices: Iterable[SimplexLike])</code></p>
+<section id="SimplexTree.remove" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.remove">SimplexTree.remove</h2>
+<p><code>SimplexTree.remove(self, simplices: Iterable[SimplexLike])</code></p>
 <p>Removes simplices into the Simplex Tree.</p>
 <p>By definition, removing a face also removes all of its cofaces. If the simplex does not exist in the complex, the tree is not modified.</p>
 <section id="parameters-1" class="level3">
 <h3 class="anchored" data-anchor-id="parameters-1">Parameters</h3>
 <strong>simplices</strong> : <span class="type_annotation"> Iterable[SimplexLike], </span>required
 <p>
-Iterable of simplices to insert (each of which are SimplexLike)
+Iterable of simplices to insert (each of which are SimplexLike).
 </p>
-<p>Note: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.</p>
 <hr>
 </section>
 </section>
-<section id="find" class="level2">
-<h2 class="anchored" data-anchor-id="find">find</h2>
-<p><code>find(self, simplices: Iterable[SimplexLike])</code></p>
+<section id="SimplexTree.find" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.find">SimplexTree.find</h2>
+<p><code>SimplexTree.find(self, simplices: Iterable[SimplexLike])</code></p>
 <p>Finds whether simplices exist in Simplex Tree.</p>
 <section id="parameters-2" class="level3">
 <h3 class="anchored" data-anchor-id="parameters-2">Parameters</h3>
@@ -310,52 +409,70 @@ Iterable of simplices to insert (each of which are SimplexLike)
 <p>
 Iterable of simplices to insert (each of which are SimplexLike)
 </p>
-<p>Note: If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride. Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree.</p>
-<p>Return: ndarray : boolean array for each simplex indicating whether it was found in the complex</p>
-<hr>
 </section>
-</section>
-<section id="adjacent" class="level2">
-<h2 class="anchored" data-anchor-id="adjacent">adjacent</h2>
-<p><code>adjacent(self, simplices: Iterable)</code></p>
-<hr>
-</section>
-<section id="collapse" class="level2">
-<h2 class="anchored" data-anchor-id="collapse">collapse</h2>
-<p><code>collapse(self, tau: SimplexLike, sigma: SimplexLike)</code></p>
-<p>Checks whether its possible to collapse <span class="math inline">\sigma</span> through $ au$, and if so, both simplices are removed.</p>
-<p>A simplex <span class="math inline">\sigma</span> is said to be collapsible through one of its faces $ au$ if <span class="math inline">\sigma</span> is the only coface of $ au$ (excluding $ au$ itself).</p>
-<p>Parameters: sigma : maximal simplex to collapse tau : face of sigma to collapse</p>
 <section id="returns" class="level3">
 <h3 class="anchored" data-anchor-id="returns">Returns</h3>
+**** :
+<p>
+found (ndarray) : boolean array for each simplex indicating whether it was found in the complex
+</p>
+<hr>
+</section>
+</section>
+<section id="SimplexTree.adjacent" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.adjacent">SimplexTree.adjacent</h2>
+<p><code>SimplexTree.adjacent(self, simplices: Iterable)</code></p>
+<p>Checks for adjacencies between simplices</p>
+<hr>
+</section>
+<section id="SimplexTree.collapse" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.collapse">SimplexTree.collapse</h2>
+<p><code>SimplexTree.collapse(self, tau: SimplexLike, sigma: SimplexLike)</code></p>
+<p>Checks whether its possible to collapse <span class="math inline">\sigma</span> through <span class="math inline">\tau</span>, and if so, both simplices are removed. A simplex <span class="math inline">\sigma</span> is said to be collapsible through one of its faces <span class="math inline">\tau</span> if <span class="math inline">\sigma</span> is the only coface of <span class="math inline">\tau</span> (excluding <span class="math inline">\tau</span> itself).</p>
+<section id="parameters-3" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-3">Parameters</h3>
+<strong>sigma</strong> : required
+<p>
+maximal simplex to collapse
+</p>
+<strong>tau</strong> : required
+<p>
+face of sigma to collapse
+</p>
+</section>
+<section id="returns-1" class="level3">
+<h3 class="anchored" data-anchor-id="returns-1">Returns</h3>
 <strong>bool</strong> : None,
 <p>
 whether the pair was collapsed
 </p>
-<p>Example: &gt;&gt;&gt; st = SimplexTree([[0,1,2]]) &gt;&gt;&gt; print(st) Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices</p>
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<p>st.collapse([1,2], [0,1,2]) True</p>
-</blockquote>
-</blockquote>
-</blockquote>
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<blockquote class="blockquote">
-<p>print(st) Simplex Tree with (3, 2) (0, 1)-simplices</p>
-</blockquote>
-</blockquote>
-</blockquote>
+</section>
+<section id="examples" class="level3">
+<h3 class="anchored" data-anchor-id="examples">Examples</h3>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> SimplexTree([[<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>]])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>st.collapse([<span class="dv">1</span>,<span class="dv">2</span>], [<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># True </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplex Tree with (3, 2) (0, 1)-simplices</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices
+Simplex Tree with (3, 2) (0, 1)-simplices</code></pre>
+</div>
+</div>
 <hr>
 </section>
 </section>
-<section id="vertex_collapse" class="level2">
-<h2 class="anchored" data-anchor-id="vertex_collapse">vertex_collapse</h2>
-<p><code>vertex_collapse(self, u: int, v: int, w: int)</code></p>
+<section id="SimplexTree.vertex_collapse" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.vertex_collapse">SimplexTree.vertex_collapse</h2>
+<p><code>SimplexTree.vertex_collapse(self, u: int, v: int, w: int)</code></p>
 <p>Maps a pair of vertices into a single vertex.</p>
-<section id="parameters-3" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-3">Parameters</h3>
+<section id="parameters-4" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-4">Parameters</h3>
 <strong>u</strong> : <span class="type_annotation"> int, </span>required
 <p>
 the first vertex in the free pair.
@@ -371,27 +488,33 @@ the target vertex to collapse to.
 <hr>
 </section>
 </section>
-<section id="degree" class="level2">
-<h2 class="anchored" data-anchor-id="degree">degree</h2>
-<p><code>degree(self, vertices: Optional[ArrayLike] = None)</code></p>
+<section id="SimplexTree.degree" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.degree">SimplexTree.degree</h2>
+<p><code>SimplexTree.degree(self, vertices: Optional[ArrayLike] = None)</code></p>
 <p>Computes the degree of select vertices in the trie.</p>
-<section id="parameters-4" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-4">Parameters</h3>
+<section id="parameters-5" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-5">Parameters</h3>
 <strong>vertices</strong> : <span class="type_annotation"> numpy.typing.ArrayLike, </span>optional (default=None)
 <p>
 Retrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.
 </p>
-<p>Returns: list: degree of each vertex id given in ‘vertices’</p>
+</section>
+<section id="returns-2" class="level3">
+<h3 class="anchored" data-anchor-id="returns-2">Returns</h3>
+<strong>list</strong> : <span class="type_annotation"> Union[ArrayLike, int], </span>
+<p>
+degree of each vertex id given in ‘vertices’
+</p>
 <hr>
 </section>
 </section>
-<section id="traverse" class="level2">
-<h2 class="anchored" data-anchor-id="traverse">traverse</h2>
-<p><code>traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)</code></p>
+<section id="SimplexTree.traverse" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.traverse">SimplexTree.traverse</h2>
+<p><code>SimplexTree.traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)</code></p>
 <p>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered</p>
 <p>Supported traversals: - breadth-first (“bfs”)</p>
-<section id="parameters-5" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-5">Parameters</h3>
+<section id="parameters-6" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-6">Parameters</h3>
 <strong>order</strong> : optional (default=‘preorder’)
 <p>
 the type of traversal to do
@@ -411,11 +534,12 @@ dimension of simplices to restrict to, where applicable.
 <hr>
 </section>
 </section>
-<section id="cofaces" class="level2">
-<h2 class="anchored" data-anchor-id="cofaces">cofaces</h2>
-<p><code>cofaces(self, p: int = None, sigma: SimplexLike = [])</code></p>
-<section id="parameters-6" class="level3">
-<h3 class="anchored" data-anchor-id="parameters-6">Parameters</h3>
+<section id="SimplexTree.cofaces" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.cofaces">SimplexTree.cofaces</h2>
+<p><code>SimplexTree.cofaces(self, p: int = None, sigma: SimplexLike = [])</code></p>
+<p>Finds the p-dimensional cofaces of sigma.</p>
+<section id="parameters-7" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-7">Parameters</h3>
 <strong>p</strong> : optional (default=None)
 <p>
 coface dimension to restrict to
@@ -424,52 +548,67 @@ coface dimension to restrict to
 <p>
 the simplex to obtain cofaces of
 </p>
-<p>Returns: list: the p-cofaces of sigma</p>
+</section>
+<section id="returns-3" class="level3">
+<h3 class="anchored" data-anchor-id="returns-3">Returns</h3>
+<strong>list</strong> : <span class="type_annotation"> list[SimplexLike], </span>
+<p>
+the p-cofaces of sigma
+</p>
 <hr>
 </section>
 </section>
-<section id="coface_roots" class="level2">
-<h2 class="anchored" data-anchor-id="coface_roots">coface_roots</h2>
-<p><code>coface_roots(self, p: int = None, sigma: SimplexLike = [])</code></p>
+<section id="SimplexTree.coface_roots" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.coface_roots">SimplexTree.coface_roots</h2>
+<p><code>SimplexTree.coface_roots(self, p: int = None, sigma: SimplexLike = [])</code></p>
 <hr>
 </section>
-<section id="skeleton" class="level2">
-<h2 class="anchored" data-anchor-id="skeleton">skeleton</h2>
-<p><code>skeleton(self, p: int = None)</code></p>
+<section id="SimplexTree.skeleton" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.skeleton">SimplexTree.skeleton</h2>
+<p><code>SimplexTree.skeleton(self, p: int = None)</code></p>
 <hr>
 </section>
-<section id="simplices" class="level2">
-<h2 class="anchored" data-anchor-id="simplices">simplices</h2>
-<p><code>simplices(self, p: int = None, sigma: SimplexLike = [])</code></p>
+<section id="SimplexTree.simplices" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.simplices">SimplexTree.simplices</h2>
+<p><code>SimplexTree.simplices(self, p: int = None, sigma: SimplexLike = [])</code></p>
 <hr>
 </section>
-<section id="maximal" class="level2">
-<h2 class="anchored" data-anchor-id="maximal">maximal</h2>
-<p><code>maximal(self)</code></p>
+<section id="SimplexTree.maximal" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.maximal">SimplexTree.maximal</h2>
+<p><code>SimplexTree.maximal(self)</code></p>
 <hr>
 </section>
-<section id="link" class="level2">
-<h2 class="anchored" data-anchor-id="link">link</h2>
-<p><code>link(self, sigma: SimplexLike = [])</code></p>
+<section id="SimplexTree.link" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.link">SimplexTree.link</h2>
+<p><code>SimplexTree.link(self, sigma: SimplexLike = [])</code></p>
 <hr>
 </section>
-<section id="expand" class="level2">
-<h2 class="anchored" data-anchor-id="expand">expand</h2>
-<p><code>expand(self, k: int)</code></p>
+<section id="SimplexTree.expand" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.expand">SimplexTree.expand</h2>
+<p><code>SimplexTree.expand(self, k: int)</code></p>
 <p>Performs a k-expansion of the complex.</p>
 <p>This function is particularly useful for expanding clique complexes beyond their 1-skeleton.</p>
-<p>Parameters: k : maximum dimension to expand to.</p>
-<section id="examples" class="level3">
-<h3 class="anchored" data-anchor-id="examples">Examples</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> st <span class="op">=</span> SimplexTree(combinations(<span class="bu">range</span>(<span class="dv">8</span>), <span class="dv">2</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(st)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Simplex Tree <span class="cf">with</span> (<span class="dv">8</span>, <span class="dv">28</span>) (<span class="dv">0</span>, <span class="dv">1</span>)<span class="op">-</span>simplices</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> st.expand(k<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(st)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    Simplex Tree <span class="cf">with</span> (<span class="dv">8</span>, <span class="dv">28</span>, <span class="dv">56</span>) (<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>)<span class="op">-</span>simplices</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-
+<section id="parameters-8" class="level3">
+<h3 class="anchored" data-anchor-id="parameters-8">Parameters</h3>
+<strong>k</strong> : required
+<p>
+maximum dimension to expand to.
+</p>
 </section>
+<section id="examples-1" class="level3">
+<h3 class="anchored" data-anchor-id="examples-1">Examples</h3>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> SimplexTree(combinations(<span class="bu">range</span>(<span class="dv">8</span>), <span class="dv">2</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>st.expand(k<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simplex Tree with (8, 28) (0, 1)-simplices
+Simplex Tree with (8, 28, 56) (0, 1, 2)-simplices</code></pre>
+</div>
+</div>
+
+
 </section>
 </section>
 

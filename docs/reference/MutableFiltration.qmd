@@ -1,0 +1,73 @@
+# MutableFiltration
+
+ --- 
+
+## splex.MutableFiltration { #splex.MutableFiltration }
+
+`splex.MutableFiltration(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None)`
+
+Simplicial Filtration 
+
+Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
+
+ --- 
+
+## MutableFiltration.update { #MutableFiltration.update }
+
+`MutableFiltration.update(self, other: Iterable[Tuple[Any, Collection[Integral]]])`
+
+ --- 
+
+## MutableFiltration.setdefault { #MutableFiltration.setdefault }
+
+`MutableFiltration.setdefault(self, key, default)`
+
+ --- 
+
+## MutableFiltration.copy { #MutableFiltration.copy }
+
+`MutableFiltration.copy(self)`
+
+ --- 
+
+## MutableFiltration.keys { #MutableFiltration.keys }
+
+`MutableFiltration.keys(self)`
+
+ --- 
+
+## MutableFiltration.values { #MutableFiltration.values }
+
+`MutableFiltration.values(self)`
+
+ --- 
+
+## MutableFiltration.items { #MutableFiltration.items }
+
+`MutableFiltration.items(self)`
+
+ --- 
+
+## MutableFiltration.reindex_keys { #MutableFiltration.reindex_keys }
+
+`MutableFiltration.reindex_keys(self, index_set: Iterable)`
+
+Given a totally ordered key set of the same length of the filtation, reindexes
+
+ --- 
+
+## MutableFiltration.faces { #MutableFiltration.faces }
+
+`MutableFiltration.faces(self, p: int = None)`
+
+ --- 
+
+## MutableFiltration.print { #MutableFiltration.print }
+
+`MutableFiltration.print(self, kwargs)`
+
+ --- 
+
+## MutableFiltration.validate { #MutableFiltration.validate }
+
+`MutableFiltration.validate(self, light: bool = True)`

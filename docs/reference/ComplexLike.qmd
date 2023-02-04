@@ -2,6 +2,10 @@
 
  --- 
 
+## meta.ComplexLike { #meta.ComplexLike }
+
+`meta.ComplexLike()`
+
 Protocol interface for types that represent (abstract) simplicial complexes
 
 An type _ComplexLike_ if it is a iterable collection of SimplexLike objects, and it the following methods:
@@ -14,12 +18,12 @@ Methods: __contains__, __iter__, __len__
 
  --- 
 
-## dim { #dim }
+## ComplexLike.dim { #ComplexLike.dim }
 
-`dim(self)`
+`ComplexLike.dim(self)`
 
  --- 
 
-## faces { #faces }
+## ComplexLike.faces { #ComplexLike.faces }
 
-`faces(self, p: int)`
+`ComplexLike.faces(self, p: int)`
