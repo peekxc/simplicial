@@ -126,6 +126,7 @@ class SimplexTree(SimplexTreeCpp):
 
 		Examples:
 
+			from splex import SimplexTree 
 			st = SimplexTree([[0,1,2]])
 			print(st)
 
@@ -267,16 +268,13 @@ class SimplexTree(SimplexTreeCpp):
 
 		Examples:
 
-			>>> st = SimplexTree(combinations(range(8), 2))
-			>>> print(st)
-					Simplex Tree with (8, 28) (0, 1)-simplices
-			>>> st.expand(k=2)
-			>>> print(st)
-					Simplex Tree with (8, 28, 56) (0, 1, 2)-simplices
-
-			```{python}
-			testing
-			```
+			from splex import SimplexTree 
+			from itertools import combinations 
+			st = SimplexTree(combinations(range(8), 2))
+			print(st)
+			
+			st.expand(k=2)
+			print(st)
 		"""
 		assert int(k) >= 0, f"Invalid expansion dimension k={k} given"
 		self._expand(int(k))

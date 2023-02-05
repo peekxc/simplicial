@@ -35,109 +35,11 @@
     "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree"
   },
   {
-    "objectID": "reference/MutableSequence.html",
-    "href": "reference/MutableSequence.html",
-    "title": "Splex",
-    "section": "",
-    "text": "meta.MutableSequence()"
-  },
-  {
-    "objectID": "reference/Simplex.html",
-    "href": "reference/Simplex.html",
-    "title": "Splex",
-    "section": "",
-    "text": "splex.Simplex(self, v: Collection[Integral])\nImplements: contains(self, v: int) <=> Returns whether integer ‘v’ is a vertex in ‘self’\n\n\n\n\nSimplex.faces(self, p: Optional[int] = None)\n\n\n\n\nSimplex.boundary(self)\n\n\n\n\nSimplex.dim(self)"
-  },
-  {
-    "objectID": "reference/Comparable.html",
-    "href": "reference/Comparable.html",
-    "title": "Splex",
-    "section": "",
-    "text": "meta.Comparable()\nProtocol for annotating comparable types."
-  },
-  {
-    "objectID": "reference/SimplicialComplex.html",
-    "href": "reference/SimplicialComplex.html",
-    "title": "Splex",
-    "section": "",
-    "text": "splex.SimplicialComplex(self, simplices: Iterable[SimplexLike] = None)\nAbstract Simplicial Complex\n\n\n\n\nSimplicialComplex.dim(self)\n\n\n\n\nSimplicialComplex.faces(self, p: Optional[int] = None)\n\n\n\n\nSimplicialComplex.update(self, simplices: Iterable[SimplexLike])\n\n\n\n\nSimplicialComplex.add(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.remove(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.discard(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.cofaces(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.print(self, kwargs)"
-  },
-  {
-    "objectID": "reference/constructions.html",
-    "href": "reference/constructions.html",
-    "title": "Splex",
-    "section": "",
-    "text": "constructions.rips_filtration(X: ArrayLike, radius: float)"
-  },
-  {
-    "objectID": "reference/generics.html",
-    "href": "reference/generics.html",
-    "title": "Splex",
-    "section": "",
-    "text": "generics.dim(sigma: Union[SimplexLike, ComplexLike])\nReturns the dimension of a simplicial object, suitably defined"
-  },
-  {
-    "objectID": "reference/generics.html#boundary",
-    "href": "reference/generics.html#boundary",
-    "title": "Splex",
-    "section": "boundary",
-    "text": "boundary\nboundary()\nReturns the boundary of a simplicial object, suitably defined"
-  },
-  {
-    "objectID": "reference/generics.html#faces",
-    "href": "reference/generics.html#faces",
-    "title": "Splex",
-    "section": "faces",
-    "text": "faces\nfaces()\nReturns the boundary of a simplicial object, suitably defined"
-  },
-  {
-    "objectID": "reference/ComplexLike.html",
-    "href": "reference/ComplexLike.html",
-    "title": "Splex",
-    "section": "",
-    "text": "meta.ComplexLike()\nProtocol interface for types that represent (abstract) simplicial complexes\nAn type ComplexLike if it is a iterable collection of SimplexLike objects, and it the following methods: - dim : None -> int - faces : int -> Iterable[SimplexLike]\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len\n\n\n\n\nComplexLike.dim(self)\n\n\n\n\nComplexLike.faces(self, p: int)"
-  },
-  {
     "objectID": "reference/SetLike.html",
     "href": "reference/SetLike.html",
     "title": "Splex",
     "section": "",
     "text": "meta.SetLike()\nProtocol for annotating set-like types."
-  },
-  {
-    "objectID": "reference/CombinatorialFiltration.html",
-    "href": "reference/CombinatorialFiltration.html",
-    "title": "Splex",
-    "section": "",
-    "text": "filtration.CombinatorialFiltration(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None)\n\n\n\n\nCombinatorialFiltration.reindex(self, f: Callable[SimplexLike, Any])"
-  },
-  {
-    "objectID": "reference/SimplexLike.html",
-    "href": "reference/SimplexLike.html",
-    "title": "Splex",
-    "section": "",
-    "text": "meta.SimplexLike()\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
-  },
-  {
-    "objectID": "reference/SimplexTree.html",
-    "href": "reference/SimplexTree.html",
-    "title": "Splex",
-    "section": "",
-    "text": "from splex import *"
-  },
-  {
-    "objectID": "reference/CombinatorialComplex.html",
-    "href": "reference/CombinatorialComplex.html",
-    "title": "Splex",
-    "section": "",
-    "text": "filtration.CombinatorialComplex(self, simplices: Union[SimplicialComplex, Iterable] = None)\nSimplicial Complex represented via the combinatorial number system\n\n\n\n\nCombinatorialComplex.dim(self)\n\n\n\n\nCombinatorialComplex.faces(self, p: int = None)"
-  },
-  {
-    "objectID": "reference/MutableFiltration.html",
-    "href": "reference/MutableFiltration.html",
-    "title": "Splex",
-    "section": "",
-    "text": "splex.MutableFiltration(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None)\nSimplicial Filtration\nImplements: getitem, iter, len, contains, keys, items, values, get, eq, and ne\n\n\n\n\nMutableFiltration.update(self, other: Iterable[Tuple[Any, Collection[Integral]]])\n\n\n\n\nMutableFiltration.setdefault(self, key, default)\n\n\n\n\nMutableFiltration.copy(self)\n\n\n\n\nMutableFiltration.keys(self)\n\n\n\n\nMutableFiltration.values(self)\n\n\n\n\nMutableFiltration.items(self)\n\n\n\n\nMutableFiltration.reindex_keys(self, index_set: Iterable)\nGiven a totally ordered key set of the same length of the filtation, reindexes\n\n\n\n\nMutableFiltration.faces(self, p: int = None)\n\n\n\n\nMutableFiltration.print(self, kwargs)\n\n\n\n\nMutableFiltration.validate(self, light: bool = True)"
   },
   {
     "objectID": "reference/Sequence.html",
@@ -147,11 +49,32 @@
     "text": "meta.Sequence()"
   },
   {
-    "objectID": "reference/FiltrationLike.html",
-    "href": "reference/FiltrationLike.html",
+    "objectID": "reference/ComplexLike.html",
+    "href": "reference/ComplexLike.html",
     "title": "Splex",
     "section": "",
-    "text": "meta.FiltrationLike()\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects.\n\n\n\n\nFiltrationLike.index(self, other: SimplexLike)"
+    "text": "meta.ComplexLike()\nProtocol interface for types that represent (abstract) simplicial complexes\nAn type ComplexLike if it is a iterable collection of SimplexLike objects, and it the following methods: - dim : None -> int - faces : int -> Iterable[SimplexLike]\nProtocols: Collection[Sized, Iterable, Container] Methods: contains, iter, len\n\n\n\n\nComplexLike.dim(self)\n\n\n\n\nComplexLike.faces(self, p: int)"
+  },
+  {
+    "objectID": "reference/SimplexTree.html",
+    "href": "reference/SimplexTree.html",
+    "title": "Splex",
+    "section": "",
+    "text": "simplextree.SimplexTree(self, simplices: Iterable[SimplexLike] = None)\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\nThe Simplex Tree was originally introduced in the paper > Boissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nn_simplices\nndarray\nnumber of simplices\n\n\ndimension\nint\nmaximal dimension of the complex\n\n\nid_policy\nstr\npolicy for generating new vertex ids\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nvertices\nndarray\nvertices of the complex\n\n\n\n\n\n\n\n\nSimplexTree.insert(self, simplices: Iterable[SimplexLike])\nInserts simplices into the Simplex Tree.\nBy definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\n\n\n\n\n\n\nNote\n\n\n\n    If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.\n    Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. \n\n\n\n\n\n\n\nSimplexTree.remove(self, simplices: Iterable[SimplexLike])\nRemoves simplices into the Simplex Tree.\nBy definition, removing a face also removes all of its cofaces. If the simplex does not exist in the complex, the tree is not modified.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike).\n\n\n\n\n\n\n\nNote\n\n\n\n    If the iterable is an 2-dim np.ndarray, then a p-simplex is removed along each contiguous p+1 stride.\n    Otherwise, each element of the iterable to casted to a Simplex and then removed from the tree. \n\n\n\n\n\n\n\nSimplexTree.find(self, simplices: Iterable[SimplexLike])\nFinds whether simplices exist in Simplex Tree.\n\n\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\n\n\n\n**** :\n\nfound (ndarray) : boolean array for each simplex indicating whether it was found in the complex\n\n\n\n\n\n\n\nNote\n\n\n\n    If the iterable is an 2-dim np.ndarray, then the p-simplex to find is given by each contiguous p+1 stride.\n    Otherwise, each element of the iterable to casted to a Simplex and then searched for in the tree. \n\n\n\n\n\n\n\nSimplexTree.adjacent(self, simplices: Iterable)\nChecks for adjacencies between simplices\n\n\n\n\nSimplexTree.collapse(self, tau: SimplexLike, sigma: SimplexLike)\nChecks whether its possible to collapse \\sigma through \\tau, and if so, both simplices are removed. A simplex \\sigma is said to be collapsible through one of its faces \\tau if \\sigma is the only coface of \\tau (excluding \\tau itself).\n\n\nsigma : required\n\nmaximal simplex to collapse\n\ntau : required\n\nface of sigma to collapse\n\n\n\n\nbool : None,\n\nwhether the pair was collapsed\n\n\n\n\n\nfrom splex import SimplexTree \nst = SimplexTree([[0,1,2]])\nprint(st)\n\nst.collapse([1,2], [0,1,2])\n\nprint(st)\n\nSimplex Tree with (3, 3, 1) (0, 1, 2)-simplices\nSimplex Tree with (3, 2) (0, 1)-simplices\n\n\n\n\n\n\n\nSimplexTree.vertex_collapse(self, u: int, v: int, w: int)\nMaps a pair of vertices into a single vertex.\n\n\nu :  int, required\n\nthe first vertex in the free pair.\n\nv :  int, required\n\nthe second vertex in the free pair.\n\nw :  int, required\n\nthe target vertex to collapse to.\n\n\n\n\n\n\nSimplexTree.degree(self, vertices: Optional[ArrayLike] = None)\nComputes the degree of select vertices in the trie.\n\n\nvertices :  numpy.typing.ArrayLike, optional (default=None)\n\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\n\n\n\n\nlist :  Union[ArrayLike, int], \n\ndegree of each vertex id given in ‘vertices’\n\n\n\n\n\n\nSimplexTree.traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)\nTraverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered\nSupported traversals: - breadth-first (“bfs”)\n\n\norder : optional (default=‘preorder’)\n\nthe type of traversal to do\n\nf : optional (default=print)\n\na function to evaluate on every simplex in the traversal. Defaults to print.\n\nsigma : optional (default=[])\n\nsimplex to start the traversal at, where applicable. Defaults to the root node (empty set)\n\np : optional (default=0)\n\ndimension of simplices to restrict to, where applicable.\n\n\n\n\n\n\nSimplexTree.cofaces(self, p: int = None, sigma: SimplexLike = [])\nFinds the p-dimensional cofaces of sigma.\n\n\np : optional (default=None)\n\ncoface dimension to restrict to\n\nsigma : optional (default=[])\n\nthe simplex to obtain cofaces of\n\n\n\n\nlist :  list[SimplexLike], \n\nthe p-cofaces of sigma\n\n\n\n\n\n\nSimplexTree.coface_roots(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nSimplexTree.skeleton(self, p: int = None)\n\n\n\n\nSimplexTree.simplices(self, p: int = None, sigma: SimplexLike = [])\n\n\n\n\nSimplexTree.maximal(self)\n\n\n\n\nSimplexTree.link(self, sigma: SimplexLike = [])\n\n\n\n\nSimplexTree.expand(self, k: int)\nPerforms a k-expansion of the complex.\nThis function is particularly useful for expanding clique complexes beyond their 1-skeleton.\n\n\nk : required\n\nmaximum dimension to expand to.\n\n\n\n\n\nfrom splex import SimplexTree \nfrom itertools import combinations \nst = SimplexTree(combinations(range(8), 2))\nprint(st)\n\nst.expand(k=2)\nprint(st)\n\nSimplex Tree with (8, 28) (0, 1)-simplices\nSimplex Tree with (8, 28, 56) (0, 1, 2)-simplices"
+  },
+  {
+    "objectID": "reference/MutableFiltration.html",
+    "href": "reference/MutableFiltration.html",
+    "title": "Splex",
+    "section": "",
+    "text": "splex.MutableFiltration(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None)\nSimplicial Filtration\nImplements: getitem, iter, len, contains, keys, items, values, get, eq, and ne\n\n\n\n\nMutableFiltration.update(self, other: Iterable[Tuple[Any, Collection[Integral]]])\n\n\n\n\nMutableFiltration.setdefault(self, key, default)\n\n\n\n\nMutableFiltration.copy(self)\n\n\n\n\nMutableFiltration.keys(self)\n\n\n\n\nMutableFiltration.values(self)\n\n\n\n\nMutableFiltration.items(self)\n\n\n\n\nMutableFiltration.reindex_keys(self, index_set: Iterable)\nGiven a totally ordered key set of the same length of the filtation, reindexes\n\n\n\n\nMutableFiltration.faces(self, p: int = None)\n\n\n\n\nMutableFiltration.print(self, kwargs)\n\n\n\n\nMutableFiltration.validate(self, light: bool = True)"
+  },
+  {
+    "objectID": "reference/SimplicialComplex.html",
+    "href": "reference/SimplicialComplex.html",
+    "title": "Splex",
+    "section": "",
+    "text": "splex.SimplicialComplex(self, simplices: Iterable[SimplexLike] = None)\nAbstract Simplicial Complex\n\n\n\n\nSimplicialComplex.dim(self)\n\n\n\n\nSimplicialComplex.faces(self, p: Optional[int] = None)\n\n\n\n\nSimplicialComplex.update(self, simplices: Iterable[SimplexLike])\n\n\n\n\nSimplicialComplex.add(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.remove(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.discard(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.cofaces(self, item: Collection[int])\n\n\n\n\nSimplicialComplex.print(self, kwargs)"
   },
   {
     "objectID": "reference/combinatorial.html",
@@ -159,55 +82,6 @@
     "title": "Splex",
     "section": "",
     "text": "combinatorial.rank_C2(i: int, j: int, n: int)"
-  },
-  {
-    "objectID": "reference/combinatorial.html#unrank_C2",
-    "href": "reference/combinatorial.html#unrank_C2",
-    "title": "Splex",
-    "section": "unrank_C2",
-    "text": "unrank_C2\nunrank_C2()"
-  },
-  {
-    "objectID": "reference/combinatorial.html#unrank_lex",
-    "href": "reference/combinatorial.html#unrank_lex",
-    "title": "Splex",
-    "section": "unrank_lex",
-    "text": "unrank_lex\nunrank_lex()"
-  },
-  {
-    "objectID": "reference/combinatorial.html#rank_lex",
-    "href": "reference/combinatorial.html#rank_lex",
-    "title": "Splex",
-    "section": "rank_lex",
-    "text": "rank_lex\nrank_lex()"
-  },
-  {
-    "objectID": "reference/combinatorial.html#rank_colex",
-    "href": "reference/combinatorial.html#rank_colex",
-    "title": "Splex",
-    "section": "rank_colex",
-    "text": "rank_colex\nrank_colex()"
-  },
-  {
-    "objectID": "reference/combinatorial.html#unrank_colex",
-    "href": "reference/combinatorial.html#unrank_colex",
-    "title": "Splex",
-    "section": "unrank_colex",
-    "text": "unrank_colex\nunrank_colex()\nUnranks a k-combinations rank ‘r’ back into the original combination in colex order\nFrom: Unranking Small Combinations of a Large Set in Co-Lexicographic Order"
-  },
-  {
-    "objectID": "reference/combinatorial.html#rank_combs",
-    "href": "reference/combinatorial.html#rank_combs",
-    "title": "Splex",
-    "section": "rank_combs",
-    "text": "rank_combs\nrank_combs()\nRanks k-combinations to integer ranks in either lexicographic or colexicographical order\nParameters: C : Iterable of combinations n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : unsigned integers ranks in the chosen order."
-  },
-  {
-    "objectID": "reference/combinatorial.html#unrank_combs",
-    "href": "reference/combinatorial.html#unrank_combs",
-    "title": "Splex",
-    "section": "unrank_combs",
-    "text": "unrank_combs\nunrank_combs()\nUnranks integer ranks to k-combinations in either lexicographic or colexicographical order\nParameters: R : Iterable of integer ranks n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : k-combinations derived from R"
   },
   {
     "objectID": "reference/combinatorial.html#combinatorial.unrank_C2",
@@ -259,6 +133,27 @@
     "text": "combinatorial.unrank_combs\ncombinatorial.unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ['colex', 'lex'])\nUnranks integer ranks to k-combinations in either lexicographic or colexicographical order\nParameters: R : Iterable of integer ranks n : cardinality of the set (lex order only) order : the bijection to use\nReturns: list : k-combinations derived from R"
   },
   {
+    "objectID": "reference/FiltrationLike.html",
+    "href": "reference/FiltrationLike.html",
+    "title": "Splex",
+    "section": "",
+    "text": "meta.FiltrationLike()\nAn object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects.\n\n\n\n\nFiltrationLike.index(self, other: SimplexLike)"
+  },
+  {
+    "objectID": "reference/CombinatorialComplex.html",
+    "href": "reference/CombinatorialComplex.html",
+    "title": "Splex",
+    "section": "",
+    "text": "filtration.CombinatorialComplex(self, simplices: Union[SimplicialComplex, Iterable] = None)\nSimplicial Complex represented via the combinatorial number system\n\n\n\n\nCombinatorialComplex.dim(self)\n\n\n\n\nCombinatorialComplex.faces(self, p: int = None)"
+  },
+  {
+    "objectID": "reference/generics.html",
+    "href": "reference/generics.html",
+    "title": "Splex",
+    "section": "",
+    "text": "generics.dim(sigma: Union[SimplexLike, ComplexLike])\nReturns the dimension of a simplicial object, suitably defined"
+  },
+  {
     "objectID": "reference/generics.html#generics.boundary",
     "href": "reference/generics.html#generics.boundary",
     "title": "Splex",
@@ -273,115 +168,45 @@
     "text": "generics.faces\ngenerics.faces(s: Union[SimplexLike, ComplexLike])\nReturns the boundary of a simplicial object, suitably defined"
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.insert",
-    "href": "reference/SimplexTree.html#SimplexTree.insert",
+    "objectID": "reference/constructions.html",
+    "href": "reference/constructions.html",
     "title": "Splex",
-    "section": "SimplexTree.insert",
-    "text": "SimplexTree.insert\nSimplexTree.insert(self, simplices: Iterable[SimplexLike])\nInserts simplices into the Simplex Tree.\nBy definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified.\n\nParameters\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\n\n\n\n\n\n\nNote\n\n\n\nNote that there are five types of callouts, including: note, tip, warning, caution, and important."
+    "section": "",
+    "text": "constructions.rips_filtration(X: ArrayLike, radius: float)"
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.remove",
-    "href": "reference/SimplexTree.html#SimplexTree.remove",
+    "objectID": "reference/Simplex.html",
+    "href": "reference/Simplex.html",
     "title": "Splex",
-    "section": "SimplexTree.remove",
-    "text": "SimplexTree.remove\nSimplexTree.remove(self, simplices: Iterable[SimplexLike])\nRemoves simplices into the Simplex Tree.\nBy definition, removing a face also removes all of its cofaces. If the simplex does not exist in the complex, the tree is not modified.\n\nParameters\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)."
+    "section": "",
+    "text": "splex.Simplex(self, v: Collection[Integral])\nImplements: contains(self, v: int) <=> Returns whether integer ‘v’ is a vertex in ‘self’\n\n\n\n\nSimplex.faces(self, p: Optional[int] = None)\n\n\n\n\nSimplex.boundary(self)\n\n\n\n\nSimplex.dim(self)"
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.find",
-    "href": "reference/SimplexTree.html#SimplexTree.find",
+    "objectID": "reference/Comparable.html",
+    "href": "reference/Comparable.html",
     "title": "Splex",
-    "section": "SimplexTree.find",
-    "text": "SimplexTree.find\nSimplexTree.find(self, simplices: Iterable[SimplexLike])\nFinds whether simplices exist in Simplex Tree.\n\nParameters\nsimplices :  Iterable[SimplexLike], required\n\nIterable of simplices to insert (each of which are SimplexLike)\n\n\n\nReturns\n**** :\n\nfound (ndarray) : boolean array for each simplex indicating whether it was found in the complex"
+    "section": "",
+    "text": "meta.Comparable()\nProtocol for annotating comparable types."
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.adjacent",
-    "href": "reference/SimplexTree.html#SimplexTree.adjacent",
+    "objectID": "reference/MutableSequence.html",
+    "href": "reference/MutableSequence.html",
     "title": "Splex",
-    "section": "SimplexTree.adjacent",
-    "text": "SimplexTree.adjacent\nSimplexTree.adjacent(self, simplices: Iterable)\nChecks for adjacencies between simplices"
+    "section": "",
+    "text": "meta.MutableSequence()"
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.collapse",
-    "href": "reference/SimplexTree.html#SimplexTree.collapse",
+    "objectID": "reference/SimplexLike.html",
+    "href": "reference/SimplexLike.html",
     "title": "Splex",
-    "section": "SimplexTree.collapse",
-    "text": "SimplexTree.collapse\nSimplexTree.collapse(self, tau: SimplexLike, sigma: SimplexLike)\nChecks whether its possible to collapse \\sigma through \\tau, and if so, both simplices are removed. A simplex \\sigma is said to be collapsible through one of its faces \\tau if \\sigma is the only coface of \\tau (excluding \\tau itself).\n\nParameters\nsigma : required\n\nmaximal simplex to collapse\n\ntau : required\n\nface of sigma to collapse\n\n\n\nReturns\nbool : None,\n\nwhether the pair was collapsed\n\n\n\nExamples\n\nst = SimplexTree([[0,1,2]])\nprint(st)\n# Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices\n\nst.collapse([1,2], [0,1,2])\n# True \n\nprint(st)\n# Simplex Tree with (3, 2) (0, 1)-simplices\n\nSimplex Tree with (3, 3, 1) (0, 1, 2)-simplices\nSimplex Tree with (3, 2) (0, 1)-simplices"
+    "section": "",
+    "text": "meta.SimplexLike()\nAn object is SimplexLike if it is Immutable, Hashable, and SetLike\nBy definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex contains queries)\nProtocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: hash, contains, len, iter, setitem"
   },
   {
-    "objectID": "reference/SimplexTree.html#SimplexTree.vertex_collapse",
-    "href": "reference/SimplexTree.html#SimplexTree.vertex_collapse",
+    "objectID": "reference/CombinatorialFiltration.html",
+    "href": "reference/CombinatorialFiltration.html",
     "title": "Splex",
-    "section": "SimplexTree.vertex_collapse",
-    "text": "SimplexTree.vertex_collapse\nSimplexTree.vertex_collapse(self, u: int, v: int, w: int)\nMaps a pair of vertices into a single vertex.\n\nParameters\nu :  int, required\n\nthe first vertex in the free pair.\n\nv :  int, required\n\nthe second vertex in the free pair.\n\nw :  int, required\n\nthe target vertex to collapse to."
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.degree",
-    "href": "reference/SimplexTree.html#SimplexTree.degree",
-    "title": "Splex",
-    "section": "SimplexTree.degree",
-    "text": "SimplexTree.degree\nSimplexTree.degree(self, vertices: Optional[ArrayLike] = None)\nComputes the degree of select vertices in the trie.\n\nParameters\nvertices :  numpy.typing.ArrayLike, optional (default=None)\n\nRetrieves vertex degrees If no vertices are specified, all degrees are computed. Non-existing vertices by default have degree 0.\n\n\n\nReturns\nlist :  Union[ArrayLike, int], \n\ndegree of each vertex id given in ‘vertices’"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.traverse",
-    "href": "reference/SimplexTree.html#SimplexTree.traverse",
-    "title": "Splex",
-    "section": "SimplexTree.traverse",
-    "text": "SimplexTree.traverse\nSimplexTree.traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)\nTraverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered\nSupported traversals: - breadth-first (“bfs”)\n\nParameters\norder : optional (default=‘preorder’)\n\nthe type of traversal to do\n\nf : optional (default=print)\n\na function to evaluate on every simplex in the traversal. Defaults to print.\n\nsigma : optional (default=[])\n\nsimplex to start the traversal at, where applicable. Defaults to the root node (empty set)\n\np : optional (default=0)\n\ndimension of simplices to restrict to, where applicable."
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.cofaces",
-    "href": "reference/SimplexTree.html#SimplexTree.cofaces",
-    "title": "Splex",
-    "section": "SimplexTree.cofaces",
-    "text": "SimplexTree.cofaces\nSimplexTree.cofaces(self, p: int = None, sigma: SimplexLike = [])\nFinds the p-dimensional cofaces of sigma.\n\nParameters\np : optional (default=None)\n\ncoface dimension to restrict to\n\nsigma : optional (default=[])\n\nthe simplex to obtain cofaces of\n\n\n\nReturns\nlist :  list[SimplexLike], \n\nthe p-cofaces of sigma"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.coface_roots",
-    "href": "reference/SimplexTree.html#SimplexTree.coface_roots",
-    "title": "Splex",
-    "section": "SimplexTree.coface_roots",
-    "text": "SimplexTree.coface_roots\nSimplexTree.coface_roots(self, p: int = None, sigma: SimplexLike = [])"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.skeleton",
-    "href": "reference/SimplexTree.html#SimplexTree.skeleton",
-    "title": "Splex",
-    "section": "SimplexTree.skeleton",
-    "text": "SimplexTree.skeleton\nSimplexTree.skeleton(self, p: int = None)"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.simplices",
-    "href": "reference/SimplexTree.html#SimplexTree.simplices",
-    "title": "Splex",
-    "section": "SimplexTree.simplices",
-    "text": "SimplexTree.simplices\nSimplexTree.simplices(self, p: int = None, sigma: SimplexLike = [])"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.maximal",
-    "href": "reference/SimplexTree.html#SimplexTree.maximal",
-    "title": "Splex",
-    "section": "SimplexTree.maximal",
-    "text": "SimplexTree.maximal\nSimplexTree.maximal(self)"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.link",
-    "href": "reference/SimplexTree.html#SimplexTree.link",
-    "title": "Splex",
-    "section": "SimplexTree.link",
-    "text": "SimplexTree.link\nSimplexTree.link(self, sigma: SimplexLike = [])"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#SimplexTree.expand",
-    "href": "reference/SimplexTree.html#SimplexTree.expand",
-    "title": "Splex",
-    "section": "SimplexTree.expand",
-    "text": "SimplexTree.expand\nSimplexTree.expand(self, k: int)\nPerforms a k-expansion of the complex.\nThis function is particularly useful for expanding clique complexes beyond their 1-skeleton.\n\nParameters\nk : required\n\nmaximum dimension to expand to.\n\n\n\nExamples\n\nst = SimplexTree(combinations(range(8), 2))\nprint(st)\nst.expand(k=2)\nprint(st)\n\nSimplex Tree with (8, 28) (0, 1)-simplices\nSimplex Tree with (8, 28, 56) (0, 1, 2)-simplices"
-  },
-  {
-    "objectID": "reference/SimplexTree.html#simplextree.SimplexTree",
-    "href": "reference/SimplexTree.html#simplextree.SimplexTree",
-    "title": "Splex",
-    "section": "simplextree.SimplexTree",
-    "text": "simplextree.SimplexTree\nsimplextree.SimplexTree(self, simplices: Iterable[SimplexLike] = None)\nSimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.\nThe Simplex Tree was originally introduced in the paper\n\nBoissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.\n\n\nAttributes\n\n\n\nName\nType\nDescription\n\n\n\n\nn_simplices\nndarray\nnumber of simplices\n\n\ndimension\nint\nmaximal dimension of the complex\n\n\nid_policy\nstr\npolicy for generating new vertex ids\n\n\n\n\n\nProperties:\n\n\n\nName\nType\nDescription\n\n\n\n\nvertices\nndarray\nvertices of the complex"
+    "section": "",
+    "text": "filtration.CombinatorialFiltration(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None)\n\n\n\n\nCombinatorialFiltration.reindex(self, f: Callable[SimplexLike, Any])"
   }
 ]

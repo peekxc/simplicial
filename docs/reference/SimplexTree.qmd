@@ -1,29 +1,6 @@
----
-format:
-  html:
-    code-fold: false
-jupyter: python3
-execute: 
-  freeze: auto
-  enabled: true
----
+# SimplexTree
 
-```{python}
-from splex import *
-```
-
-```{python}
-import plotly.express as px
-import plotly.io as pio
-pio.renderers.default = "plotly_mimetype+notebook_connected"
-df = px.data.iris()
-fig = px.scatter(df, x="sepal_width", y="sepal_length", 
-                 color="species", 
-                 marginal_y="violin", marginal_x="box", 
-                 trendline="ols", template="simple_white")
-fig.show()
-```
-
+ --- 
 
 ## simplextree.SimplexTree { #simplextree.SimplexTree }
 
@@ -33,7 +10,6 @@ SimplexTree provides lightweight wrapper around a Simplex Tree data structure: a
 This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
 
 The Simplex Tree was originally introduced in the paper
-
 > Boissonnat, Jean-Daniel, and Clément Maria. "The simplex tree: An efficient data structure for general simplicial complexes." Algorithmica 70.3 (2014): 406-427.
 
 ### Attributes
@@ -44,7 +20,7 @@ The Simplex Tree was originally introduced in the paper
 | dimension   | int     | maximal dimension of the complex     |
 | id_policy   | str     | policy for generating new vertex ids |
 
-### Properties:
+### Attributes
 
 | Name     | Type    | Description             |
 |----------|---------|-------------------------|
@@ -65,12 +41,11 @@ By definition, inserting a simplex also inserts all of its faces. If the simplex
 **simplices** : <span class='type_annotation'> Iterable[SimplexLike], </span>required<p> Iterable of simplices to insert (each of which are SimplexLike) </p>
 
 ::: {.callout-note}
-Note that there are five types of callouts, including: `note`, `tip`, `warning`, `caution`, and `important`.
+        If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
+        Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
 :::
 
---- 
-
-
+ --- 
 
 ## SimplexTree.remove { #SimplexTree.remove }
 
@@ -83,9 +58,14 @@ By definition, removing a face also removes all of its cofaces. If the simplex d
 ### Parameters
 
 **simplices** : <span class='type_annotation'> Iterable[SimplexLike], </span>required<p> 
-Iterable of simplices to insert (each of which are SimplexLike). </p>
+Iterable of simplices to insert (each of which are SimplexLike).                 </p>
 
---- 
+::: {.callout-note}
+        If the iterable is an 2-dim np.ndarray, then a p-simplex is removed along each contiguous p+1 stride.
+        Otherwise, each element of the iterable to casted to a Simplex and then removed from the tree. 
+:::
+
+ --- 
 
 ## SimplexTree.find { #SimplexTree.find }
 
@@ -100,6 +80,11 @@ Finds whether simplices exist in Simplex Tree.
 ### Returns
 
 **** : <p> found (ndarray) : boolean array for each simplex indicating whether it was found in the complex </p>
+
+::: {.callout-note}
+        If the iterable is an 2-dim np.ndarray, then the p-simplex to find is given by each contiguous p+1 stride.
+        Otherwise, each element of the iterable to casted to a Simplex and then searched for in the tree. 
+:::
 
  --- 
 
@@ -131,15 +116,13 @@ A simplex $\sigma$ is said to be collapsible through one of its faces $\tau$ if 
 ### Examples
 
 ```{python}
+from splex import SimplexTree 
 st = SimplexTree([[0,1,2]])
 print(st)
-# Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices
 
 st.collapse([1,2], [0,1,2])
-# True 
 
 print(st)
-# Simplex Tree with (3, 2) (0, 1)-simplices
 ```
 
  --- 
@@ -261,8 +244,11 @@ This function is particularly useful for expanding clique complexes beyond their
 ### Examples
 
 ```{python}
+from splex import SimplexTree 
+from itertools import combinations 
 st = SimplexTree(combinations(range(8), 2))
 print(st)
+
 st.expand(k=2)
 print(st)
 ```

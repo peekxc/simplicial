@@ -12,38 +12,12 @@ _UNHANDLED = []
 ## NOTE: CAREFUL! DISPATCH DEFINITION ORDER MATTERS HERE!
 class MdRendererNumpyStyle(MdRenderer):
   style = "markdown_numpy"
-
-  def __init__(
-    self,
-    header_level: int = 2,
-    show_signature: bool = True,
-    show_signature_annotations: bool = False,
-    display_name: str = "name",
-    hook_pre=None,
-  ):
-    self.header_level = header_level
-    self.show_signature = show_signature
-    self.show_signature_annotations = show_signature_annotations
-    self.display_name = display_name
-    self.hook_pre = hook_pre
   
-  def _render_annotation(self, el: "str | dc.Name | dc.Expression | None"):
-    if isinstance(el, (type(None), str)):
-      return el
-    return el.full.replace("|", "\\|")
-
   def _fetch_object_dispname(self, el: "dc.Alias | dc.Object"):
-    if self.display_name == "name":
-      return el.name
-    elif self.display_name == "relative":
-      return ".".join(el.path.split(".")[1:])
-    elif self.display_name == "full":
-      return el.path
-    elif self.display_name == "canonical":
-      return el.canonical_path
-    elif self.display_name == "parent":
+    if self.display_name == "parent":
       return el.parent.name + "." + el.name
-    raise ValueError(f"Unsupported display_name: `{self.display_name}`")
+    else: 
+      return super(MdRendererNumpyStyle, self).render(el)
   
   # Keep admonition at the top here ----
   @dispatch
@@ -51,34 +25,9 @@ class MdRendererNumpyStyle(MdRenderer):
     _UNHANDLED.append(el)
     return "UNHANDLED ADMONITION"
 
-
-  ## Most general 
   @dispatch
   def render(self, el: Union[dc.Object, dc.Alias]):
-    # return super(MdRendererNumpyStyle, self).render(el)
-    _str_dispname = self._fetch_object_dispname(el)
-    _str_pars = self.render(el.parameters)
-    str_sig = f"`{_str_dispname}({_str_pars})`"
-
-    _anchor = f"{{ #{_str_dispname} }}"
-    str_title = f"{'#' * self.header_level} {_str_dispname} {_anchor}"
-
-    str_body = []
-    if el.docstring is None:
-      pass
-    else:
-      for section in el.docstring.parsed:
-        new_el = docstring_section_narrow(section)
-        title = new_el.title if new_el.title is not None else new_el.kind.value
-        body = self.render(new_el)
-        if title != "text":
-          header = f"{'#' * (self.header_level + 1)} {title.title()}"
-          str_body.append("\n\n".join([header, body]))
-        else:
-          str_body.append(body)
-
-    parts = [str_title, str_sig, *str_body] if self.show_signature else [str_title, *str_body]
-    return "\n\n".join(parts)
+    return super(MdRendererNumpyStyle, self).render(el)
 
   # Parameters ----
   @dispatch
@@ -99,23 +48,11 @@ class MdRendererNumpyStyle(MdRenderer):
 
   @dispatch
   def render(self, el: dc.Parameters):
-    return ", ".join(map(self.render, el))
-    # return super(MdRendererNumpyStyle, self).render(el)
+    return super(MdRendererNumpyStyle, self).render(el)
 
   @dispatch
   def render(self, el: dc.Parameter):
-    splats = {dc.ParameterKind.var_keyword, dc.ParameterKind.var_positional}
-    has_default = el.default and el.kind not in splats
-    annotation = self._render_annotation(el.annotation)
-    if self.show_signature_annotations:
-      if annotation and has_default:
-        return f"{el.name}: {el.annotation} = {el.default}"
-      elif annotation:
-        return f"{el.name}: {el.annotation}"
-    elif has_default:
-      return f"{el.name}={el.default}"
-    return el.name
-    #  return super(MdRendererNumpyStyle, self).render(el)
+    return super(MdRendererNumpyStyle, self).render(el)
 
   # returns ----
   @dispatch
@@ -133,12 +70,11 @@ class MdRendererNumpyStyle(MdRenderer):
       params_str.append(sec_md)
     return "\n\n".join(params_str)
 
+  ## This shouldn't be triggered 
   @dispatch
   def render(self, el: Union[ds.DocstringReturn, ds.DocstringRaise]):
-    # similar to DocstringParameter, but no name or default
-    # annotation = self._render_annotation(el.annotation)
-    # return (annotation, el.description)
-    return "RETURNS"
+    _UNHANDLED.append(el)
+    return "UNHANDLED RETURN"
 
   # --- Attributes
   @dispatch
@@ -152,8 +88,6 @@ class MdRendererNumpyStyle(MdRenderer):
   @dispatch
   def render(self, el: ds.DocstringSectionAttributes):
     header = ["Name", "Type", "Description"]
-    # _UNHANDLED.append(el)
-    # rows = list(map(self.render, el.value))
     rows = []
     for ds_attr in el.value:
       d = ds_attr.as_dict()
@@ -173,10 +107,7 @@ class MdRendererNumpyStyle(MdRenderer):
   ## Sections ---   
   @dispatch
   def render(self, el: ds.DocstringSectionText):
-    new_el = docstring_section_narrow(el)
-    if isinstance(new_el, ds.DocstringSectionText):
-      return el.value # ensures we don't recurse forever
-    return self.render(new_el)  
+    return super(MdRendererNumpyStyle, self).render(el)
 
   @dispatch
   def render(self, el: ds.DocstringSection):
