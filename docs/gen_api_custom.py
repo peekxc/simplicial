@@ -109,6 +109,25 @@ for fn in auto_summaries.keys():
   p_func.write_text("\n\n --- \n\n".join(auto_summaries[fn]))
 
 
+## TODO: 
+## Preprend the following to each doc
+## Fix minor formatting issues 
+## 
+# ---
+# format:
+#   html:
+#     code-fold: false
+# jupyter: python3
+# execute: 
+#   freeze: auto
+#   enabled: true
+# ---
+
+# ```{python}
+# from splex import *
+# ```
+
+
 ## Example Parameters 
 # el = ds_elements["FUNCTION"][11]
 # # p.annotation.full

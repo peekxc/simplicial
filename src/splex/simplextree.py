@@ -40,7 +40,8 @@ class SimplexTree(SimplexTreeCpp):
 			simplices: Iterable of simplices to insert (each of which are SimplexLike)
 
 		::: {.callout-note}
-		Note that there are five types of callouts, including: `note`, `tip`, `warning`, `caution`, and `important`.
+		 	If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
+			Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
 		:::
 		"""
 		if isinstance(simplices, np.ndarray):
@@ -53,8 +54,7 @@ class SimplexTree(SimplexTreeCpp):
 		else: 
 			raise ValueError("Invalid type given")
 	
-	# If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
-	# Otherwise, each element of the iterable to casted to a Simplex and then inserted into the tree. 
+	#
 
 	def remove(self, simplices: Iterable[SimplexLike]):
 		"""
@@ -65,6 +65,11 @@ class SimplexTree(SimplexTreeCpp):
 		Parameters:
 			simplices: 
 				Iterable of simplices to insert (each of which are SimplexLike).		
+		
+		::: {.callout-note}
+		 	If the iterable is an 2-dim np.ndarray, then a p-simplex is removed along each contiguous p+1 stride.
+			Otherwise, each element of the iterable to casted to a Simplex and then removed from the tree. 
+		:::
 		"""
 		if isinstance(simplices, np.ndarray):
 			simplices = np.array(simplices, dtype=np.int8)
@@ -85,6 +90,11 @@ class SimplexTree(SimplexTreeCpp):
 
 		Returns:
 			found (ndarray) : boolean array for each simplex indicating whether it was found in the complex
+
+		::: {.callout-note}
+		 	If the iterable is an 2-dim np.ndarray, then the p-simplex to find is given by each contiguous p+1 stride.
+			Otherwise, each element of the iterable to casted to a Simplex and then searched for in the tree. 
+		:::
 		"""
 		if isinstance(simplices, np.ndarray):
 			simplices = np.array(simplices, dtype=np.int8)
@@ -118,13 +128,10 @@ class SimplexTree(SimplexTreeCpp):
 
 			st = SimplexTree([[0,1,2]])
 			print(st)
-			# Simplex Tree with (3, 3, 1) (0, 1, 2)-simplices
 
 			st.collapse([1,2], [0,1,2])
-			# True 
 
 			print(st)
-			# Simplex Tree with (3, 2) (0, 1)-simplices
 		"""
 		tau, sigma = Simplex(tau), Simplex(sigma)
 		assert tau in boundary(sigma), f"Simplex {tau} is not in the boundary of simplex {sigma}"
