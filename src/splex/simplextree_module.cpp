@@ -51,7 +51,9 @@ void remove_(SimplexTree& st, const py::array_t< idx_t >& simplices){
   });
 }
 void remove_list(SimplexTree& st, std::list< simplex_t > L){
-  for (auto s: L){ st.remove(simplex_t(s)); }
+  for (auto s: L){ 
+    st.remove(st.find(simplex_t(s))); 
+  }
 }
 
 // Vectorized find 
@@ -548,7 +550,7 @@ PYBIND11_MODULE(_simplextree, m) {
     .def( "_remove",  &remove_)
     .def( "_remove_list",  &remove_list)
     .def( "_find", &find_)
-    .def( "_find_list", &remove_list)
+    .def( "_find_list", &find_list)
     .def( "_adjacent", &adjacent_)
     .def( "_collapse", &collapse_)
     .def( "generate_ids", &SimplexTree::generate_ids)

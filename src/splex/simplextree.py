@@ -174,12 +174,21 @@ class SimplexTree(SimplexTreeCpp):
 
 	# PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, 
 	# K_SKELETON = 5, K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
-	def traverse(order: str = "preorder", f: Callable = print, sigma: SimplexLike = [], p: int = 0) -> None:
+	def traverse(self, order: str = "preorder", f: Callable = print, sigma: SimplexLike = [], p: int = 0) -> None:
 		"""
 		Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered
 
 		Supported traversals: 
-			- breadth-first ("bfs") 
+			- breadth-first / level order ("bfs", "levelorder") 
+			- depth-first / prefix ("dfs", "preorder")
+			- faces ("faces")
+			- cofaces ("cofaces")
+			- coface roots 
+			- p-skeleton
+			- p-simplices 
+			- maximal simplices 
+			- link 
+		To select one of these options, set order to one of ["bfs", "levelorder", "dfs", "preorder"]
 
 		Parameters:
 			order : the type of traversal to do 
@@ -210,7 +219,7 @@ class SimplexTree(SimplexTreeCpp):
 			order = 8
 		else: 
 			raise ValueError(f"Unknown order '{order}' specified")
-		self._traverse(3, lambda s: f(s), [], p) # order, f, init, k
+		self._traverse(order, lambda s: f(s), [], p) # order, f, init, k
 
 	def cofaces(self, p: int = None, sigma: SimplexLike = []) -> list['SimplexLike']:
 		"""

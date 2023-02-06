@@ -19,8 +19,8 @@ ext_modules = [
     '_simplextree', 
     sources = ['src/splex/simplextree_module.cpp'], 
     include_dirs=[
-      base_path + '/extern/pybind11/include',
-      base_path + '/src/splex/include'
+      'extern/pybind11/include',
+      'src/splex/include'
     ], 
     extra_compile_args=extra_compile_args,
     language='c++17', 

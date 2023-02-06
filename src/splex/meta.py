@@ -49,6 +49,7 @@ class SimplexLike(SetLike, Hashable, Protocol):
   '''
   # def __setitem__(self, *args) -> None:
   #   raise TypeError("'simplex' object does not support item assignment")
+  # typing.get_args(List[int])
 
 @runtime_checkable
 class ComplexLike(Collection['SimplexLike'], Protocol):
@@ -59,17 +60,18 @@ class ComplexLike(Collection['SimplexLike'], Protocol):
     - dim : None -> int
     - faces : int -> Iterable[SimplexLike]
 
-  
+  A _ComplexLike_ object consists of homogenous _SimplexLike_ types. 
   Protocols: Collection[Sized, Iterable, Container]
   Methods: __contains__, __iter__, __len__
+  TODO: Distinguish form _SimplexLike_ by the value_type of __iter__
   '''
   def __iter__(self) -> Iterable['SimplexLike']: 
     raise NotImplementedError 
   def __next__(self) -> SimplexLike:
     raise NotImplementedError
-  def dim(self) -> int: 
+  def dim(self) -> int: ## cannot be inferred from __len__
     raise NotImplementedError
-  def faces(self, p: int) -> Iterable['SimplexLike']:
+  def faces(self, p: int) -> Iterable['SimplexLike']: ## *can* be inferred by enumerating __iter__ w/ filter 
     raise NotImplementedError
 
 @runtime_checkable

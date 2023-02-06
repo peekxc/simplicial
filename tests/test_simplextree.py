@@ -1,8 +1,8 @@
 # python -m pytest tests/
 import numpy as np 
 
-from simplicial.simplextree import _simplextree as st_mod
-from simplicial.simplextree import SimplexTree
+from splex.simplextree import _simplextree as st_mod
+from splex.simplextree import SimplexTree
 
 def test_can_import():
   assert str(type(st_mod)) == "<class 'module'>"
@@ -13,7 +13,9 @@ def test_construct():
   s = st_mod.SimplexTree()
   assert str(type(s)) == "<class '_simplextree.SimplexTree'>"
   s = SimplexTree()
-  assert str(type(s)) == "<class 'simplicial.simplextree.SimplexTree'>"
+  assert str(type(s)) == "<class 'splex.simplextree.SimplexTree'>"
+  st = SimplexTree([[0,1,2,3,4]])
+  assert all(st.n_simplices == np.array([5,10,10,5,1]))
 
 def test_insert():
   st = SimplexTree()
@@ -21,6 +23,10 @@ def test_insert():
   assert st.insert(simplex) is None 
   assert st.dimension == 4
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
+
+def test_traverse():
+  st = SimplexTree([[0,1,2,3,4]])
+  st.traverse
 
 def test_expand():
   from itertools import combinations
@@ -52,11 +58,14 @@ def test_SimplexTree():
 
 
 def test_remove():
-  assert True
-  # s = st.SimplexTree()
+  st = SimplexTree([[0,1,2,3,4]])
+  print(st)
+
+  st.remove([[0,1,2]])
+  assert all(st.n_simplices == np.array([5,10,9,3]))
   # simplex = np.array([[0,1,2,3,4]], dtype=np.int8)
   # assert s.insert(simplex) is None 
- 
+  st.find([[0,1], [1,2]])
   
   # s.vertices
   # s.n_simplices

@@ -65,7 +65,7 @@ def rank_combs(C: Iterable[tuple], n: int = None, order: str = ["colex", "lex"])
     return [rank_colex(c) for c in C]
   else:
     assert n is not None, "Cardinality of set must be supplied for lexicographical ranking"
-    return [rank_comb(c, len(c), n) for c in C]
+    return [rank_lex(c, n) for c in C]
 
 def unrank_combs(R: Iterable[int], k: Union[int, Iterable], n: int = None, order: str = ["colex", "lex"]):
   """

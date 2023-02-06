@@ -207,18 +207,18 @@ class MutableFiltration(MutableMapping):
   def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
     self.data = SortedDict()
     self.shape = tuple()
-    if isinstance(iterable, SimplicialComplex):
+    if isinstance(simplices, SimplicialComplex):
       if isinstance(f, Callable):
-        self += ((f(s), s) for s in iterable)
+        self += ((f(s), s) for s in simplices)
       elif f is None:
-        index_set = np.arange(len(iterable))  
-        iterable = sorted(iter(iterable), key=lambda s: (len(s), tuple(s), s)) # dimension, lex, face poset
-        self += zip(iter(index_set), iterable)
+        index_set = np.arange(len(simplices))  
+        simplices = sorted(iter(simplices), key=lambda s: (len(s), tuple(s), s)) # dimension, lex, face poset
+        self += zip(iter(index_set), simplices)
       else:
         raise ValueError("Invalid input for simplicial complex")
-    elif isinstance(iterable, Iterable):
-      self += iterable ## accept pairs, like a normal dict
-    elif iterable is None:
+    elif isinstance(simplices, Iterable):
+      self += simplices ## accept pairs , like a normal dict
+    elif simplices is None:
       pass
     else: 
       raise ValueError("Invalid input")
@@ -254,24 +254,24 @@ class MutableFiltration(MutableMapping):
     #return self.data.__len__()
 
   # https://peps.python.org/pep-0584/
-  def __or__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
+  def __or__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
     new = self.copy()
     new.update(SortedDict(other))
     return new
 
-  def __ror__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
+  def __ror__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
     new = SortedDict(other)
     new.update(self.data)
     return new
 
   ## In-place union '|=' operator 
   # TODO: map Collection[Integral] -> SimplexLike? 
-  def __ior__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
+  def __ior__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
     self.data.update(other)
     return self
   
   ## In-place append '+=' operator ; true dict union/merge, retaining values
-  def __iadd__(self, other: Iterable[Tuple[int, int]]):
+  def __iadd__(self, other: Iterable[Tuple[Any, 'SimplexLike']]):
     for k,v in other:
       if len(Simplex(v)) >= 1:
         # print(f"key={str(k)}, val={str(v)}")
