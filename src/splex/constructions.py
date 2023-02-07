@@ -1,17 +1,21 @@
 import numpy as np
-from scipy.spatial.distance import pdist
+from scipy.spatial.distance import pdist, squareform
 
 from .splex import * 
 from .simplextree import * 
 from .combinatorial import rank_combs, unrank_combs
 
+def enclosing_radius(a: ArrayLike) -> float:
+	''' Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. '''
+	# assert is_distance_matrix(a)
+	return(np.min(np.amax(a, axis = 0)))
 
-def rips_filtration(X: ArrayLike, radius: float) -> MutableFiltration:
-  X = np.random.uniform(size=(30,2))
+def rips_filtration(X: ArrayLike, radius: float = None) -> MutableFiltration:
+  #X = np.random.uniform(size=(30,2))
   pd = pdist(X)
+  radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  
-  st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2))
+  st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
   st.expand(2)
   n = X.shape[0]
   def _clique_weight(s: SimplexLike) -> float:

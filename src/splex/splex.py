@@ -1,7 +1,7 @@
 ## splex.py
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
-
+from scipy.sparse import coo_array
 import numpy as np 
 from .meta import *   # typing utilities for meta-programming
 from .generics import * 
@@ -204,6 +204,12 @@ class MutableFiltration(MutableMapping):
     return SortedSet(None, key) if iterable is None else SortedSet(iter(map(Simplex, iterable)), key)
   
   # simplices: Sequence[SimplexLike], I: Optional[Collection] = None
+  # Accept: 
+  # x simplices_iterable, f = None (this shouldnt work)
+  # simplices_iterable, f = Callable
+  # (index_iterable, simplices_iterable)
+  # SimplicialComplex, f = None 
+  # SimplicialComplex, f = Callable 
   def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
     self.data = SortedDict()
     self.shape = tuple()
@@ -217,7 +223,10 @@ class MutableFiltration(MutableMapping):
       else:
         raise ValueError("Invalid input for simplicial complex")
     elif isinstance(simplices, Iterable):
-      self += simplices ## accept pairs , like a normal dict
+      if isinstance(f, Callable):
+        self += ((f(s), s) for s in simplices)
+      else:
+        self += simplices ## accept pairs, like a normal dict
     elif simplices is None:
       pass
     else: 
@@ -254,24 +263,24 @@ class MutableFiltration(MutableMapping):
     #return self.data.__len__()
 
   # https://peps.python.org/pep-0584/
-  def __or__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
+  def __or__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
     new = self.copy()
     new.update(SortedDict(other))
     return new
 
-  def __ror__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
+  def __ror__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
     new = SortedDict(other)
     new.update(self.data)
     return new
 
   ## In-place union '|=' operator 
   # TODO: map Collection[Integral] -> SimplexLike? 
-  def __ior__(self, other: Union[Iterable[Tuple[Any, 'SimplexLike']], Mapping]):
+  def __ior__(self, other: Union[Iterable[Tuple[int, int]], Mapping]):
     self.data.update(other)
     return self
   
   ## In-place append '+=' operator ; true dict union/merge, retaining values
-  def __iadd__(self, other: Iterable[Tuple[Any, 'SimplexLike']]):
+  def __iadd__(self, other: Iterable[Tuple[int, int]]):
     for k,v in other:
       if len(Simplex(v)) >= 1:
         # print(f"key={str(k)}, val={str(v)}")
@@ -295,8 +304,9 @@ class MutableFiltration(MutableMapping):
   ## Simple copy operator 
   def copy(self) -> 'MutableFiltration':
     new = MutableFiltration()
-    new.data = self.data.copy()
-    new.shape = self.shape.copy()
+    from copy import deepcopy
+    new.data = deepcopy(self.data)
+    new.shape = deepcopy(self.shape)
     return new 
 
   ## Keys yields the index set. Set expand = True to get linearized order. 
@@ -320,20 +330,24 @@ class MutableFiltration(MutableMapping):
       it_vals = chain(it_vals, iter(v))
     return zip(it_keys, it_vals)
 
-  def reindex_keys(self, index_set: Iterable):
-    ''' Given a totally ordered key set of the same length of the filtation, reindexes '''
-    assert len(index_set) == len(self)
-    assert all((i <= j for i,j in pairwise(index_set)))
-    new = MutableFiltration(zip(iter(index_set), self.values()))
-    return new
+  def reindex(self, index_set: Union[Iterable, Callable]) -> None:
+    ''' Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration '''
+    if isinstance(index_set, Iterable):
+      assert len(index_set) == len(self), "Index set length not match the number of simplices in the filtration!"
+      assert all((i <= j for i,j in pairwise(index_set))), "Index set is not totally ordered!"
+      new = MutableFiltration(zip(iter(index_set), self.values()))
+      self.data = new.data
+    elif isinstance(index_set, Callable):
+      new = MutableFiltration(simplices=self.values(), f=index_set)
+      self.data = new.data
+    else:
+      raise ValueError("invalid index set supplied")
 
   def faces(self, p: int = None) -> Iterable:
-    return filter(lambda s: len(s) == p+1, self.values())
+    assert isinstance(p, Integral) or p is None, f"Invalid p:{p} given"
+    return self.values() if p is None else filter(lambda s: len(s) == p+1, self.values())
 
   def __repr__(self) -> str:
-    # from collections import Counter
-    # cc = Counter([len(s)-1 for s in self.values()])
-    # cc = dict(sorted(cc.items()))
     n = len(self.shape)
     return f"{n-1}-d filtered complex with {self.shape}-simplices of dimension {tuple(range(n))}"
 
@@ -353,7 +367,7 @@ class MutableFiltration(MutableMapping):
   def validate(self, light: bool = True) -> bool:
     fs = list(self.values())
     for i, s in enumerate(fs): 
-      p = s.dim() - 1 if light and len(s) >= 2 else None
+      p = s.dimension() - 1 if light and len(s) >= 2 else None
       assert all([fs.index(face) <= i for face in s.faces(p)])
     assert all([k1 <= k2 for k1, k2 in pairwise(self.keys())])
 
@@ -364,4 +378,55 @@ class MutableFiltration(MutableMapping):
     res = s.getvalue()
     s.close()
     return res
+
+
+# See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
+def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = None):
+
+  ## Load faces. If not given, by definition, the given p-simplices contain their boundary faces.
+  if F is None: 
+    assert not(S is iter(S)), "Simplex iterable must be repeatable (a generator is not sufficient!)"
+    F = list(map(Simplex, set(chain.from_iterable([combinations(s, len(s)-1) for s in S]))))
   
+  ## Ensure faces 'F' is indexable
+  assert isinstance(F, Sequence), "Faces must be a valid Sequence (supporting .index(*) with SimplexLike objects!)"
+
+  ## Build the boundary matrix from the sequence
+  m = 0
+  I,J,X = [],[],[] # row, col, data 
+  for (j,s) in enumerate(map(Simplex, S)):
+    if dim(s) > 0:
+      I.extend([F.index(f) for f in s.faces(dim(s)-1)])
+      J.extend(repeat(j, dim(s)+1))
+      X.extend(islice(cycle([1,-1]), dim(s)+1))
+    m += 1
+  D = coo_array((X, (I,J)), shape=(len(F), m)).tolil(copy=False)
+  return D 
+
+## TODO: investigate whether to make a 'ChainLike' for extension with 'BoundaryChain'
+## something like chain(s: SimplexLike, c: ComplexLike, oriented: bool) -> ndarray, or generator (index, value)
+## complexLike could be overloaded to handle .index(), checked if Sequence[SimplexLike] or if just Container[int] (+implying)
+def boundary_matrix(K: Union[SimplicialComplex, MutableFiltration], p: Optional[Union[int, tuple]] = None):
+  """
+  Constructs a sparse boundary matrix of a given simplicial object _K_
+
+  Returns: 
+    D := sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)
+  """
+  from collections.abc import Sized
+  if isinstance(p, tuple):
+    return (boundary_matrix(K, pi) for pi in p)
+  else: 
+    assert p is None or isinstance(p, Integral), "p must be integer, or None"
+    if isinstance(K, SimplicialComplex) or isinstance(K, MutableFiltration):
+      if p is None:
+        simplices = list(K.faces())
+        D = _boundary(simplices, simplices)
+      else:
+        p_simplices = K.faces(p=p)
+        p_faces = list(K.faces(p=p-1))
+        D = _boundary(p_simplices, p_faces)
+    else: 
+      raise ValueError("Invalid input")
+    return D
+
