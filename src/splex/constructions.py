@@ -4,14 +4,31 @@ from scipy.spatial.distance import pdist, squareform
 from .splex import * 
 from .simplextree import * 
 from .combinatorial import rank_combs, unrank_combs
+from .predicates import *
 
-def enclosing_radius(a: ArrayLike) -> float:
-	''' Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. '''
-	# assert is_distance_matrix(a)
-	return(np.min(np.amax(a, axis = 0)))
+def enclosing_radius(x: ArrayLike) -> float:
+  ''' Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. '''
+  if is_point_cloud(x):
+    d = squareform(pdist(x))
+    return 0.5*np.min(np.amax(d, axis = 0))
+  elif is_dist_like(x):
+    assert is_distance_matrix(x) or is_pairwise_distances(x), "Must be valid distances"
+    d = x if is_distance_matrix(x) else squareform(x)
+    return 0.5*np.min(np.amax(d, axis = 0))
+  else:
+    raise ValueError("Unknown input type")
+
+def rips_complex(X: ArrayLike, radius: float = None) -> MutableFiltration:
+  pd = pdist(X)
+  radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
+  ind = np.flatnonzero(pd <= 2*radius)
+  st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
+  st.expand(2)
+  ## TODO: replace 
+  S = SimplicialComplex(list(map(Simplex, st.simplices())))
+  return S
 
 def rips_filtration(X: ArrayLike, radius: float = None) -> MutableFiltration:
-  #X = np.random.uniform(size=(30,2))
   pd = pdist(X)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
@@ -31,5 +48,12 @@ def rips_filtration(X: ArrayLike, radius: float = None) -> MutableFiltration:
   return K
 
 
+def delaunay_complex(X: ArrayLike):
+  from scipy.spatial import Delaunay
+  dt = Delaunay(X)
+  T = dt.simplices
+  V = np.fromiter(range(X.shape[0]), dtype=np.int32)
+  S = SimplicialComplex(chain(V, T))
+  return(S)
 
 
