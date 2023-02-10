@@ -1,7 +1,7 @@
 ## --- GENERICS --- 
 import numpy as np 
 # import networkx as nx
-from .meta import *   # typing utilities for meta-programming
+from .meta import *   
 from sortedcontainers import SortedDict, SortedSet
 from dataclasses import dataclass
 from numbers import Integral

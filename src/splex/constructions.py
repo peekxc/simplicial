@@ -28,6 +28,26 @@ def rips_complex(X: ArrayLike, radius: float = None) -> MutableFiltration:
   S = SimplicialComplex(list(map(Simplex, st.simplices())))
   return S
 
+def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None):
+  if is_point_cloud(x):
+    pd = pdist(x)
+    n = x.shape[0]
+  elif is_dist_like(distances):
+    pd = np.tril(x) if is_distance_matrix(x) else x
+    n = inverse_choose(len(pd), 2)
+  else: 
+    raise ValueError("Invalid input {type(x)}; not recongized")
+  vertex_weights = np.zeros(n) if vertex_weights is None else vertex_weights
+  assert len(vertex_weights) == n, "Invalid vertex weights"
+  def _clique_weight(s: SimplexLike):
+    if len(s) == 1:
+      return vertex_weights[s]
+    elif len(s) == 2:
+      return pd[int(rank_combs([s], n=n, order='lex')[0])]
+    else: 
+      return max(pd[np.array(rank_combs(faces(s,1), n=X.shape[0], order='lex'), dtype=int)])
+  return _clique_weight
+
 def rips_filtration(X: ArrayLike, radius: float = None) -> MutableFiltration:
   pd = pdist(X)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)

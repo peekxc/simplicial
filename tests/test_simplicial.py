@@ -16,6 +16,9 @@ def test_combinatorial_filtration():
   C = CombinatorialComplex(S)
   K = CombinatorialFiltration(S)
 
+def test_rips():
+  pass 
+
 ## Testing reindexing capability 
 def test_filtration():
   S = SimplicialComplex([[0,1,2,3,4]])

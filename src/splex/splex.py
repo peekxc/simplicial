@@ -2,9 +2,8 @@
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
 from scipy.sparse import coo_array
-import numpy as np 
-from .meta import *   # typing utilities for meta-programming
-from .generics import * 
+import numpy as np      
+from .generics import *   
 
 @dataclass(frozen=True)
 class Simplex(Set, Hashable):
