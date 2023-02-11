@@ -6,36 +6,32 @@
 //
 // Class definition based off of data-structure described here:  
 // https://en.wikipedia.org/wiki/Disjoint-set_data_structure
-#include <Rcpp.h>
-using namespace Rcpp; 
+#include <pybind11/pybind11.h>
+#include <pybind11/iostream.h>
+#include <pybind11/numpy.h>
+#include <pybind11/stl.h>
+namespace py = pybind11;
+using namespace pybind11::literals;
 
-#include "UnionFind.h"
-
-
-SEXP as_XPtr(UnionFind* uf){
-  Rcpp::XPtr< UnionFind > p(uf, false);
-  return(p);
-}
+#include "include/UnionFind.h"
                    
-void printCC(UnionFind* uf){
-  for (size_t j = 0; j < uf->size; ++j){ Rcout << uf->Find(j) << " "; }
-  Rcout << std::endl;
+void printCC(UnionFind& uf){
+  for (size_t j = 0; j < uf.size; ++j){ py::print(uf.Find(j), " "); }
+  py::print("\n");
 }
 
-// Export as an Rcpp module
-RCPP_MODULE(union_find_module) {
-  Rcpp::class_<UnionFind>("UnionFind")
-  .constructor< std::size_t >()
-  .field_readonly( "size", &UnionFind::size)
-  .field_readonly( "parent", &UnionFind::parent)
-  .field_readonly( "rank", &UnionFind::rank)
-  .method("as_XPtr", &as_XPtr)
-  .method("print", &printCC )
-  .method("connected_components", &UnionFind::ConnectedComponents)
-  .method("find", &UnionFind::Find)
-  .method("find_all", &UnionFind::FindAll)
-  .method("union", &UnionFind::Union)
-  .method("union_all", &UnionFind::UnionAll)
-  .method("add_sets", &UnionFind::AddSets)
-  ;
+PYBIND11_MODULE(_union_find, m) {
+  py::class_<UnionFind>(m, "UnionFind")
+    .def(py::init< size_t >())
+    .def_readonly( "size", &UnionFind::size)
+    .def_readonly( "parent", &UnionFind::parent)
+    .def_readonly( "rank", &UnionFind::rank)
+    .def("print", &printCC )
+    .def("connected_components", &UnionFind::ConnectedComponents)
+    .def("find", &UnionFind::Find)
+    .def("find_all", &UnionFind::FindAll)
+    .def("union", &UnionFind::Union)
+    .def("union_all", &UnionFind::UnionAll)
+    .def("add_sets", &UnionFind::AddSets)
+    ;
 }

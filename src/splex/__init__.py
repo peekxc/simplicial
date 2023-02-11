@@ -14,6 +14,6 @@ from .filtration import *
 from .splex import * 
 from .simplextree import *
 from .constructions import *
-
+from .UnionFind import * 
 
 

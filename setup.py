@@ -25,6 +25,16 @@ ext_modules = [
     extra_compile_args=extra_compile_args,
     language='c++17', 
     cxx_std=1
+  ), 
+   Pybind11Extension(
+    '_union_find', 
+    sources = ['src/splex/UnionFind.cpp'], 
+    include_dirs=[
+      'extern/pybind11/include'
+    ], 
+    extra_compile_args=extra_compile_args,
+    language='c++17', 
+    cxx_std=1
   )
 ]
 
