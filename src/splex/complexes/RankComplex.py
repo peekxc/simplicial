@@ -2,15 +2,15 @@
 import numbers
 import numpy as np 
 
-from .meta import *
-from .combinatorial import * 
+from ..meta import *
+from ..combinatorial import * 
 
 class RankComplex(ComplexLike):
   """
   Simplicial Complex represented via the combinatorial number system
   """
-  def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None) -> None:
-    simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
+  def __init__(self, simplices: Union[ComplexLike, Iterable] = None) -> None:
+    simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
     s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
     if simplices is not None:
       assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
@@ -39,8 +39,8 @@ class RankComplex(ComplexLike):
 
 
 class RankFiltration(FiltrationLike):
-  def __init__(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None):
-    simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
+  def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None):
+    simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
     assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
     if f is not None:
       s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.float64)])

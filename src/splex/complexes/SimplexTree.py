@@ -4,9 +4,7 @@ from numbers import Integral
 from numpy.typing import ArrayLike
 
 import numpy as np 
-import _simplextree
-from _simplextree import SimplexTree as SimplexTreeCpp
-from .splex import *
+from ._simplextree import SimplexTree as SimplexTreeCpp
 
 class SimplexTree(SimplexTreeCpp):
 	""" 

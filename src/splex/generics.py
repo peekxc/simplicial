@@ -1,9 +1,6 @@
 ## --- GENERICS --- 
 import numpy as np 
-from dataclasses import dataclass
 from numbers import Integral
-from sortedcontainers import SortedDict, SortedSet
-
 from .meta import *
 
 def dim(sigma: Union[SimplexLike, ComplexLike]) -> int:
@@ -49,7 +46,7 @@ def faces(s: Union[SimplexLike, ComplexLike], p: int = None) -> Iterable['Simple
   ## TODO: handle ComplexLike
 
 
-def SimplicialComplex(ds: str = "default"):
+def SimplicialComplex(simplices: Iterable[SimplexConvertible] = None, ds: str = "default"):
   """"
   '"set_complex", "rank_complex", "simplex_tree"'
   """ 

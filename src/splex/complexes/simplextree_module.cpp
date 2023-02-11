@@ -5,7 +5,7 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#include "include/simplextree.h"
+#include "simplextree.h"
 using simplex_t = SimplexTree::simplex_t; 
 
 // Generic function to handle various vector types

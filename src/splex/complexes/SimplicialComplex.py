@@ -1,10 +1,11 @@
-from .Simplex import *
-
+import numpy as np
+from ..meta import * 
+from ..Simplex import *
+from sortedcontainers import SortedSet 
 
 ## TODO: implement a simplex |-> attribute system like networkx graphs
-class SimplicialComplex(MutableSet, ComplexLike):
+class SetComplex(ComplexLike):
   """ Abstract Simplicial Complex"""
-  __hash__ = Set._hash
 
   def __init__(self, simplices: Iterable[SimplexLike] = None):
     """"""

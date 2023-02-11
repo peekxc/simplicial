@@ -1,6 +1,7 @@
 import numpy as np  
-from .meta import *
-from .SimplicialComplex import * 
+from ..meta import *
+from ..Simplex import *
+from ..complexes import * 
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault
@@ -28,10 +29,10 @@ class SetFiltration(MutableMapping):
   # (index_iterable, simplices_iterable)
   # SimplicialComplex, f = None 
   # SimplicialComplex, f = Callable 
-  def __init__(self, simplices: Union[SimplicialComplex, Iterable] = None, f: Optional[Callable] = None) -> None:
+  def __init__(self, simplices: Union[ComplexLike, Iterable] = None, f: Optional[Callable] = None) -> None:
     self.data = SortedDict()
     self.shape = tuple()
-    if isinstance(simplices, SimplicialComplex):
+    if isinstance(simplices, ComplexLike):
       if isinstance(f, Callable):
         self += ((f(s), s) for s in simplices)
       elif f is None:

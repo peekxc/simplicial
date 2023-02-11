@@ -1,5 +1,8 @@
 import numpy as np
+from dataclasses import dataclass
+from sortedcontainers import SortedDict, SortedSet
 from .meta import *   
+
 
 @dataclass(frozen=True)
 class Simplex(Set, Hashable):

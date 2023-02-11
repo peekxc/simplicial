@@ -11,13 +11,14 @@ from pybind11.setup_helpers import Pybind11Extension, build_ext
 
 base_path = os.path.dirname(__file__)
 compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
+compile_flags += list(dict.fromkeys(sysconfig.get_config_var('CPPFLAGS').split()))
 compile_flags += ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
 print(f"COMPILER FLAGS: { str(compile_flags) }")
 
 ext_modules = [
   Pybind11Extension(
-    '_simplextree', 
-    sources = ['src/splex/simplextree_module.cpp'], 
+    'splex.complexes._simplextree', 
+    sources = ['src/splex/complexes/simplextree_module.cpp'], 
     include_dirs=[
       'extern/pybind11/include',
       'src/splex/include'
