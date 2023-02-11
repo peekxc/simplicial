@@ -1,3 +1,3 @@
-from . import RankComplex
-from . import SimplexTree
-from . import SimplicialComplex
+from .RankComplex import RankComplex
+from .SimplexTree import SimplexTree
+from .SetComplex import SetComplex

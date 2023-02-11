@@ -1,3 +1,4 @@
+from __future__ import annotations
 import numpy as np
 from numbers import Integral
 from dataclasses import dataclass
@@ -7,7 +8,7 @@ from .meta import *
 IntType = TypeVar('IntType', bound=Union[int, np.integer, Integral])
 
 @dataclass(frozen=True)
-class Simplex(SimplexLike, Generic[IntType]):
+class Simplex(SimplexLike): #  Generic[IntType]
   '''Dataclass for representing a simplex. 
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 

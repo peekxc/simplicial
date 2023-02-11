@@ -1,6 +1,6 @@
 import numpy as np 
 from splex import * 
-from splex import SimplicialComplex, MutableFiltration
+from splex import simplicial_complex, filtration
 
 def check_poset(S: ComplexLike):
   ## Reflexivity 
@@ -22,11 +22,15 @@ def test_simplex():
   s = Simplex([0,1,2])
   assert isinstance(s, Simplex)
   assert isinstance(s, SimplexLike)
+  assert isinstance(s, SimplexConvertible)
 
-def test_combinatorial_complex():
-  S = SimplicialComplex([[0,1,2,3,4]])
-  C = CombinatorialComplex(S)
+def test_simplicial_complex_api():
+  T = simplicial_complex([[0,1,2,3,4]], ds="simplex tree")
+  C = simplicial_complex([[0,1,2,3,4]], ds="rank complex")
+  S = simplicial_complex([[0,1,2,3,4]], ds="set complex")
   check_poset(C)
+  check_poset(T)
+  check_poset(S)
 
 def test_combinatorial_filtration():
   S = SimplicialComplex([[0,1,2,3,4]])

@@ -7,7 +7,7 @@ from sortedcontainers import SortedSet
 class SetComplex(ComplexLike):
   """ Abstract Simplicial Complex"""
 
-  def __init__(self, simplices: Iterable[SimplexLike] = None):
+  def __init__(self, simplices: Iterable[SimplexConvertible] = None):
     """"""
     self.data = SortedSet([], key=lambda s: (len(s), tuple(s), s)) # for now, just use the lex/dim/face order 
     self.shape = tuple()

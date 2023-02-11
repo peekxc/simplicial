@@ -56,6 +56,10 @@ def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, ds: str =
     ds = '"set_complex", "rank_complex", "simplex_tree"'
 
   """ 
+  if ds is None or isinstance(ds, str) and ds == "default":
+    ds = "simplex_tree"
+  assert isinstance(ds, str), f"Invalid data structure argument '{ds}'; must be string."
+  ds = ds.replace(' ','_').lower()
   if ds == "simplex_tree":
     sc = SimplexTree(simplices)
   elif ds == "rank_complex":
@@ -64,7 +68,7 @@ def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, ds: str =
     sc = SetComplex(simplices)
   else: 
     raise ValueError(f"Unknown data structure '{str(type(ds))}'.")
-  return ds 
+  return sc 
 
 
 def filtration(simplices: Iterable[SimplexConvertible], f: Optional[Callable] = None, ds: Optional[str] = "default", **kwargs):

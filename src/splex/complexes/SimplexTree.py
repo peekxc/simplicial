@@ -4,6 +4,7 @@ from numbers import Integral
 from numpy.typing import ArrayLike
 
 import numpy as np 
+from ..meta import * 
 from ._simplextree import SimplexTree as SimplexTreeCpp
 
 class SimplexTree(SimplexTreeCpp):
@@ -22,13 +23,13 @@ class SimplexTree(SimplexTreeCpp):
 	Attributes: Properties:
 		vertices (ndarray): vertices of the complex
 	"""    
-	def __init__(self, simplices: Iterable[SimplexLike] = None) -> None:
+	def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
 		SimplexTreeCpp.__init__(self)
 		if simplices is not None: 
 			self.insert(simplices)
 		return None
 
-	def insert(self, simplices: Iterable[SimplexLike]) -> None:
+	def insert(self, simplices: Iterable[SimplexConvertible]) -> None:
 		"""
 		Inserts simplices into the Simplex Tree. 
 
@@ -47,12 +48,9 @@ class SimplexTree(SimplexTreeCpp):
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			self._insert(simplices)
 		elif isinstance(simplices, Iterable): 
-			simplices = [Simplex(s) for s in simplices]
-			self._insert_list(simplices)
+			self._insert_list([tuple(s) for s in simplices])
 		else: 
 			raise ValueError("Invalid type given")
-	
-	#
 
 	def remove(self, simplices: Iterable[SimplexLike]):
 		"""
@@ -74,8 +72,7 @@ class SimplexTree(SimplexTreeCpp):
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			self._remove(simplices)
 		elif isinstance(simplices, Iterable): 
-			simplices = [Simplex(s) for s in simplices]
-			self._remove_list(simplices)
+			self._remove_list([tuple(s) for s in simplices])
 		else: 
 			raise ValueError("Invalid type given")
 
@@ -99,8 +96,7 @@ class SimplexTree(SimplexTreeCpp):
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			return self._find(simplices)
 		elif isinstance(simplices, Iterable): 
-			simplices = [Simplex(s) for s in simplices]
-			return self._find_list(simplices)
+			return self._find_list([tuple(s) for s in simplices])
 		else: 
 			raise ValueError("Invalid type given")
 
@@ -110,7 +106,7 @@ class SimplexTree(SimplexTreeCpp):
 		"""
 		return self._adjacent(list(map(Simplex, simplices)))
 
-	def collapse(self, tau: SimplexLike, sigma: SimplexLike) -> None:
+	def collapse(self, tau: SimplexConvertible, sigma: SimplexConvertible) -> None:
 		"""
 		Checks whether its possible to collapse $\sigma$ through $\\tau$, and if so, both simplices are removed. 
 		A simplex $\sigma$ is said to be collapsible through one of its faces $\\tau$ if $\sigma$ is the only coface of $\\tau$ (excluding $\\tau$ itself). 
@@ -132,7 +128,6 @@ class SimplexTree(SimplexTreeCpp):
 
 			print(st)
 		"""
-		tau, sigma = Simplex(tau), Simplex(sigma)
 		assert tau in boundary(sigma), f"Simplex {tau} is not in the boundary of simplex {sigma}"
 		success = self._collapse(tau, sigma) 
 		return success 
@@ -288,3 +283,6 @@ class SimplexTree(SimplexTreeCpp):
 
 	def __repr__(self) -> str:
 		return f"Simplex Tree with {tuple(self.n_simplices)} {tuple(range(0,self.dimension+1))}-simplices"
+
+	def __iter__(self) -> Iterator[SimplexConvertible]:
+		yield from self.simplices()

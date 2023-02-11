@@ -12,8 +12,6 @@ from .generics import *
 from .combinatorial import * 
 from .complexes import *
 from .filtrations import *
-# from .simplextree import *
-# from .constructions import *
 from .UnionFind import * 
 
 

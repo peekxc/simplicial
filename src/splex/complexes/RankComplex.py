@@ -6,10 +6,10 @@ from ..meta import *
 from ..combinatorial import * 
 
 class RankComplex(ComplexLike):
+  """Simplicial complex represented via the combinatorial number system.
+  
   """
-  Simplicial Complex represented via the combinatorial number system
-  """
-  def __init__(self, simplices: Union[ComplexLike, Iterable] = None) -> None:
+  def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
     simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
     s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
     if simplices is not None:
