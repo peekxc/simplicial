@@ -1,12 +1,11 @@
 
-import numpy as np 
 import numbers
+import numpy as np 
 
 from .meta import *
-from .splex import * 
 from .combinatorial import * 
 
-class CombinatorialComplex(ComplexLike):
+class RankComplex(ComplexLike):
   """
   Simplicial Complex represented via the combinatorial number system
   """
@@ -38,7 +37,8 @@ class CombinatorialComplex(ComplexLike):
   def __iter__(self) -> Iterable[SimplexLike]:
     yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
 
-class CombinatorialFiltration(CombinatorialComplex, Mapping):
+
+class RankFiltration(FiltrationLike):
   def __init__(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None):
     simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
     assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"

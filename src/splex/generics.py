@@ -1,11 +1,10 @@
 ## --- GENERICS --- 
 import numpy as np 
-# import networkx as nx
-from .meta import *   
-from sortedcontainers import SortedDict, SortedSet
 from dataclasses import dataclass
 from numbers import Integral
+from sortedcontainers import SortedDict, SortedSet
 
+from .meta import *
 
 def dim(sigma: Union[SimplexLike, ComplexLike]) -> int:
   """Returns the dimension of a simplicial object, suitably defined."""
@@ -48,3 +47,15 @@ def faces(s: Union[SimplexLike, ComplexLike], p: int = None) -> Iterable['Simple
     assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
     return (combinations(s, p+1))
   ## TODO: handle ComplexLike
+
+
+def SimplicialComplex(ds: str = "default"):
+  """"
+  '"set_complex", "rank_complex", "simplex_tree"'
+  """ 
+  
+  pass 
+
+
+def Filtration():
+  pass

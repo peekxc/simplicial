@@ -1,3 +1,6 @@
+## meta.py
+## Contains definitions and utilities for prescribing a structural type system on the 
+## space of abstract simplicial complexes and on simplicial filtrations
 from __future__ import annotations
 from abc import abstractmethod
 from typing import *

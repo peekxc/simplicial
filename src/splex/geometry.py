@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
-from .splex import * 
+from .meta import * 
 from .simplextree import * 
 from .combinatorial import rank_combs, unrank_combs
 from .predicates import *
@@ -18,7 +18,7 @@ def enclosing_radius(x: ArrayLike) -> float:
   else:
     raise ValueError("Unknown input type")
 
-def rips_complex(X: ArrayLike, radius: float = None) -> MutableFiltration:
+def rips_complex(X: ArrayLike, radius: float = None) -> FiltrationLike:
   pd = pdist(X)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
@@ -48,7 +48,7 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None):
       return float(max(pd[np.array(rank_combs(faces(s,1), n=n, order='lex'), dtype=int)]))
   return _clique_weight
 
-def rips_filtration(X: ArrayLike, radius: float = None) -> MutableFiltration:
+def rips_filtration(X: ArrayLike, radius: float = None) -> FiltrationLike:
   pd = pdist(X)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)

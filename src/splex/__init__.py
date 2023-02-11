@@ -10,8 +10,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 from .meta import *
 from .generics import *
 from .combinatorial import * 
-from .filtration import *
-from .splex import * 
+from .Filtration import *
 from .simplextree import *
 from .constructions import *
 from .UnionFind import * 
