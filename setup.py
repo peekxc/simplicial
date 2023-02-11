@@ -7,12 +7,12 @@ from typing import Any, Dict
 from setuptools import setup, Extension, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
-base_path = os.path.dirname(__file__)
-extra_compile_args = sysconfig.get_config_var('CFLAGS').split()
-extra_compile_args += ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
+# flags = distutils.sysconfig.get_config_var("CFLAGS")
 
-flags = distutils.sysconfig.get_config_var("CFLAGS")
-print(f"COMPILER FLAGS: { str(flags) }")
+base_path = os.path.dirname(__file__)
+compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
+compile_flags += ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
+print(f"COMPILER FLAGS: { str(compile_flags) }")
 
 ext_modules = [
   Pybind11Extension(
@@ -22,9 +22,8 @@ ext_modules = [
       'extern/pybind11/include',
       'src/splex/include'
     ], 
-    extra_compile_args=extra_compile_args,
-    language='c++17', 
-    cxx_std=1
+    extra_compile_args=compile_flags,
+    language='c++17'
   ), 
    Pybind11Extension(
     '_union_find', 
@@ -32,9 +31,8 @@ ext_modules = [
     include_dirs=[
       'extern/pybind11/include'
     ], 
-    extra_compile_args=extra_compile_args,
-    language='c++17', 
-    cxx_std=1
+    extra_compile_args=compile_flags,
+    language='c++17'
   )
 ]
 
