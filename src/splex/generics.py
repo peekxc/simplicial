@@ -2,12 +2,14 @@
 import numpy as np 
 from numbers import Integral
 from .meta import *
+from .complexes import * 
+from .filtrations import * 
 
-def dim(sigma: Union[SimplexLike, ComplexLike]) -> int:
+def dim(sigma: Union[SimplexConvertible, ComplexLike]) -> int:
   """Returns the dimension of a simplicial object, suitably defined."""
   return sigma.dim() if hasattr(sigma, "dim") else len(sigma) - 1
 
-def boundary(s: Union[SimplexLike, ComplexLike], p: int = None, oriented: bool = False, **kwargs) -> Iterable['SimplexLike']:
+def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented: bool = False, **kwargs) -> Iterable['SimplexConvertible']:
   """
   Returns the boundary of a simplicial object, optionally signed.
 
@@ -23,7 +25,7 @@ def boundary(s: Union[SimplexLike, ComplexLike], p: int = None, oriented: bool =
     return s.boundary(**kwargs)
   return combinations(s, len(s)-1)
   
-def faces(s: Union[SimplexLike, ComplexLike], p: int = None) -> Iterable['SimplexLike']:
+def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None) -> Iterator[SimplexConvertible]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 
@@ -46,13 +48,30 @@ def faces(s: Union[SimplexLike, ComplexLike], p: int = None) -> Iterable['Simple
   ## TODO: handle ComplexLike
 
 
-def SimplicialComplex(simplices: Iterable[SimplexConvertible] = None, ds: str = "default"):
-  """"
-  '"set_complex", "rank_complex", "simplex_tree"'
-  """ 
+def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, ds: str = "default"):
+  """Wrapper for constructing an abstract simplicial complex.
   
-  pass 
+  Parameters:
+    simplices = Iterable of objects convertible to SimplexLike types
+    ds = '"set_complex", "rank_complex", "simplex_tree"'
+
+  """ 
+  if ds == "simplex_tree":
+    sc = SimplexTree(simplices)
+  elif ds == "rank_complex":
+    sc = RankComplex(simplices)
+  elif ds == "set_complex":
+    sc = SetComplex(simplices)
+  else: 
+    raise ValueError(f"Unknown data structure '{str(type(ds))}'.")
+  return ds 
 
 
-def Filtration():
-  pass
+def filtration(simplices: Iterable[SimplexConvertible], f: Optional[Callable] = None, ds: Optional[str] = "default", **kwargs):
+  if ds == "set_filtration":
+    sc = SetFiltration(simplices, f, **kwargs)
+  elif ds == "rank_complex":
+    sc = RankFiltration(simplices, f, **kwargs)
+  else: 
+    raise ValueError(f"Unknown data structure '{str(type(ds))}'.")
+  return sc
