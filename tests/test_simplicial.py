@@ -62,18 +62,18 @@ def test_face_poset():
   S = SimplicialComplex([[0,1,2,3,4]])
   check_poset(S)
   
-# def test_rips():
-#   from splex.constructions import flag_weight, delaunay_complex, rips_filtration
-#   X = np.random.uniform(size=(10,2))
-#   f = flag_weight(X)
-#   S = delaunay_complex(X)
-#   assert isinstance([f(s) for s in S], list)
-#   assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
+def test_rips():
+  from splex.constructions import flag_weight, delaunay_complex, rips_filtration
+  X = np.random.uniform(size=(10,2))
+  f = flag_weight(X)
+  S = delaunay_complex(X)
+  assert isinstance([f(s) for s in S], list)
+  assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
 
-# def test_rips():
-#   radius = 0.35
-#   X = np.random.uniform(size=(15,2))
-#   K = rips_filtration(X, radius)
-#   assert isinstance(K, MutableFiltration)
+def test_rips():
+  radius = 0.35
+  X = np.random.uniform(size=(15,2))
+  K = rips_filtration(X, radius)
+  assert isinstance(K, MutableFiltration)
 
 

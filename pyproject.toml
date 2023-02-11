@@ -17,5 +17,6 @@ keywords = ["TDA"]
 dependencies = [
 	"pybind11",
 	"sortedcontainers",
-	"numpy"
+	"numpy",
+	"scipy"
 ]
