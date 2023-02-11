@@ -1,8 +1,8 @@
 ## splex.py
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
+import numpy as np   
 from scipy.sparse import coo_array
-import numpy as np      
 from .generics import *   
 
 @dataclass(frozen=True)
@@ -279,7 +279,7 @@ class MutableFiltration(MutableMapping):
     return self
   
   ## In-place append '+=' operator ; true dict union/merge, retaining values
-  def __iadd__(self, other: Iterable[Tuple[int, int]]):
+  def __iadd__(self, other: Iterable[Tuple[Any, SimplexLike]]):
     for k,v in other:
       if len(Simplex(v)) >= 1:
         # print(f"key={str(k)}, val={str(v)}")

@@ -2,6 +2,22 @@ import numpy as np
 from splex import * 
 from splex import SimplicialComplex, MutableFiltration
 
+def check_poset(S: ComplexLike):
+  ## Reflexivity 
+  for s in S: assert s <= s, "Simplex order not reflexive"
+
+  ## Antisymmetry 
+  for x, y in product(S, S):
+    if x <= y and y <= x:
+      assert x == y, "Simplex order not symmetric"
+
+  ## Transitivity
+  for x, y, z in product(S, S, S):
+    if x <= y and y <= z:
+      assert x <= z, "Simplex order not transitive"
+
+  return True 
+
 def test_simplex():
   s = Simplex([0,1,2])
   assert isinstance(s, Simplex)
@@ -10,6 +26,7 @@ def test_simplex():
 def test_combinatorial_complex():
   S = SimplicialComplex([[0,1,2,3,4]])
   C = CombinatorialComplex(S)
+  check_poset(C)
 
 def test_combinatorial_filtration():
   S = SimplicialComplex([[0,1,2,3,4]])
@@ -17,7 +34,12 @@ def test_combinatorial_filtration():
   K = CombinatorialFiltration(S)
 
 def test_rips():
-  pass 
+  from splex.constructions import flag_weight, delaunay_complex, rips_filtration
+  X = np.random.uniform(size=(10,2))
+  f = flag_weight(X)
+  S = delaunay_complex(X)
+  assert isinstance([f(s) for s in S], list)
+  assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
 
 ## Testing reindexing capability 
 def test_filtration():
@@ -44,42 +66,12 @@ def test_boundary_matrix():
   assert len(list(F.faces())) == len(F)
 
 def test_rips():
-  # radius = 0.35
-  # X = np.random.uniform(size=(15,2))
-  # from scipy.spatial.distance import pdist
-  # pd = pdist(X)
-  # D = squareform(pd)
-  # radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
-  # ind = np.flatnonzero(pd <= 2*radius)
-  # st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
-  # st.expand(2)
-  # n = X.shape[0]
-  # def _clique_weight(s: SimplexLike) -> float:
-  #   if len(s) == 1:
-  #     return 0
-  #   elif len(s) == 2:
-  #     return pd[int(rank_combs([s], n=n, order='lex')[0])]
-  #   else: 
-  #     return max(pd[np.array(rank_combs(s.faces(1), n=X.shape[0], order='lex'), dtype=int)])
-  # simplices = list(map(Simplex, st.simplices()))
-  # filter_weights = np.array([_clique_weight(s) for s in simplices])
-  # K = MutableFiltration(zip(filter_weights, simplices))
-  return K
-
+  radius = 0.35
+  X = np.random.uniform(size=(15,2))
+  K = rips_filtration(X, radius)
+  assert isinstance(K, MutableFiltration)
 
 def test_face_poset():
   from itertools import product
   S = SimplicialComplex([[0,1,2,3,4]])
-
-  ## Reflexivity 
-  for s in S: assert s <= s, "Simplex order not reflexive"
-
-  ## Antisymmetry 
-  for x, y in product(S, S):
-    if x <= y and y <= x:
-      assert x == y, "Simplex order not symmetric"
-
-  ## Transitivity
-  for x, y, z in product(S, S, S):
-    if x <= y and y <= z:
-      assert x <= z, "Simplex order not transitive"
+  check_poset(S)

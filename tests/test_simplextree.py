@@ -59,18 +59,6 @@ def test_SimplexTree():
 
 def test_remove():
   st = SimplexTree([[0,1,2,3,4]])
-  print(st)
-
   st.remove([[0,1,2]])
   assert all(st.n_simplices == np.array([5,10,9,3]))
-  # simplex = np.array([[0,1,2,3,4]], dtype=np.int8)
-  # assert s.insert(simplex) is None 
-  st.find([[0,1], [1,2]])
-  
-  # s.vertices
-  # s.n_simplices
-
-  # s.is_tree()
-  # s.n_simplices
-  # s.find([0, 1])
-  # s.find(np.array([[1,2],[0,1]], dtype=np.int16))
+  assert all(st.find([[0,1], [1,2], [0,1,2]]) == np.array([True, True, False]))

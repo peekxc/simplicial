@@ -23,8 +23,8 @@ def test_lex():
   assert all((combs_test == combs_truth).flatten()), "Lex unranking invalid"
 
 def test_api():
-  C = unrank_combs(rank_combs(simplices), k=d)
-  assert all([tuple(s) == tuple(c) for s,c in zip(simplices, C)])
-  # n, k = 10, 3
-  # from 
-  # ranks = np.array([rank_lex(c, n) for c in combinations(range(n), k)])
+  n = 20
+  for d in range(1, 5):
+    combs = list(combinations(range(n), d))
+    C = unrank_combs(rank_combs(combs), k=d)
+    assert all([tuple(s) == tuple(c) for s,c in zip(combs, C)])

@@ -16,10 +16,8 @@ class CombinatorialComplex(ComplexLike):
     if simplices is not None:
       assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
       self.simplices = np.unique(np.array([(rank_colex(s), len(s)) for s in simplices], dtype=s_dtype))
-      self._i = 0
     else:
       self.simplices = np.empty(dtype=s_dtype)
-      self._i = 0
 
   def __len__(self) -> int: 
     return len(self.simplices)
@@ -27,17 +25,6 @@ class CombinatorialComplex(ComplexLike):
   def __contains__(self, x: SimplexLike) -> bool:
     return rank_colex(x) in self.simplices['rank']
     
-  def __iter__(self) -> Iterable[SimplexLike]:
-    self._i = 0
-    return self 
-
-  def __next__(self) -> SimplexLike:
-    if self._i < len(self.simplices):
-      self._i += 1
-      return unrank_colex(*self.simplices[i])
-    else:
-      raise StopIteration
-
   def dim(self) -> int: 
     return max(self.simplices['d'])-1
 
@@ -48,7 +35,9 @@ class CombinatorialComplex(ComplexLike):
     else:
       yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
 
-  
+  def __iter__(self) -> Iterable[SimplexLike]:
+    yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
+
 class CombinatorialFiltration(CombinatorialComplex, Mapping):
   def __init__(self, simplices: Union[SimplicialComplex, Iterable], f: Callable = None):
     simplices = list(simplices.faces()) if isinstance(simplices, SimplicialComplex) else simplices 
