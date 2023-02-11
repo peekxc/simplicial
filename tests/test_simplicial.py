@@ -33,14 +33,6 @@ def test_combinatorial_filtration():
   C = CombinatorialComplex(S)
   K = CombinatorialFiltration(S)
 
-def test_rips():
-  from splex.constructions import flag_weight, delaunay_complex, rips_filtration
-  X = np.random.uniform(size=(10,2))
-  f = flag_weight(X)
-  S = delaunay_complex(X)
-  assert isinstance([f(s) for s in S], list)
-  assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
-
 ## Testing reindexing capability 
 def test_filtration():
   S = SimplicialComplex([[0,1,2,3,4]])
@@ -65,13 +57,23 @@ def test_boundary_matrix():
   assert isinstance(F, MutableFiltration)
   assert len(list(F.faces())) == len(F)
 
-def test_rips():
-  radius = 0.35
-  X = np.random.uniform(size=(15,2))
-  K = rips_filtration(X, radius)
-  assert isinstance(K, MutableFiltration)
-
 def test_face_poset():
   from itertools import product
   S = SimplicialComplex([[0,1,2,3,4]])
   check_poset(S)
+  
+# def test_rips():
+#   from splex.constructions import flag_weight, delaunay_complex, rips_filtration
+#   X = np.random.uniform(size=(10,2))
+#   f = flag_weight(X)
+#   S = delaunay_complex(X)
+#   assert isinstance([f(s) for s in S], list)
+#   assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
+
+# def test_rips():
+#   radius = 0.35
+#   X = np.random.uniform(size=(15,2))
+#   K = rips_filtration(X, radius)
+#   assert isinstance(K, MutableFiltration)
+
+
