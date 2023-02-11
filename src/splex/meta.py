@@ -3,82 +3,68 @@ from abc import abstractmethod
 from typing import *
 from itertools import *
 from functools import total_ordering
-from numbers import Number
+from numbers import Number, Integral
 from numpy.typing import ArrayLike
-from collections.abc import Set, Hashable
+from collections.abc import Hashable
+
+# Based on https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
+@runtime_checkable
+class SimplexConvertible(Collection[Integral], Hashable, Protocol):
+  """Protocol class for simplex-convertible types. 
+  
+  Any hashable collection is convertible to a Simplex type. The minimal overloads include: 
+    __contains__ 
+    __iter__
+    __len__
+    __hash__ 
+  """
+  pass
+
 
 @runtime_checkable
 class Comparable(Protocol):
   """Protocol for annotating comparable types."""
   @abstractmethod
   def __lt__(self, other) -> bool:
-      pass
+      pass 
 
 @runtime_checkable
-class SetLike(Comparable, Protocol):
+class SetLike(Comparable, Container, Protocol):
   """Protocol for annotating set-like types."""
-  @abstractmethod
-  def __contains__(self, item: Any) -> bool: pass
-  
-  @abstractmethod
-  def __iter__(self) -> Iterator[Any]: pass
-  
-  @abstractmethod
-  def __len__(self) -> int: pass
-    
-@runtime_checkable
-class Sequence(Collection, Sized, Protocol):
-  def __getitem__(self, index): raise NotImplementedError
+  pass
 
 @runtime_checkable
-class MutableSequence(Sequence, Protocol):
-  def __delitem__(self, index): raise NotImplementedError
-  def __setitem__(self, key, newvalue): raise NotImplementedError
+class SimplexLike(SimplexConvertible, SetLike, Protocol):
+  '''Protocol class for _SimplexLike_ classes. 
 
-
-## --- Protocol classes --- 
-@runtime_checkable
-class SimplexLike(SetLike, Hashable, Protocol):
-  ''' 
-  An object is SimplexLike if it is Immutable, Hashable, and SetLike
-
-  By definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex __contains__ queries)
-
-  Protocols: SetLike[Container, Comparable], Hashable, Immutable
-  Abstract Methods: __hash__, __contains__, __len__, __iter__, __setitem__
+  _SimplexLike_ types are sized iterable containers of hashable types. 
+  Consequently, generic methods that rely on enumerating combinations (like faces) or checking 
+  length (like dim) work out of the box for the such classes. 
   '''
-  # def __setitem__(self, *args) -> None:
-  #   raise TypeError("'simplex' object does not support item assignment")
-  # typing.get_args(List[int])
+  ...
+
 
 @runtime_checkable
-class ComplexLike(Collection['SimplexLike'], Protocol):
-  ''' 
-  Protocol interface for types that represent (abstract) simplicial complexes
+class ComplexLike(Collection[SimplexLike], Protocol):
+  '''Protocol interface for types that represent (abstract) simplicial complexes
 
-  An type _ComplexLike_ if it is a iterable collection of SimplexLike objects, and it the following methods:
-    - dim : None -> int
-    - faces : int -> Iterable[SimplexLike]
-
-  A _ComplexLike_ object consists of homogenous _SimplexLike_ types. 
-  Protocols: Collection[Sized, Iterable, Container]
-  Methods: __contains__, __iter__, __len__
-  TODO: Distinguish form _SimplexLike_ by the value_type of __iter__
+  A type is _ComplexLike_ if it is a collection of SimplexLike objects.
   '''
-  def __iter__(self) -> Iterable['SimplexLike']: 
+  def __iter__(self) -> Iterator[SimplexLike]: 
     raise NotImplementedError 
   def __next__(self) -> SimplexLike:
-    raise NotImplementedError
-  def dim(self) -> int: ## cannot be inferred from __len__
-    raise NotImplementedError
-  def faces(self, p: int) -> Iterable['SimplexLike']: ## *can* be inferred by enumerating __iter__ w/ filter 
     raise NotImplementedError
 
 @runtime_checkable
 class FiltrationLike(Protocol):
-  # Should implement the MutableMapping protocols 
-  """ An object is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects. """
-  def __reversed__(self) -> Iterable['SimplexLike']:
+  """ A type is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects. """
+  def keys(self) -> Iterable[Any]:
+    pass
+  def values(self) -> Iterable[SimplexLike]:
     raise NotImplementedError
-  def index(self, other: SimplexLike) -> int:
-    raise NotImplementedError
+  def __getitem__(self, k: Any) -> SimplexLike:
+    pass
+  def __iter__(self) -> Iterator[Any]:
+    pass
+  def __len__(self) -> int: 
+    pass 

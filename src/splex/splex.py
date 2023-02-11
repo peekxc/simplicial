@@ -7,8 +7,14 @@ from .generics import *
 
 @dataclass(frozen=True)
 class Simplex(Set, Hashable):
-  '''
-  Implements: 
+  '''Dataclass for representing a simplex. 
+
+  A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
+  
+  This class is also SimplexLike.
+  
+  Magics:
+    __hash__  
     __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
   '''
   # __slots__ = 'vertices'
@@ -176,8 +182,6 @@ class SimplicialComplex(MutableSet, ComplexLike):
       print(s, sep='', end=ending, **kwargs)
 
 # Pythonic version: https://grantjenks.com/docs/sortedcontainers/#features
-
-
 
 # The OrderedDict was designed to be good at reordering operations. Space efficiency, iteration speed, and the performance of update operations were secondary.
 # A mapping object maps hashable values to arbitrary objects

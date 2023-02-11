@@ -105,6 +105,8 @@ An entirely different structure, such as a numpy array, may be more performant i
 
 ## Structural Subtyping & Generics
 
+Convertibles 
+https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
 
 This is a common pattern that exists in other languages. In Haskell, they're called _typeclasses_. In Rust, they're _traits_. In Swift, they're called _protocols_. In D, a related thing is called _type constraints_. These appear over and over in other languages. Swift celebrates itself as a _protocol_-oriented language. 
 https://www.youtube.com/watch?v=E-2y1qHQvTg

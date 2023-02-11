@@ -8,9 +8,7 @@ from numbers import Integral
 
 
 def dim(sigma: Union[SimplexLike, ComplexLike]) -> int:
-  """
-  Returns the dimension of a simplicial object, suitably defined 
-  """
+  """Returns the dimension of a simplicial object, suitably defined."""
   return sigma.dim() if hasattr(sigma, "dim") else len(sigma) - 1
 
 def boundary(s: Union[SimplexLike, ComplexLike], p: int = None, oriented: bool = False, **kwargs) -> Iterable['SimplexLike']:
