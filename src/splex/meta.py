@@ -38,9 +38,9 @@ class SetLike(Comparable, Container, Protocol):
 
 @runtime_checkable
 class SimplexLike(SimplexConvertible, SetLike, Protocol):
-  '''Protocol class for _SimplexLike_ classes. 
+  '''Protocol for _SimplexLike_ types. 
 
-  _SimplexLike_ types are sized iterable containers of hashable types. 
+  _SimplexLike_ types are (sized) iterable containers of SimplexConvertible types. 
   Consequently, generic methods that rely on enumerating combinations (like faces) or checking 
   length (like dim) work out of the box for the such classes. 
   '''
@@ -49,18 +49,19 @@ class SimplexLike(SimplexConvertible, SetLike, Protocol):
 
 @runtime_checkable
 class ComplexLike(Collection[SimplexLike], Protocol):
-  '''Protocol interface for types that represent (abstract) simplicial complexes
+  """Protocol interface for types that represent (abstract) simplicial complexes
 
-  A type is _ComplexLike_ if it is a collection of SimplexLike objects.
-  '''
+  A type is _ComplexLike_ if it implements the Collection[SimplexLike] protocol.
+  """
   def __iter__(self) -> Iterator[SimplexLike]: 
     raise NotImplementedError 
-  def __next__(self) -> SimplexLike:
-    raise NotImplementedError
 
 @runtime_checkable
 class FiltrationLike(Protocol):
-  """ A type is FiltrationLike if it is ComplexLike and is a Sequence of SimplexLike objects. """
+  """Protocol interface for types that represent (abstract) simplicial complexes 
+  
+  A type is _FiltrationLike_ if it implements the Mapping[Any, SimplexLike] protocol. 
+  """
   def keys(self) -> Iterable[Any]:
     pass
   def values(self) -> Iterable[SimplexLike]:

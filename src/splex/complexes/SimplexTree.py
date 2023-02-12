@@ -286,3 +286,6 @@ class SimplexTree(SimplexTreeCpp):
 
 	def __iter__(self) -> Iterator[SimplexConvertible]:
 		yield from self.simplices()
+
+	def __contains__(self, s: SimplexConvertible) -> bool:
+		return bool(self.find([s])[0])

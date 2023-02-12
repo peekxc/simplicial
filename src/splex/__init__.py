@@ -13,5 +13,5 @@ from .combinatorial import *
 from .complexes import *
 from .filtrations import *
 from .UnionFind import * 
-
-
+from .sparse import *
+from .geometry import *

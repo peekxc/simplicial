@@ -2,9 +2,20 @@ import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
 from .meta import * 
-from .simplextree import * 
+from .complexes import * 
+from .filtrations import *
 from .combinatorial import rank_combs, unrank_combs
 from .predicates import *
+
+def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
+  if is_point_cloud(x):
+    pd = pdist(x)
+  elif is_dist_like(x):
+    pd = np.tril(x) if is_distance_matrix(x) else x
+  else: 
+    raise ValueError("Unknown input shape 'x' ")
+  assert is_pairwise_distances(pd)
+  return pd
 
 def enclosing_radius(x: ArrayLike) -> float:
   ''' Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. '''
@@ -18,25 +29,17 @@ def enclosing_radius(x: ArrayLike) -> float:
   else:
     raise ValueError("Unknown input type")
 
-def rips_complex(X: ArrayLike, radius: float = None) -> FiltrationLike:
-  pd = pdist(X)
+def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLike:
+  pd = pdist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
   st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
-  st.expand(2)
-  ## TODO: replace 
-  S = SimplicialComplex(list(map(Simplex, st.simplices())))
-  return S
+  st.expand(p)
+  return st
 
-def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None):
-  if is_point_cloud(x):
-    pd = pdist(x)
-    n = x.shape[0]
-  elif is_dist_like(distances):
-    pd = np.tril(x) if is_distance_matrix(x) else x
-    n = inverse_choose(len(pd), 2)
-  else: 
-    raise ValueError("Invalid input {type(x)}; not recongized")
+def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Callable:
+  pd = as_pairwise_dist(x)
+  n = inverse_choose(len(pd), 2)
   vertex_weights = np.zeros(n) if vertex_weights is None else vertex_weights
   assert len(vertex_weights) == n, "Invalid vertex weights"
   def _clique_weight(s: SimplexLike) -> float:
@@ -48,32 +51,23 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None):
       return float(max(pd[np.array(rank_combs(faces(s,1), n=n, order='lex'), dtype=int)]))
   return _clique_weight
 
-def rips_filtration(X: ArrayLike, radius: float = None) -> FiltrationLike:
-  pd = pdist(X)
+def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
+  pd = as_pairwise_dist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
-  st.expand(2)
-  n = X.shape[0]
-  def _clique_weight(s: SimplexLike) -> float:
-    if len(s) == 1:
-      return 0
-    elif len(s) == 2:
-      return pd[int(rank_combs([s], n=n, order='lex')[0])]
-    else: 
-      return max(pd[np.array(rank_combs(s.faces(1), n=X.shape[0], order='lex'), dtype=int)])
-  simplices = list(map(Simplex, st.simplices()))
-  filter_weights = np.array([_clique_weight(s) for s in simplices])
-  K = MutableFiltration(zip(filter_weights, simplices))
+  st = SimplexTree(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))
+  st.expand(p)
+  f = flag_weight(pd)
+  filter_weights = np.array([f(s) for s in simplices])
+  K = filtration(zip(filter_weights, simplices), **kwargs)
   return K
 
-
-def delaunay_complex(X: ArrayLike):
+def delaunay_complex(x: ArrayLike):
   from scipy.spatial import Delaunay
-  dt = Delaunay(X)
+  dt = Delaunay(x)
   T = dt.simplices
-  V = np.fromiter(range(X.shape[0]), dtype=np.int32)
-  S = SimplicialComplex(chain(V, T))
+  V = np.fromiter(range(x.shape[0]), dtype=np.int32)
+  S = simplicial_complex(chain(V, T))
   return(S)
 
 

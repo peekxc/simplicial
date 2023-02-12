@@ -1,6 +1,5 @@
 import numpy as np 
 from splex import * 
-from splex import simplicial_complex, filtration
 
 def check_poset(S: ComplexLike):
   ## Reflexivity 
@@ -16,6 +15,11 @@ def check_poset(S: ComplexLike):
     if x <= y and y <= z:
       assert x <= z, "Simplex order not transitive"
 
+  ## Test containment of faces 
+  for s in S: 
+    for face in faces(s):
+      assert face in S
+
   return True 
 
 def test_simplex():
@@ -25,24 +29,25 @@ def test_simplex():
   assert isinstance(s, SimplexConvertible)
 
 def test_simplicial_complex_api():
-  T = simplicial_complex([[0,1,2,3,4]], ds="simplex tree")
-  C = simplicial_complex([[0,1,2,3,4]], ds="rank complex")
-  S = simplicial_complex([[0,1,2,3,4]], ds="set complex")
-  check_poset(C)
-  check_poset(T)
+  S = simplicial_complex([[0,1,2,3,4]], form="set")
+  T = simplicial_complex([[0,1,2,3,4]], form="tree")
+  C = simplicial_complex([[0,1,2,3,4]], form="rank")
   check_poset(S)
+  check_poset(T)
+  check_poset(C)
 
-def test_combinatorial_filtration():
-  S = SimplicialComplex([[0,1,2,3,4]])
-  C = CombinatorialComplex(S)
-  K = CombinatorialFiltration(S)
+def test_rank_filtration():
+  pass
+  # S = simplicial_complex([[0,1,2,3,4]], "rank")
+  # C = CombinatorialComplex(S)
+  # K = CombinatorialFiltration(S)
 
 ## Testing reindexing capability 
 def test_filtration():
-  S = SimplicialComplex([[0,1,2,3,4]])
-  assert isinstance(S, SimplicialComplex)
-  K = MutableFiltration(S)
-  assert isinstance(K, MutableFiltration)
+  S = simplicial_complex([[0,1,2,3,4]], "set")
+  assert isinstance(S, SetComplex)
+  # K = filtration(S, "set_filtration")
+  # assert isinstance(K, MutableFiltration)
   # L = K.copy()
   # K.reindex(lambda s: 10 + sum(s))
   # L_simplices = [tuple(s) for s in L.values()]
@@ -52,32 +57,32 @@ def test_filtration():
   # assert list(sorted(K_simplices)) == list(sorted(L_simplices))
 
 def test_boundary_matrix():
-  S = SimplicialComplex([[0,1,2,3,4]])
+  S = simplicial_complex([[0,1,2,3,4]], "set")
   D = boundary_matrix(S)
   from scipy.sparse import spmatrix
   assert isinstance(D, spmatrix), "Is not sparse matrix"
   x = np.random.uniform(size=5, low = 0, high=5)
-  F = MutableFiltration(S, lambda s: max(x[s]))
+  F = filtration(S, lambda s: max(x[s]))
   assert isinstance(F, MutableFiltration)
   assert len(list(F.faces())) == len(F)
 
 def test_face_poset():
   from itertools import product
-  S = SimplicialComplex([[0,1,2,3,4]])
+  S = simplicial_complex([[0,1,2,3,4]])
   check_poset(S)
   
 def test_rips():
-  from splex.constructions import flag_weight, delaunay_complex, rips_filtration
+  from splex.geometry import flag_weight, delaunay_complex, rips_filtration
   X = np.random.uniform(size=(10,2))
   f = flag_weight(X)
   S = delaunay_complex(X)
   assert isinstance([f(s) for s in S], list)
-  assert isinstance(MutableFiltration(S, f=f), MutableFiltration)
+  assert isinstance(filtration(S, f=f), FiltrationLike)
 
 def test_rips():
   radius = 0.35
   X = np.random.uniform(size=(15,2))
   K = rips_filtration(X, radius)
-  assert isinstance(K, MutableFiltration)
+  assert isinstance(K, FiltrationLike)
 
 

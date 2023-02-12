@@ -1,8 +1,8 @@
 # python -m pytest tests/
 import numpy as np 
 
-from splex.simplextree import _simplextree as st_mod
-from splex.simplextree import SimplexTree
+from splex.complexes import _simplextree as st_mod
+from splex.complexes import SimplexTree
 
 def test_can_import():
   assert str(type(st_mod)) == "<class 'module'>"
@@ -11,9 +11,9 @@ def test_can_import():
 
 def test_construct():
   s = st_mod.SimplexTree()
-  assert str(type(s)) == "<class '_simplextree.SimplexTree'>"
+  assert str(type(s)) == "<class 'splex.complexes._simplextree.SimplexTree'>"
   s = SimplexTree()
-  assert str(type(s)) == "<class 'splex.simplextree.SimplexTree'>"
+  assert str(type(s)) == "<class 'splex.complexes.SimplexTree.SimplexTree'>"
   st = SimplexTree([[0,1,2,3,4]])
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
 

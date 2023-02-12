@@ -2,8 +2,7 @@ import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import coo_array
 from collections.abc import Sized
-from typing import * 
-
+from .meta import * 
 
 # See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
 def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = None):
@@ -30,9 +29,16 @@ def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = Non
 
 ## TODO: investigate whether to make a 'ChainLike' for extension with 'BoundaryChain'?
 ## Or maybe its fine to just rely on something with __index__
+## class Chain(SupportsIndex[int], [Coefficient], Protocol):
+##    def __init__(orientation = ...)
+##    def __iter__() -> tuple[int, Coefficient]:
+##    def __add__(Chain) -> Chain
+##    def __iadd__(Chain) -> None
+##    def pivot() -> (int, coefficient) [for homology]
+##    def index(SimplexConvertible) -> int 
 ## something like chain(s: SimplexLike, c: ComplexLike, oriented: bool) -> ndarray, or generator (index, value)
 ## complexLike could be overloaded to handle .index(), checked if Sequence[SimplexLike] or if just Container[int] (+implying)
-def boundary_matrix(K: Union[SimplicialComplex, MutableFiltration], p: Optional[Union[int, tuple]] = None):
+def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int, tuple]] = None):
   """
   Constructs a sparse boundary matrix of a given simplicial object _K_
 
@@ -43,15 +49,13 @@ def boundary_matrix(K: Union[SimplicialComplex, MutableFiltration], p: Optional[
     return (boundary_matrix(K, pi) for pi in p)
   else: 
     assert p is None or isinstance(p, Integral), "p must be integer, or None"
-    if isinstance(K, SimplicialComplex) or isinstance(K, MutableFiltration):
-      if p is None:
-        simplices = list(K.faces())
-        D = _boundary(simplices, simplices)
-      else:
-        p_simplices = K.faces(p=p)
-        p_faces = list(K.faces(p=p-1))
-        D = _boundary(p_simplices, p_faces)
-    else: 
-      raise ValueError("Invalid input")
+    assert isinstance(K, ComplexLike) or isinstance(K, FiltrationLike), f"Unknown input type '{type(K)}'"
+    if p is None:
+      simplices = faces(K), faces(K)
+      D = _boundary(simplices, simplices)
+    else:
+      p_simplices = K.faces(p=p)
+      p_faces = list(K.faces(p=p-1))
+      D = _boundary(p_simplices, p_faces)
     return D
 

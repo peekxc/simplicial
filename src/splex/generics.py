@@ -2,8 +2,8 @@
 import numpy as np 
 from numbers import Integral
 from .meta import *
-from .complexes import * 
-from .filtrations import * 
+# from .complexes import * 
+# from .filtrations import * 
 
 def dim(sigma: Union[SimplexConvertible, ComplexLike]) -> int:
   """Returns the dimension of a simplicial object, suitably defined."""
@@ -46,36 +46,3 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None) -> Iterator[
     assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
     return (combinations(s, p+1))
   ## TODO: handle ComplexLike
-
-
-def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, ds: str = "default"):
-  """Wrapper for constructing an abstract simplicial complex.
-  
-  Parameters:
-    simplices = Iterable of objects convertible to SimplexLike types
-    ds = '"set_complex", "rank_complex", "simplex_tree"'
-
-  """ 
-  if ds is None or isinstance(ds, str) and ds == "default":
-    ds = "simplex_tree"
-  assert isinstance(ds, str), f"Invalid data structure argument '{ds}'; must be string."
-  ds = ds.replace(' ','_').lower()
-  if ds == "simplex_tree":
-    sc = SimplexTree(simplices)
-  elif ds == "rank_complex":
-    sc = RankComplex(simplices)
-  elif ds == "set_complex":
-    sc = SetComplex(simplices)
-  else: 
-    raise ValueError(f"Unknown data structure '{str(type(ds))}'.")
-  return sc 
-
-
-def filtration(simplices: Iterable[SimplexConvertible], f: Optional[Callable] = None, ds: Optional[str] = "default", **kwargs):
-  if ds == "set_filtration":
-    sc = SetFiltration(simplices, f, **kwargs)
-  elif ds == "rank_complex":
-    sc = RankFiltration(simplices, f, **kwargs)
-  else: 
-    raise ValueError(f"Unknown data structure '{str(type(ds))}'.")
-  return sc
