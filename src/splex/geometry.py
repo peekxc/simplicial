@@ -33,7 +33,7 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   pd = pdist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  st = SimplexTree(unrank_combs(ind, n=X.shape[0], k=2, order="lex"))
+  st = SimplexTree(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))
   st.expand(p)
   return st
 

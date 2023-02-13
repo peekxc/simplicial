@@ -5,6 +5,8 @@ from .meta import *
 # from .complexes import * 
 # from .filtrations import * 
 
+
+
 def dim(sigma: Union[SimplexConvertible, ComplexLike]) -> int:
   """Returns the dimension of a simplicial object, suitably defined."""
   return sigma.dim() if hasattr(sigma, "dim") else len(sigma) - 1
@@ -58,3 +60,15 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None) -> Iterator[
         return iter(combinations(s, p+1))
   else:
     raise ValueError("Unknown type")
+
+def card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = None):
+  if hasattr(s, "card"):
+    return s.card(p)
+  else:
+    if p is None: 
+      from collections import Counter
+      cc = Counter([dim(s) for s in faces(s, p)])
+      return np.array(list(cc.values()), dtype=int)
+    else: 
+      assert isinstance(p, int)
+      return int(sum([1 for s in faces(s, p) if dim(s) == p]))
