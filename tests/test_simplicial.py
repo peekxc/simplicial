@@ -95,3 +95,4 @@ def test_boundary():
     [ 0,  0,  0,  0,  0,  0],
     [ 0,  0,  0,  0,  0,  0]
   ])
+  assert np.allclose(D_test - D_true, 0.0)
