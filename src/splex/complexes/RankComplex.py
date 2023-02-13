@@ -19,8 +19,7 @@ class RankComplex(ComplexLike):
   """
   def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
     # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
-    sset = set()
-    for s in simplices: sset |= set(faces(s))
+    sset = unique(faces(simplices))
     s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
     if simplices is not None:
       assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"

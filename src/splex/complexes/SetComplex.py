@@ -32,6 +32,13 @@ class SetComplex(ComplexLike):
       assert isinstance(p, Number)
       yield from filter(lambda s: len(s) == p + 1, iter(self))
 
+  def card(self, p: int = None):
+    if p is None: 
+      return self.shape
+    else: 
+      assert isinstance(p, int), "Invalid p"
+      return 0 if p < 0 or p >= len(self.shape) else self.shape[p]
+
   def update(self, simplices: Iterable[SimplexLike]):
     for s in simplices:
       self.add(s)

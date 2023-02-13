@@ -292,3 +292,10 @@ class SimplexTree(SimplexTreeCpp, Generic[IT]):
 
 	def __len__(self) -> int:
 		return int(sum(self.n_simplices))
+
+	def card(self, p: int = None):
+		if p is None: 
+			return self.n_simplices
+		else: 
+			assert isinstance(p, int), "Invalid p"
+			return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]

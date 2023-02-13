@@ -84,3 +84,14 @@ def test_rips():
   assert isinstance(K, FiltrationLike)
 
 
+def test_boundary():
+  K = filtration(zip([0,1,2,3,4,5], [0,1,2,[0,1],[0,2],[1,2]]))
+  D_test = boundary_matrix(K).todense()
+  D_true = np.array([
+    [ 0,  0,  0,  1,  1,  0],
+    [ 0,  0,  0, -1,  0,  1],
+    [ 0,  0,  0,  0, -1, -1],
+    [ 0,  0,  0,  0,  0,  0],
+    [ 0,  0,  0,  0,  0,  0],
+    [ 0,  0,  0,  0,  0,  0]
+  ])
