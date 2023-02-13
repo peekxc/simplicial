@@ -41,16 +41,20 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None) -> Iterator[
   if isinstance(s, FiltrationLike):
     return(iter(s.values()))
   elif isinstance(s, ComplexLike):
-    _ = next(iter(s))
-    complex_like = isinstance(_, SimplexConvertible)
-    if not complex_like:
+    complex_like = isinstance(next(iter(s)), SimplexConvertible) # first element is simplexconvertible -> complexLike
+    if complex_like:
+      sset = set()
+      for sx in s: sset |= set(faces(sx))
+      if p is None:
+        return iter(sset)
+      else: 
+        return iter(filter(lambda s: len(s) == p+1, iter(sset)))
+    else: # is simplex convertible
       k = len(s)
       if p is None:
-        return chain([combinations(s, k-i) for i in reversed(range(1, k))])
+        return chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
       else:
         assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
-        return (combinations(s, p+1))
-    else:
-      return iter(s)
+        return iter(combinations(s, p+1))
   else:
     raise ValueError("Unknown type")

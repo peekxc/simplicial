@@ -291,4 +291,4 @@ class SimplexTree(SimplexTreeCpp, Generic[IT]):
 		return bool(self.find([s])[0])
 
 	def __len__(self) -> int:
-		return sum(self.n_simplices)
+		return int(sum(self.n_simplices))

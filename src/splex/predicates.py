@@ -5,6 +5,9 @@ from numpy.typing import ArrayLike
  
 from .combinatorial import * 
 
+def is_repeatable(x: Iterable) -> bool:
+  return not(iter(x) is x)
+
 def is_distance_matrix(x: ArrayLike) -> bool:
 	''' Checks whether 'x' is a distance matrix, i.e. is square, symmetric, and that the diagonal is all 0. '''
 	x = np.array(x, copy=False)

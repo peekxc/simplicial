@@ -2,15 +2,16 @@ import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import coo_array
 from collections.abc import Sized
-from .meta import * 
+from .generics import *
+from .predicates import *
 
 # See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
-def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = None):
+def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConvertible]] = None):
 
   ## Load faces. If not given, by definition, the given p-simplices contain their boundary faces.
   if F is None: 
-    assert not(S is iter(S)), "Simplex iterable must be repeatable (a generator is not sufficient!)"
-    F = list(map(Simplex, set(chain.from_iterable([combinations(s, len(s)-1) for s in S]))))
+    assert is_repeatable(S), "Simplex iterable must be repeatable (a generator is not sufficient!)"
+    F = list(faces(S))
   
   ## Ensure faces 'F' is indexable
   assert isinstance(F, Sequence), "Faces must be a valid Sequence (supporting .index(*) with SimplexLike objects!)"
@@ -18,9 +19,9 @@ def _boundary(S: Iterable[SimplexLike], F: Optional[Sequence[SimplexLike]] = Non
   ## Build the boundary matrix from the sequence
   m = 0
   I,J,X = [],[],[] # row, col, data 
-  for (j,s) in enumerate(map(Simplex, S)):
+  for (j,s) in enumerate(S):
     if dim(s) > 0:
-      I.extend([F.index(f) for f in s.faces(dim(s)-1)])
+      I.extend([F.index(f) for f in faces(s, dim(s)-1)])
       J.extend(repeat(j, dim(s)+1))
       X.extend(islice(cycle([1,-1]), dim(s)+1))
     m += 1
@@ -51,11 +52,11 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
     assert p is None or isinstance(p, Integral), "p must be integer, or None"
     assert isinstance(K, ComplexLike) or isinstance(K, FiltrationLike), f"Unknown input type '{type(K)}'"
     if p is None:
-      simplices = faces(K), faces(K)
-      D = _boundary(simplices, simplices)
+      simplices = list(faces(K)) # to ensure repeatable
+      D = _boundary(simplices)
     else:
-      p_simplices = K.faces(p=p)
-      p_faces = list(K.faces(p=p-1))
+      p_simplices = faces(K, p=p)
+      p_faces = list(faces(K, p=p-1))
       D = _boundary(p_simplices, p_faces)
     return D
 

@@ -61,7 +61,7 @@ def test_boundary_matrix():
   assert isinstance(D, spmatrix), "Is not sparse matrix"
   x = np.random.uniform(size=5, low = 0, high=5)
   F = filtration(S, lambda s: max(x[s]))
-  assert isinstance(F, MutableFiltration)
+  assert isinstance(F, FiltrationLike)
   assert len(list(F.faces())) == len(F)
 
 def test_face_poset():

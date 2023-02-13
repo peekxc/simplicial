@@ -4,6 +4,8 @@ import numpy as np
 
 from ..meta import *
 from ..combinatorial import * 
+from ..generics import *
+from ..predicates import *
 
 class RankComplex(ComplexLike):
   """Simplicial complex represented via the combinatorial number system.
@@ -16,11 +18,13 @@ class RankComplex(ComplexLike):
   are computed on the fly by inverting the correspondence ('unranking') upon on access. 
   """
   def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
-    simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
+    # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
+    sset = set()
+    for s in simplices: sset |= set(faces(s))
     s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
     if simplices is not None:
-      assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
-      self.simplices = np.unique(np.array([(rank_colex(s), len(s)) for s in simplices], dtype=s_dtype))
+      assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"
+      self.simplices = np.unique(np.array([(rank_colex(s), len(s)) for s in sset], dtype=s_dtype))
     else:
       self.simplices = np.empty(dtype=s_dtype)
 

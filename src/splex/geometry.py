@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
-from .meta import * 
+from .generics import *
 from .complexes import * 
 from .filtrations import *
 from .combinatorial import rank_combs, unrank_combs
@@ -58,8 +58,8 @@ def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) ->
   st = SimplexTree(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))
   st.expand(p)
   f = flag_weight(pd)
-  filter_weights = np.array([f(s) for s in simplices])
-  K = filtration(zip(filter_weights, simplices), **kwargs)
+  G = ((f(s), s) for s in st)
+  K = filtration(G, **kwargs)
   return K
 
 def delaunay_complex(x: ArrayLike):
