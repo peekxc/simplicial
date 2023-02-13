@@ -10,42 +10,38 @@ from numbers import Number, Integral
 from numpy.typing import ArrayLike
 from collections.abc import Hashable
 
+import numpy as np 
+
+# IT = TypeVar('IT', bound=Union[int, np.integer, Integral])
+IT = TypeVar('IT', int, np.integer, Integral, covariant=True)
+
+
 # Based on https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
 @runtime_checkable
-class SimplexConvertible(Collection[Integral], Hashable, Protocol):
+class SimplexConvertible(Collection, Protocol[IT]):
   """Protocol class for simplex-convertible types. 
   
-  Any hashable collection is convertible to a Simplex type. The minimal overloads include: 
-    __contains__ 
-    __iter__
-    __len__
-    __hash__ 
+  Any collection of integer-like values is convertible to a Simplex type.
   """
   pass
-
 
 @runtime_checkable
 class Comparable(Protocol):
   """Protocol for annotating comparable types."""
-  @abstractmethod
   def __lt__(self, other) -> bool:
-      pass 
+    raise NotImplementedError 
+
 
 @runtime_checkable
-class SetLike(Comparable, Container, Protocol):
-  """Protocol for annotating set-like types."""
-  pass
-
-@runtime_checkable
-class SimplexLike(SimplexConvertible, SetLike, Protocol):
+class SimplexLike(SimplexConvertible[IT], Comparable, Protocol):
   '''Protocol for _SimplexLike_ types. 
 
-  _SimplexLike_ types are (sized) iterable containers of SimplexConvertible types. 
+  _SimplexLike_ types are (sized) iterable containers of integer-like types. 
   Consequently, generic methods that rely on enumerating combinations (like faces) or checking 
   length (like dim) work out of the box for the such classes. 
   '''
-  ...
-
+  def __iter__(self) -> Iterator[IT]: 
+    raise NotImplementedError 
 
 @runtime_checkable
 class ComplexLike(Collection[SimplexLike], Protocol):

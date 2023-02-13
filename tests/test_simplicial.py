@@ -29,12 +29,10 @@ def test_simplex():
   assert isinstance(s, SimplexConvertible)
 
 def test_simplicial_complex_api():
-  S = simplicial_complex([[0,1,2,3,4]], form="set")
-  T = simplicial_complex([[0,1,2,3,4]], form="tree")
-  C = simplicial_complex([[0,1,2,3,4]], form="rank")
-  check_poset(S)
-  check_poset(T)
-  check_poset(C)
+  for form in ["set", "tree", "rank"]:
+    S = simplicial_complex([[0,1,2,3,4]], form=form)
+    assert isinstance(S, ComplexLike)
+    check_poset(S)
 
 def test_rank_filtration():
   pass

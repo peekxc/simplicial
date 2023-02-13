@@ -7,7 +7,7 @@ import numpy as np
 from ..meta import * 
 from ._simplextree import SimplexTree as SimplexTreeCpp
 
-class SimplexTree(SimplexTreeCpp):
+class SimplexTree(SimplexTreeCpp, Generic[IT]):
 	""" 
 	SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
 	This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
@@ -289,3 +289,6 @@ class SimplexTree(SimplexTreeCpp):
 
 	def __contains__(self, s: SimplexConvertible) -> bool:
 		return bool(self.find([s])[0])
+
+	def __len__(self) -> int:
+		return sum(self.n_simplices)
