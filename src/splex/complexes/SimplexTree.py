@@ -5,9 +5,9 @@ from numpy.typing import ArrayLike
 
 import numpy as np 
 from ..meta import * 
-from ._simplextree import SimplexTree as SimplexTreeCpp
+from ..complexes import _simplextree as st_mod
 
-class SimplexTree(SimplexTreeCpp, Generic[IT]):
+class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 	""" 
 	SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
 	This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
@@ -24,7 +24,7 @@ class SimplexTree(SimplexTreeCpp, Generic[IT]):
 		vertices (ndarray): vertices of the complex
 	"""    
 	def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
-		SimplexTreeCpp.__init__(self)
+		st_mod.SimplexTree.__init__(self)
 		if simplices is not None: 
 			self.insert(simplices)
 		return None

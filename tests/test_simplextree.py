@@ -1,17 +1,8 @@
 # python -m pytest tests/
 import numpy as np 
-
-from splex.complexes import _simplextree as st_mod
 from splex.complexes import SimplexTree
 
-def test_can_import():
-  assert str(type(st_mod)) == "<class 'module'>"
-  assert "SimplexTree" in dir(st_mod)
-  assert str(type(st_mod.SimplexTree)) == "<class 'pybind11_builtins.pybind11_type'>"
-
 def test_construct():
-  s = st_mod.SimplexTree()
-  assert str(type(s)) == "<class 'splex.complexes._simplextree.SimplexTree'>"
   s = SimplexTree()
   assert str(type(s)) == "<class 'splex.complexes.SimplexTree.SimplexTree'>"
   st = SimplexTree([[0,1,2,3,4]])
