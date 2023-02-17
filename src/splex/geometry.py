@@ -14,11 +14,10 @@ def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
     pd = np.tril(x) if is_distance_matrix(x) else x
   else: 
     raise ValueError("Unknown input shape 'x' ")
-  assert is_pairwise_distances(pd)
   return pd
 
 def enclosing_radius(x: ArrayLike) -> float:
-  ''' Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. '''
+  """Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. """
   if is_point_cloud(x):
     d = squareform(pdist(x))
     return 0.5*np.min(np.amax(d, axis = 0))

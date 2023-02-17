@@ -48,6 +48,6 @@ setup(
   zip_safe=False, # needed for platform-specific wheel 
   python_requires=">=3.8",
   package_dir={'': 'src'}, # < root >/src/* contains packages
-  packages=['splex']
+  packages=['splex', 'splex.complexes', 'splex.filtrations']
 )
 
