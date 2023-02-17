@@ -5,7 +5,7 @@ from numpy.typing import ArrayLike
 
 import numpy as np 
 from ..meta import * 
-from ..complexes import _simplextree as st_mod
+from . import _simplextree as st_mod
 
 class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 	""" 
@@ -108,8 +108,8 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 
 	def collapse(self, tau: SimplexConvertible, sigma: SimplexConvertible) -> None:
 		"""
-		Checks whether its possible to collapse $\sigma$ through $\\tau$, and if so, both simplices are removed. 
-		A simplex $\sigma$ is said to be collapsible through one of its faces $\\tau$ if $\sigma$ is the only coface of $\\tau$ (excluding $\\tau$ itself). 
+		Checks whether its possible to collapse $\\sigma$ through $\\tau$, and if so, both simplices are removed. 
+		A simplex $\\sigma$ is said to be collapsible through one of its faces $\\tau$ if $\\sigma$ is the only coface of $\\tau$ (excluding $\\tau$ itself). 
 		
 		Parameters:
 			sigma : maximal simplex to collapse
