@@ -282,7 +282,7 @@ namespace st {
   // Preorder traversal iterator
   template < bool ts = false > 
   struct preorder : TraversalInterface< ts, preorder > {
-  	using B = TraversalInterface< ts, preorder >;
+  	using B = TraversalInterface< ts, st::preorder >;
   	using B::init;
   	using B::st; 
   	using B::p1;
@@ -378,7 +378,7 @@ namespace st {
   // level order traversal iterator
   template < bool ts = false > 
   struct level_order : TraversalInterface< ts, level_order > {
-  	using B = TraversalInterface< ts, level_order >;
+  	using B = TraversalInterface< ts, st::level_order >;
   	using B::init;
   	using B::st; 
   	using B::p1;
@@ -460,7 +460,7 @@ namespace st {
   // Coface-roots search
   template < bool ts = false >
   struct coface_roots : TraversalInterface< ts, coface_roots > {
-  	using B = TraversalInterface< ts, coface_roots >;
+  	using B = TraversalInterface< ts, st::coface_roots >;
   	using B::init;
   	using B::st; 
   	using B::p1;
@@ -575,7 +575,7 @@ namespace st {
   // ---- coface iterator ------
   template < bool ts = false > 
   struct cofaces : TraversalInterface< ts, cofaces > {
-  	using B = TraversalInterface< ts, cofaces >;
+  	using B = TraversalInterface< ts, st::cofaces >;
   	using B::init;
   	using B::st; 
   	using B::p1;
@@ -763,7 +763,7 @@ namespace st {
   template < bool ts = false > 
   struct k_skeleton : preorder< ts > {
     using P = preorder< ts >;
-    using B = TraversalInterface< ts, preorder >;
+    using B = TraversalInterface< ts, st::preorder >;
   	using B::init;
   	using t_node = typename B::t_node;
   	using iterator_t = typename P::iterator;
@@ -790,7 +790,7 @@ namespace st {
   template < bool ts = false > 
   struct k_simplices : preorder< ts > {
     using P = preorder< ts >;
-    using B = TraversalInterface< ts, preorder >;
+    using B = TraversalInterface< ts, st::preorder >;
   	using B::init;
   	using t_node = typename B::t_node;
   	using iterator_t = typename P::iterator;
@@ -824,7 +824,7 @@ namespace st {
   template < bool ts = false > 
   struct maximal : preorder< ts > {
     using P = preorder< ts >;
-    using B = TraversalInterface< ts, preorder >;
+    using B = TraversalInterface< ts, st::preorder >;
   	using B::init;
   	using t_node = typename B::t_node;
   	using iterator_t = typename P::iterator;
@@ -897,7 +897,7 @@ namespace st {
   template < bool ts = false > 
   struct link : preorder< ts > {
   	using P = preorder< ts >;
-    using B = TraversalInterface< ts, preorder >;
+    using B = TraversalInterface< ts, st::preorder >;
   	using B::init;
   	using t_node = typename B::t_node;
   	using iterator_t = typename P::iterator;
@@ -993,7 +993,7 @@ namespace st {
   template < bool ts = false > 
   struct faces : level_order< ts > {
   	using P = level_order< ts >;
-    using B = TraversalInterface< ts, level_order >;
+    using B = TraversalInterface< ts, st::level_order >;
   	using B::init;
   	using t_node = typename B::t_node;
   	using iterator_t = typename P::iterator;
