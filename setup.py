@@ -9,8 +9,8 @@ base_path = os.path.dirname(__file__)
 # compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
 # compile_flags += list(dict.fromkeys(sysconfig.get_config_var('CPPFLAGS').split()))
 if sys.platform.startswith("win"):
-  cpp_version = "c++14"
-  compile_flags = ["/O2", "/std:c++14"]
+  cpp_version = "c++11"
+  compile_flags = ["/O2", "/std:c++11"]
 else: 
   cpp_version = "c++17"
   compile_flags = ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
