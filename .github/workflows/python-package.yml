@@ -29,11 +29,13 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest tests/
+        
   build_windows: # Since github cannot figure out how to make a clean API, repeat the same
+    runs-on: windows-latest
     strategy:
-    fail-fast: false
-    matrix:
-      python-version: ["3.9", "3.10", "3.11"]
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
@@ -47,11 +49,13 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest tests/
+        
   build_osx: # Since github cannot figure out how to make a clean API, repeat the same
+    runs-on: macos-latest
     strategy:
-    fail-fast: false
-    matrix:
-      python-version: ["3.9", "3.10", "3.11"]
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
