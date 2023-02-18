@@ -30,12 +30,13 @@ jobs:
       run: |
         python -m pytest tests/ --cov=src/ --cov-report lcov:tests/lcov.info
     - name: Upload Coverage Results
-      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.github_token }}
         path-to-lcov: tests/lcov.info
       run: 
         coveralls --service=github
+    # - name:       
+    #   uses: coverallsapp/github-action@master
         
   build_windows: # Since github cannot figure out how to make a clean API, repeat the same
     runs-on: windows-latest
