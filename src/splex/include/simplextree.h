@@ -21,7 +21,8 @@
 #include "UnionFind.h"
 #include "utility/discrete.h"
 #include "utility/combinations.h"
-#include "utility/delegate.hpp"
+// #include "utility/delegate.hpp"
+#include "utility/delegate2.hpp"
 #include "utility/set_utilities.h"
 
 // #include <iostream>

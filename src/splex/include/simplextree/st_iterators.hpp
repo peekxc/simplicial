@@ -143,8 +143,8 @@ namespace st {
   		static const idx_t LABELS = 2;
   		node_ptr init;
   		const SimplexTree* st;
-  		pair_pred_t p1 = [](t_node& cn){ return true; };
-  		pair_pred_t p2 = [](t_node& cn){ return true; };
+  		pair_pred_t p1 { [](t_node& cn){ return true; } };
+  		pair_pred_t p2 { [](t_node& cn){ return true; } };
   
   		TraversalInterface() = default;
   		TraversalInterface(const SimplexTree* st_) : st(st_){
@@ -154,7 +154,9 @@ namespace st {
   			init = start;
   		};
   		template< typename P1, typename P2 >
-  		TraversalInterface(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : init(start), st(st_), p1(pred1), p2(pred2){
+  		TraversalInterface(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : init(start), st(st_){
+				p1.set(pred1);
+				p2.set(pred2);
   			init = start;
   		};
   
