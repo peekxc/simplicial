@@ -8,7 +8,10 @@ from pybind11.setup_helpers import Pybind11Extension, build_ext
 base_path = os.path.dirname(__file__)
 # compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
 # compile_flags += list(dict.fromkeys(sysconfig.get_config_var('CPPFLAGS').split()))
-compile_flags = ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
+if sys.platform.startswith("win"):
+  compile_flags = ["/O2", "/std:c++17"]
+else: 
+  compile_flags = ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
 print(f"COMPILER FLAGS: { str(compile_flags) }")
 
 ext_modules = [
@@ -32,6 +35,8 @@ ext_modules = [
     language='c++17'
   )
 ]
+
+from setuptools.command.build_ext import build_ext
 
 setup(
   name="splex",
