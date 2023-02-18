@@ -9,8 +9,10 @@ base_path = os.path.dirname(__file__)
 # compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
 # compile_flags += list(dict.fromkeys(sysconfig.get_config_var('CPPFLAGS').split()))
 if sys.platform.startswith("win"):
-  compile_flags = ["/O2", "/std:c++17"]
+  cpp_version = "c++14"
+  compile_flags = ["/O2", "/std:c++14"]
 else: 
+  cpp_version = "c++17"
   compile_flags = ["-std=c++17", "-Wall", "-Wextra", "-O2", "-Wno-unused-parameter"]
 print(f"COMPILER FLAGS: { str(compile_flags) }")
 
@@ -23,7 +25,7 @@ ext_modules = [
       'src/splex/include'
     ], 
     extra_compile_args=compile_flags,
-    language='c++17'
+    language=cpp_version
   ), 
    Pybind11Extension(
     '_union_find', 
@@ -32,7 +34,7 @@ ext_modules = [
       'extern/pybind11/include'
     ], 
     extra_compile_args=compile_flags,
-    language='c++17'
+    language=cpp_version
   )
 ]
 
