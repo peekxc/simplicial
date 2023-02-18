@@ -7,25 +7,61 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  build_linux:
     runs-on: ubuntu-latest
+    env:
+      CC: g++
+      CXX: g++
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.9", "3.10", "3.11"]
-
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install pytest
-        CC=g++ CXX=g++ pip install --verbose .
+        pip install --verbose .
+    - name: Test with pytest
+      run: |
+        python -m pytest tests/
+  build_windows: # Since github cannot figure out how to make a clean API, repeat the same
+    strategy:
+    fail-fast: false
+    matrix:
+      python-version: ["3.9", "3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest
+        pip install --verbose .
+    - name: Test with pytest
+      run: |
+        python -m pytest tests/
+  build_osx: # Since github cannot figure out how to make a clean API, repeat the same
+    strategy:
+    fail-fast: false
+    matrix:
+      python-version: ["3.9", "3.10", "3.11"]
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest
+        pip install --verbose .
     - name: Test with pytest
       run: |
         python -m pytest tests/
