@@ -16,6 +16,7 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         python-version: ["3.9", "3.10", "3.11"]
+    run-name: ${{ matrix.os }} - Python ${{ matrix.python-version }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -39,6 +40,10 @@ jobs:
     - name: Send coverage report
       run: |
         coveralls --service=github
+    - name: Create status badges
+      run: |
+        echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
+        echo "Job URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true#job=${{ github.job }}"
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
@@ -64,7 +69,8 @@ jobs:
   #       path-to-lcov: tests/lcov.info
   #       parallel-finished: true
 
-  cibuildwheel:    
+  cibuildwheel: 
+    needs: build_all   
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
