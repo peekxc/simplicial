@@ -51,7 +51,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: upload-status-badges
-        path: /home/runner/work/splex/splex/coverage**.svg
+        path: /home/runner/work/splex/splex/coverage-${{ matrix.python-version }}.svg
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
