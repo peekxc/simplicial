@@ -47,6 +47,11 @@ jobs:
     - name: generate coverage badge
       run: |
         coverage-badge -o coverage-${{ matrix.python-version }}.svg
+    - name: Upload badges
+      uses: actions/upload-artifact@v1
+      with:
+        name: upload-status-badges
+        path: /home/runner/work/splex/splex/coverage**.svg
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
