@@ -32,7 +32,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install pytest pytest-cov coveralls
+        python -m pip install pytest pytest-cov coverage-badge coveralls 
         pip install --verbose .
     - name: Test with pytest
       run: |
@@ -44,6 +44,9 @@ jobs:
       run: |
         echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
         echo "Job URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true#job=${{ github.job }}"
+    - name: generate coverage badge
+      run: |
+        coverage-badge -o coverage-${{ matrix.python-version }}.svg
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
