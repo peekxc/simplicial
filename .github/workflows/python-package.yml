@@ -35,7 +35,7 @@ jobs:
         pip install --verbose .
     - name: Test with pytest
       run: |
-        python -m pytest tests/ --cov-report lcov:tests/lcov.info
+        python -m pytest tests/ --cov=.
     - name: Send coverage report
       run: |
         coveralls --service=github
