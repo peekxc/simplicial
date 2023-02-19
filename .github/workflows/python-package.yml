@@ -39,7 +39,7 @@ jobs:
     #     coveralls
   coveralls:
     name: Indicate completion to coveralls.io
-    needs: build_linux
+    needs: build_all
     runs-on: ubuntu-latest
     container: python:3-slim
     steps:
