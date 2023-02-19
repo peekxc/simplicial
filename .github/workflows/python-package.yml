@@ -24,8 +24,10 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        if [[ ${{ matrix.os == 'windows' }} ]]; then
-          echo "STAGE=prod" >> $GITHUB_ENV
+        if [[ ${{ matrix.os == 'ubuntu-latest' }} ]]; then
+          echo "CC=g++" >> $GITHUB_ENV
+          echo "CXX=g++" >> $GITHUB_ENV
+        fi
         python -m pip install --upgrade pip
         python -m pip install pytest pytest-cov
         pip install --verbose .
