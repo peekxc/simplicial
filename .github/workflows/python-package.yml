@@ -54,9 +54,10 @@ jobs:
     - name: Finished
       run: |
         pip install --upgrade coveralls
-        coveralls --finish
+        coveralls --finish --service=github
       env:
-        COVERALLS_REPO_TOKEN: gjuQ3bu3XuueRECiW1S4j7afxvdNXYGEN
+        COVERALLS_SERVICE_NAME: github
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
     # - name: Upload Coverage Results w/ Coveralls.io app
