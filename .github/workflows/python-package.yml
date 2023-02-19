@@ -70,7 +70,8 @@ jobs:
   #       parallel-finished: true
 
   cibuildwheel: 
-    needs: build_all   
+    needs: build_all  
+    runs-on: ubuntu-latest 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
