@@ -35,10 +35,10 @@ jobs:
         pip install --verbose .
     - name: Test with pytest
       run: |
-        python -m pytest tests/ --cov=src/ --cov-report lcov:tests/lcov.info
+        python -m pytest tests/ --cov-report lcov:tests/lcov.info
     - name: Send coverage report
       run: |
-        coveralls
+        coveralls 
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
