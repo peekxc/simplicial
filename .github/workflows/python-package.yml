@@ -64,7 +64,8 @@ jobs:
   #       path-to-lcov: tests/lcov.info
   #       parallel-finished: true
 
-  cibuildwheel:    
+  cibuildwheel:  
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
