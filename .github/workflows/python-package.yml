@@ -50,6 +50,7 @@ jobs:
     needs: build_all
     runs-on: ubuntu-latest
     container: python:3-slim
+    environment: coveralls
     steps:
     - name: Finished
       run: |
@@ -59,12 +60,12 @@ jobs:
         COVERALLS_SERVICE_NAME: github
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
-    # - name: Upload Coverage Results w/ Coveralls.io app
-    #   uses: coverallsapp/github-action@master
-    #   with:
-    #     github-token: ${{ secrets.github_token }}
-    #     path-to-lcov: tests/lcov.info
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@1.1.3
+      with:
+        github-token: ${{ secrets.github_token }}
+        path-to-lcov: tests/lcov.info
+        parallel-finished: true
         
   # build_windows: # Since github cannot figure out how to make a clean API, repeat the same
   #   runs-on: windows-latest
