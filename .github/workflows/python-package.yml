@@ -55,7 +55,7 @@ jobs:
     - name: Finished
       run: |
         pip install --upgrade coveralls
-        coveralls --finish --service=github
+        ${{ secrets.COVERALLS_REPO_TOKEN }} coveralls --finish --service=github
       env:
         COVERALLS_SERVICE_NAME: github
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
