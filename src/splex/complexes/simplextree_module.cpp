@@ -13,7 +13,7 @@ template < typename Lambda >
 void vector_handler(SimplexTree& st, const py::array_t< idx_t >& simplices, Lambda&& f){
   py::buffer_info s_buffer = simplices.request();
   if (s_buffer.ndim == 1){
-    py::print(s_buffer.shape[0]);
+    // py::print(s_buffer.shape[0]);
     const size_t n = s_buffer.shape[0]; 
     idx_t* s = static_cast< idx_t* >(s_buffer.ptr); 
     for (size_t i = 0; i < n; ++i){
@@ -37,7 +37,7 @@ void vector_handler(SimplexTree& st, const py::array_t< idx_t >& simplices, Lamb
 // TODO: accept py::buffer?
 void insert_(SimplexTree& st, const py::array_t< idx_t >& simplices){
   vector_handler(st, simplices, [&st](idx_t* b, idx_t* e){
-    py::print(py::cast(simplex_t(b,e)));
+    // py::print(py::cast(simplex_t(b,e)));
     st.insert_it< true >(b, e, st.root.get(), 0);
   });
 }
@@ -313,7 +313,7 @@ enum TRAVERSAL_TYPE {
   PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, K_SKELETON = 5, 
   K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
 }; 
-const size_t N_TRAVERSALS = 9;
+// const size_t N_TRAVERSALS = 9;
 
 // Exports a list with the parameters for a preorder traversal
 // py::list parameterize_(SimplexTree& st, vector< idx_t > sigma, std::string type, Rcpp::Nullable<List> args){
@@ -426,6 +426,7 @@ using param_pack = typename std::tuple< SimplexTree*, node_ptr, TRAVERSAL_TYPE >
 
 void traverse_(SimplexTree& stree, const size_t order, py::function f, simplex_t init = simplex_t(), const size_t k = 0){
   node_ptr base = init.size() == 0 ? stree.root.get() : stree.find(init);
+  // py::print("Starting from root?", init.size() == 0 ? "Y" : "N", ", k=",k);
   const auto apply_f = [&f](node_ptr cn, idx_t depth, simplex_t s){
     f(py::cast(s));
     return true; 

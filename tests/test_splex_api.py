@@ -34,6 +34,7 @@ def test_simplicial_complex_api():
     assert isinstance(S, ComplexLike)
     check_poset(S)
 
+
 def test_rank_filtration():
   pass
   # S = simplicial_complex([[0,1,2,3,4]], "rank")

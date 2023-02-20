@@ -212,7 +212,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			order = 8
 		else: 
 			raise ValueError(f"Unknown order '{order}' specified")
-		self._traverse(order, lambda s: f(s), [], p) # order, f, init, k
+		self._traverse(order, lambda s: f(s), sigma, p) # order, f, init, k
 
 	def cofaces(self, p: int = None, sigma: SimplexLike = []) -> list['SimplexLike']:
 		"""
@@ -242,8 +242,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 	def simplices(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
 		F = []
 		if p is None: 
-			for p in range(0, self.dimension+1):
-				self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
+			self._traverse(1, lambda s: F.append(s), [], 0) # order, f, init, k
 		else: 
 			assert isinstance(int(p), int), f"Invalid argument type '{type(p)}', must be integral"
 			self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
@@ -251,7 +250,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 	
 	def maximal(self) -> Iterable['SimplexLike']:
 		F = []
-		self._traverse(7, lambda s: F.append(s), p)
+		self._traverse(7, lambda s: F.append(s), [], 0)
 		return F
 
 	def link(self, sigma: SimplexLike = []) -> Iterable['SimplexLike']:

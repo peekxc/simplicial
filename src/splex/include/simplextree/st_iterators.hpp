@@ -134,7 +134,8 @@ namespace st {
   	using d_type = Derived< ts >;
   	using d_node = std::tuple< node_ptr, idx_t >;
   	using t_node = typename std::conditional< ts, std::tuple< node_ptr, idx_t, simplex_t >, d_node >::type;
-  	using pair_pred_t = delegate< bool (t_node&) >;
+  	// using pair_pred_t = delegate< bool (t_node&) >; // delegate appears to not work
+		using pair_pred_t = std::function<bool(t_node&)>;
   
   	public: 
   	  static const bool is_tracking = ts;
@@ -154,9 +155,9 @@ namespace st {
   			init = start;
   		};
   		template< typename P1, typename P2 >
-  		TraversalInterface(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : init(start), st(st_){
-				p1.set(pred1);
-				p2.set(pred2);
+  		TraversalInterface(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : init(start), st(st_), p1(pred1), p2(pred2) {
+				// p1.set(pred1);
+				// p2.set(pred2);
   			init = start;
   		};
   
@@ -295,7 +296,10 @@ namespace st {
   	preorder(const SimplexTree* st_) : TraversalInterface<  ts, preorder >(st_, st_->root.get()) {};
   	preorder(const SimplexTree* st_, node_ptr start) : TraversalInterface<  ts, preorder >(st_, start) {};
   	template< typename P1, typename P2 >
-  	preorder(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, preorder >(st_, start, pred1, pred2){};
+  	preorder(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, preorder >(st_, start, pred1, pred2){
+			// p1.set(pred1);
+			// p2.set(pred2);
+		};
   
   	void reset(node_ptr start){
   		init = start; 
@@ -392,7 +396,10 @@ namespace st {
   	level_order(const SimplexTree* st_) : TraversalInterface<  ts, level_order >(st_, st_->root.get()) {};
   	level_order(const SimplexTree* st_, node_ptr start) : TraversalInterface<  ts, level_order >(st_, start) {};
   	template< typename P1, typename P2 >
-  	level_order(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, level_order >(st_, start, pred1, pred2){};
+  	level_order(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, level_order >(st_, start, pred1, pred2){
+			// p1.set(pred1);
+			// p2.set(pred2);
+		};
   
   	void reset(node_ptr start){ init = start;  }
   
@@ -474,7 +481,10 @@ namespace st {
   	coface_roots() : TraversalInterface< ts, coface_roots >() {};
   	coface_roots(const SimplexTree* st_, node_ptr start = nullptr) : TraversalInterface<  ts, coface_roots >(st_, start) {};
   	template< typename P1, typename P2 >
-  	coface_roots(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, coface_roots >(st_, start, pred1, pred2){};
+  	coface_roots(const SimplexTree* st_, node_ptr start, P1 pred1, P2 pred2) : TraversalInterface<  ts, coface_roots >(st_, start, pred1, pred2){
+			// p1.set(pred1);
+			// p2.set(pred2);
+		};
   
   	// Iterator type
   	struct iterator : public TraversalInterface< ts, coface_roots >::iterator {

@@ -8,6 +8,24 @@ def test_construct():
   st = SimplexTree([[0,1,2,3,4]])
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
 
+## Minimal API tests
+def test_SimplexTree():
+  st = SimplexTree()
+  st.insert([[0,1,2], [0,1], [4,5], [1,4], [1,5]])
+  assert all(st.n_simplices == np.array([5,6,1]))
+  st.traverse("preorder", print, [], 0)
+  st.traverse("preorder", print, [0,1], 1)
+  st.traverse("level_order", print, [], 0)
+  st.traverse("k_simplices", print, [], 0)
+  st.traverse("k_skeleton", print, [], 1)
+  st.traverse("cofaces", print, [0], 0)
+  # st.traverse("maximal", print, [0], 1)
+
+
+  st.simplices()
+  st.maximal()
+
+
 def test_insert():
   st = SimplexTree()
   simplex = np.array([[0,1,2,3,4]], dtype=np.int8)
@@ -34,10 +52,6 @@ def test_expand():
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
   assert st.dimension == 4
 
-
-def test_SimplexTree():
-  st = SimplexTree()
-  st.insert([[0,1,2], [0,1], [4,5]])
 
   # t order, py::function f, simplex_t init = simplex_t(), const size_t k = 0
   # stree._traverse(0, lambda s: print(Simplex(s)), [], 0)
