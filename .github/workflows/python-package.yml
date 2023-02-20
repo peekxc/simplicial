@@ -53,12 +53,6 @@ jobs:
       with:
         name: upload-status-badges
         path: /home/runner/work/splex/splex/coverage-${{ matrix.python-version }}.svg
-    - uses: DamianReeves/write-file-action@master
-      with:
-        path: ${{ env.home}}/.bashrc
-        contents: |
-          ${{ matrix.os }} - Python - ${{ matrix.python-version }}
-        write-mode: overwrite
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
