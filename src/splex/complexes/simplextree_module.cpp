@@ -91,7 +91,7 @@ auto get_k_simplices(SimplexTree& st, const size_t k) -> py::array_t< idx_t > {
     res.insert(res.end(), sigma.begin(), sigma.end());
     return true; 
   });
-  py::array_t< idx_t > out(res);
+  py::array_t< idx_t > out = py::cast(res);
   std::array< size_t, 2 > shape = { ns, k+1 };
   return(out.reshape(shape));
 }

@@ -13,18 +13,23 @@ def test_SimplexTree():
   st = SimplexTree()
   st.insert([[0,1,2], [0,1], [4,5], [1,4], [1,5]])
   assert all(st.n_simplices == np.array([5,6,1]))
-  st.traverse("preorder", print, [], 0)
-  st.traverse("preorder", print, [0,1], 1)
-  st.traverse("level_order", print, [], 0)
-  st.traverse("k_simplices", print, [], 0)
-  st.traverse("k_skeleton", print, [], 1)
-  st.traverse("cofaces", print, [0], 0)
-  # st.traverse("maximal", print, [0], 1)
-
-
-  st.simplices()
-  st.maximal()
-
+  assert sorted(st.simplices()) == sorted(list([[0],[1],[2],[4],[5], [0,1],[0,2],[1,2],[1,4],[1,5],[4,5],[0,1,2]]))
+  assert sorted(st.skeleton(1)) == sorted(list([[0],[1],[2],[4],[5], [0,1],[0,2],[1,2],[1,4],[1,5],[4,5]]))
+  assert sorted(st.simplices(p=1)) == sorted(list([[0,1],[0,2],[1,2],[1,4],[1,5],[4,5]]))
+  assert st.expand(2) is None
+  assert sorted(st.simplices(2)) == sorted([[0,1,2], [1,4,5]])
+  assert sorted(st.cofaces([1])) == sorted(list([[1],[0,1],[1,2],[1,4],[1,5],[0,1,2],[1,4,5]]))
+  assert sorted(st.maximal()) == sorted([[0,1,2], [1,4,5]])
+  assert sorted(st.connected_components) == [1,1,1,1,1]
+  assert st.vertices == [0,1,2,4,5]
+  assert st.dimension == 2
+  assert all(np.all(st.edges == np.array(st.simplices(p=1)), axis=0))
+  assert all(np.all(st.triangles == np.array(st.simplices(p=2)), axis=0))
+  assert all(st.degree() == np.array([2,4,2,2,2]))
+  assert st.print_tree() is None
+  assert st.print_cousins() is None
+  assert all(st.find([[0],[1],[3],[1,2]]) == np.array([True, True, False, True]))
+  assert sorted(st.coface_roots([1,2])) == sorted([[1,2],[0,1,2]])
 
 def test_insert():
   st = SimplexTree()

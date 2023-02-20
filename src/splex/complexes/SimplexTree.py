@@ -161,7 +161,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		elif isinstance(vertices, Iterable): 
 			vertices = np.fromiter(iter(vertices), dtype=np.int8)
 			assert vertices.ndim == 1, "Invalid shape given; Must be flattened array of vertex ids"
-			self._degree(vertices)
+			return self._degree(vertices)
 		else: 
 			raise ValueError(f"Invalid type {type(vertices)} given")
 
@@ -214,7 +214,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			raise ValueError(f"Unknown order '{order}' specified")
 		self._traverse(order, lambda s: f(s), sigma, p) # order, f, init, k
 
-	def cofaces(self, p: int = None, sigma: SimplexLike = []) -> list['SimplexLike']:
+	def cofaces(self, sigma: SimplexLike = []) -> list['SimplexLike']:
 		"""
 		Finds the p-dimensional cofaces of sigma.
 
@@ -225,18 +225,20 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		Returns:
 			list: the p-cofaces of sigma
 		"""
+		if sigma == [] or len(sigma) == 0:
+			return self.simplices()
 		F = []
-		self._traverse(3, lambda s: F.append(s), [], p) # order, f, init, k
+		self._traverse(3, lambda s: F.append(s), sigma, 0) # order, f, init, k
 		return F
 	
-	def coface_roots(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+	def coface_roots(self, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
 		F = []
-		self._traverse(4, lambda s: F.append(s), [], p) # order, f, init, k
+		self._traverse(4, lambda s: F.append(s), sigma, 0) # order, f, init, k
 		return F
 
-	def skeleton(self, p: int = None) -> Iterable['SimplexLike']:
+	def skeleton(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
 		F = []
-		self._traverse(5, lambda s: F.append(s), sigma, self.dimension)
+		self._traverse(5, lambda s: F.append(s), sigma, p)
 		return F 
 
 	def simplices(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
