@@ -10,7 +10,7 @@ execute:
 
 # Splex
 
-_Simplicial_ is an experimental Python package aimed at simplifying computation with simplicial complexes. 
+_Splex_ is an experimental Python package aimed at simplifying computation with simplicial complexes. 
 
 ```{tableofcontents}
 ```
@@ -18,5 +18,5 @@ _Simplicial_ is an experimental Python package aimed at simplifying computation 
 ## Quick start 
 
 ```{python}
-import simplicial 
+import splex 
 ```

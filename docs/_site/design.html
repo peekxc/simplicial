@@ -278,6 +278,7 @@ s = Simplex([0,1,2])
 </section>
 <section id="structural-subtyping-generics" class="level2">
 <h2 class="anchored" data-anchor-id="structural-subtyping-generics">Structural Subtyping &amp; Generics</h2>
+<p>Convertibles https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/</p>
 <p>This is a common pattern that exists in other languages. In Haskell, they’re called <em>typeclasses</em>. In Rust, they’re <em>traits</em>. In Swift, they’re called <em>protocols</em>. In D, a related thing is called <em>type constraints</em>. These appear over and over in other languages. Swift celebrates itself as a <em>protocol</em>-oriented language. https://www.youtube.com/watch?v=E-2y1qHQvTg</p>
 <p>Wadler, Philip, and Stephen Blott. “How to make ad-hoc polymorphism less ad hoc.” Proceedings of the 16th ACM SIGPLAN-SIGACT symposium on Principles of programming languages. 1989.</p>
 <p>With all of these types, its clear there are going to be memory and time complexity tradeoffs associated with each type. Searcing might take longer in one, but shorter in the other… One representation might be extremely compact and great for read-only streaming…. another might be more suitable for a time-varying setting, where the underlying complex is constantly changing via simplex insertions, deletions, and reorderings.</p>

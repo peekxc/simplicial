@@ -1,21 +1,47 @@
+## generics.unique { #generics.unique }
+
+`generics.unique(sequence)`
+
+ --- 
+
 ## generics.dim { #generics.dim }
 
-`generics.dim(sigma: Union[SimplexLike, ComplexLike])`
+`generics.dim(sigma: Union[SimplexConvertible, ComplexLike])`
 
-Returns the dimension of a simplicial object, suitably defined
+Returns the dimension of a simplicial object, suitably defined.
 
  --- 
 
 ## generics.boundary { #generics.boundary }
 
-`generics.boundary(s: Union[SimplexLike, ComplexLike])`
+`generics.boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented: bool = False, kwargs)`
 
-Returns the _boundary_ of a simplicial object, suitably defined
+Returns the boundary of a simplicial object, optionally signed.
+
+If _s_ has an existing method _s.boundary(p, oriented)_, then that method is called with additional keyword args _kwargs_.
+
+Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
+- if _s_ is SimplexLike with dimension _p_, then a generator enumerating _(p-1)_-faces of _s_ is created. 
+- if _s_ is ComplexLike, then a sparse boundary matrix whose columns represent boundary chains is returned. 
+- if _s_ is FiltrationLike, then a sparse boundary matrix whose columns represent boundary chains in filtration order is returned.
 
  --- 
 
 ## generics.faces { #generics.faces }
 
-`generics.faces(s: Union[SimplexLike, ComplexLike])`
+`generics.faces(s: Union[SimplexConvertible, ComplexLike], p: int = None)`
 
-Returns the _boundary_ of a simplicial object, suitably defined
+Returns the faces of a simplicial object, optionally restricted by dimension.
+
+If _s_ has an existing method _s.faces(p)_, then that method is called with additional keyword args _kwargs_.
+
+Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
+- if _s_ is SimplexLike, then a generator enumerating _p_-combinations of _s_ is created. 
+- if _s_ is ComplexLike, then a generator enumerating _p_-faces of _s_ is created. 
+- if _s_ is FiltrationLike, then a generator enumerating _p_-faces of _s_ in filtration order is created.
+
+ --- 
+
+## generics.card { #generics.card }
+
+`generics.card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = None)`

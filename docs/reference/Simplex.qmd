@@ -2,18 +2,25 @@
 
  --- 
 
-## splex.Simplex { #splex.Simplex }
+## Simplex.Simplex { #Simplex.Simplex }
 
-`splex.Simplex(self, v: Collection[Integral])`
+`Simplex.Simplex(self, v: SimplexConvertible)`
 
-Implements: 
-  __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
+Dataclass for representing a simplex. 
+
+A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
+
+This class is also SimplexLike.
+
+### Admonition
+
+UNHANDLED ADMONITION
 
  --- 
 
 ## Simplex.faces { #Simplex.faces }
 
-`Simplex.faces(self, p: Optional[int] = None)`
+`Simplex.faces(self, p: Optional[IT] = None)`
 
  --- 
 

@@ -1,0 +1,28 @@
+# RankComplex
+
+ --- 
+
+## RankComplex.RankComplex { #RankComplex.RankComplex }
+
+`RankComplex.RankComplex(self, simplices: Iterable[SimplexConvertible] = None)`
+
+Simplicial complex represented via the combinatorial number system.
+
+A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers 
+are computed by bijecting each p-dimensional simplex to an integer in the range [0, comb(n,p+1))---this process is called _ranking_
+a simplex, and the correspondence between natural numbers and simplices is called the _combinatorial numer system_. 
+
+Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations
+are computed on the fly by inverting the correspondence ('unranking') upon on access.
+
+ --- 
+
+## RankComplex.dim { #RankComplex.dim }
+
+`RankComplex.dim(self)`
+
+ --- 
+
+## RankComplex.faces { #RankComplex.faces }
+
+`RankComplex.faces(self, p: int = None)`

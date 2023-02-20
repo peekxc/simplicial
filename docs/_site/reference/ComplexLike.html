@@ -124,19 +124,9 @@ ul.task-list li input[type="checkbox"] {
   <a href="../overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../design.html" class="sidebar-item-text sidebar-link">Design</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -145,6 +135,16 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/SetComplex.html" class="sidebar-item-text sidebar-link">SetComplex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/RankComplex.md" class="sidebar-item-text sidebar-link">RankComplex</a>
   </div>
 </li>
       </ul>
@@ -166,18 +166,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="meta.ComplexLike">meta.ComplexLike</h2>
 <p><code>meta.ComplexLike()</code></p>
 <p>Protocol interface for types that represent (abstract) simplicial complexes</p>
-<p>An type <em>ComplexLike</em> if it is a iterable collection of SimplexLike objects, and it the following methods: - dim : None -&gt; int - faces : int -&gt; Iterable[SimplexLike]</p>
-<p>Protocols: Collection[Sized, Iterable, Container] Methods: <strong>contains</strong>, <strong>iter</strong>, <strong>len</strong></p>
-<hr>
-</section>
-<section id="ComplexLike.dim" class="level2">
-<h2 class="anchored" data-anchor-id="ComplexLike.dim">ComplexLike.dim</h2>
-<p><code>ComplexLike.dim(self)</code></p>
-<hr>
-</section>
-<section id="ComplexLike.faces" class="level2">
-<h2 class="anchored" data-anchor-id="ComplexLike.faces">ComplexLike.faces</h2>
-<p><code>ComplexLike.faces(self, p: int)</code></p>
+<p>A type is <em>ComplexLike</em> if it implements the Collection[SimplexLike] protocol.</p>
 
 
 </section>

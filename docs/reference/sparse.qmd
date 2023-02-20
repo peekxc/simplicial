@@ -1,0 +1,8 @@
+## sparse.boundary_matrix { #sparse.boundary_matrix }
+
+`sparse.boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int, tuple]] = None)`
+
+Constructs a sparse boundary matrix of a given simplicial object _K_
+
+Returns: 
+  D := sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)

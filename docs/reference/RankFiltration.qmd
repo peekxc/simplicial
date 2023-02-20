@@ -1,0 +1,13 @@
+# RankFiltration
+
+ --- 
+
+## RankFiltration.RankFiltration { #RankFiltration.RankFiltration }
+
+`RankFiltration.RankFiltration(self, simplices: Union[ComplexLike, Iterable], f: Callable = None)`
+
+ --- 
+
+## RankFiltration.reindex { #RankFiltration.reindex }
+
+`RankFiltration.reindex(self, f: Callable[SimplexLike, Any])`

@@ -30,18 +30,20 @@ website:
     contents: 
       - text: Overview 
         href: overview.qmd
-      - text: Design 
-        href: design.qmd
-      - text: Simplex Tree
-        href: simplextree_ds.qmd
+      # - text: Design 
+      #   href: design.qmd
+      # - text: Simplex Tree
+      #   href: simplextree_ds.qmd
       # - text: API Overview
       #   href: reference/index.qmd
-      - section: Reference
+      - section: API Reference
         contents: 
           - text: SimplexTree
             href: reference/SimplexTree.qmd
-          # - text: ComplexLike
-          #   href: API/ComplexLike.md
+          - text: SetComplex
+            href: reference/SetComplex.qmd
+          - text: RankComplex
+            href: reference/RankComplex.md
 
   page-navigation: true
   reader-mode: true

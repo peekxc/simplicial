@@ -1,0 +1,11 @@
+# SimplexConvertible
+
+ --- 
+
+## meta.SimplexConvertible { #meta.SimplexConvertible }
+
+`meta.SimplexConvertible()`
+
+Protocol class for simplex-convertible types. 
+
+Any collection of integer-like values is convertible to a Simplex type.

@@ -67,3 +67,9 @@ Parameters:
 
 Returns: 
   list : k-combinations derived from R
+
+ --- 
+
+## combinatorial.inverse_choose { #combinatorial.inverse_choose }
+
+`combinatorial.inverse_choose(x: int, k: int)`

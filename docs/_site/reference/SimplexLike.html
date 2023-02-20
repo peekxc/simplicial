@@ -124,19 +124,9 @@ ul.task-list li input[type="checkbox"] {
   <a href="../overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../design.html" class="sidebar-item-text sidebar-link">Design</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -145,6 +135,16 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link">SimplexTree</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/SetComplex.html" class="sidebar-item-text sidebar-link">SetComplex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/RankComplex.md" class="sidebar-item-text sidebar-link">RankComplex</a>
   </div>
 </li>
       </ul>
@@ -165,9 +165,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="meta.SimplexLike" class="level2">
 <h2 class="anchored" data-anchor-id="meta.SimplexLike">meta.SimplexLike</h2>
 <p><code>meta.SimplexLike()</code></p>
-<p>An object is SimplexLike if it is Immutable, Hashable, and SetLike</p>
-<p>By definition, this implies a simplex is sized, iterable, and acts as a container (supports vertex <strong>contains</strong> queries)</p>
-<p>Protocols: SetLike[Container, Comparable], Hashable, Immutable Abstract Methods: <strong>hash</strong>, <strong>contains</strong>, <strong>len</strong>, <strong>iter</strong>, <strong>setitem</strong></p>
+<p>Protocol for <em>SimplexLike</em> types.</p>
+<p><em>SimplexLike</em> types are (sized) iterable containers of integer-like types. Consequently, generic methods that rely on enumerating combinations (like faces) or checking length (like dim) work out of the box for the such classes.</p>
 
 
 </section>

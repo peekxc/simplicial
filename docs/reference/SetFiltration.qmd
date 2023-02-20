@@ -1,0 +1,73 @@
+# SetFiltration
+
+ --- 
+
+## SetFiltration.SetFiltration { #SetFiltration.SetFiltration }
+
+`SetFiltration.SetFiltration(self, simplices: Union[ComplexLike, Iterable] = None, f: Optional[Callable] = None)`
+
+Simplicial Filtration 
+
+Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
+
+ --- 
+
+## SetFiltration.update { #SetFiltration.update }
+
+`SetFiltration.update(self, other: Iterable[Tuple[Any, Collection[Integral]]])`
+
+ --- 
+
+## SetFiltration.setdefault { #SetFiltration.setdefault }
+
+`SetFiltration.setdefault(self, key, default)`
+
+ --- 
+
+## SetFiltration.copy { #SetFiltration.copy }
+
+`SetFiltration.copy(self)`
+
+ --- 
+
+## SetFiltration.keys { #SetFiltration.keys }
+
+`SetFiltration.keys(self)`
+
+ --- 
+
+## SetFiltration.values { #SetFiltration.values }
+
+`SetFiltration.values(self)`
+
+ --- 
+
+## SetFiltration.items { #SetFiltration.items }
+
+`SetFiltration.items(self)`
+
+ --- 
+
+## SetFiltration.reindex { #SetFiltration.reindex }
+
+`SetFiltration.reindex(self, index_set: Union[Iterable, Callable])`
+
+Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration
+
+ --- 
+
+## SetFiltration.faces { #SetFiltration.faces }
+
+`SetFiltration.faces(self, p: int = None)`
+
+ --- 
+
+## SetFiltration.print { #SetFiltration.print }
+
+`SetFiltration.print(self, kwargs)`
+
+ --- 
+
+## SetFiltration.validate { #SetFiltration.validate }
+
+`SetFiltration.validate(self, light: bool = True)`

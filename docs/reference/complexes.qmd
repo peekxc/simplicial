@@ -1,0 +1,9 @@
+## complexes.simplicial_complex { #complexes.simplicial_complex }
+
+`complexes.simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str = 'default')`
+
+Wrapper for constructing an abstract simplicial complex.
+
+### Returns
+
+**** : <p> sc = a _ComplexLike_ structure whose structure depends on _form_. </p>

@@ -21,14 +21,14 @@ ds_elements = {}
 ## Reload the local file for quick edits
 from quartodoc import MdRenderer
 from quartodoc.renderers import Renderer
-if 'markdown_numpy' in Renderer._registry:
-  del Renderer._registry['markdown_numpy']
 import importlib
 import renderers
-importlib.reload(renderers)
+# importlib.reload(renderers)
 
 ## Choose the custom renderer
 from renderers import MdRendererNumpyStyle, _UNHANDLED
+# if 'markdown_numpy' in Renderer._registry:
+#   del Renderer._registry['markdown_numpy']
 renderer = MdRendererNumpyStyle(show_signature=True, show_signature_annotations=True, display_name="parent")
 
 class AutoSummary:

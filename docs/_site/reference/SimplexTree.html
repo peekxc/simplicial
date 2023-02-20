@@ -93,7 +93,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../simplextree_ds.html" rel="prev">
+<link href="../reference/SetComplex.html" rel="next">
+<link href="../overview.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -204,19 +205,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <a href="../overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../design.html" class="sidebar-item-text sidebar-link">Design</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../simplextree_ds.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Reference</a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -225,6 +216,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/SimplexTree.html" class="sidebar-item-text sidebar-link active">SimplexTree</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/SetComplex.html" class="sidebar-item-text sidebar-link">SetComplex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/RankComplex.md" class="sidebar-item-text sidebar-link">RankComplex</a>
   </div>
 </li>
       </ul>
@@ -242,9 +243,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="simplextree" class="level1">
 <h1>SimplexTree</h1>
 <hr>
-<section id="simplextree.SimplexTree" class="level2">
-<h2 class="anchored" data-anchor-id="simplextree.SimplexTree">simplextree.SimplexTree</h2>
-<p><code>simplextree.SimplexTree(self, simplices: Iterable[SimplexLike] = None)</code></p>
+<section id="SimplexTree.SimplexTree" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.SimplexTree">SimplexTree.SimplexTree</h2>
+<p><code>SimplexTree.SimplexTree(self, simplices: Iterable[SimplexConvertible] = None)</code></p>
 <p>SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. This class exposes a native extension module wrapping a simplex tree implemented with modern C++.</p>
 <p>The Simplex Tree was originally introduced in the paper &gt; Boissonnat, Jean-Daniel, and Clément Maria. “The simplex tree: An efficient data structure for general simplicial complexes.” Algorithmica 70.3 (2014): 406-427.</p>
 <section id="attributes" class="level3">
@@ -299,12 +300,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="SimplexTree.insert" class="level2">
 <h2 class="anchored" data-anchor-id="SimplexTree.insert">SimplexTree.insert</h2>
-<p><code>SimplexTree.insert(self, simplices: Iterable[SimplexLike])</code></p>
+<p><code>SimplexTree.insert(self, simplices: Iterable[SimplexConvertible])</code></p>
 <p>Inserts simplices into the Simplex Tree.</p>
 <p>By definition, inserting a simplex also inserts all of its faces. If the simplex already exists in the complex, the tree is not modified.</p>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">Parameters</h3>
-<strong>simplices</strong> : <span class="type_annotation"> Iterable[SimplexLike], </span>required
+<strong>simplices</strong> : <span class="type_annotation"> Iterable[SimplexConvertible], </span>required
 <p>
 Iterable of simplices to insert (each of which are SimplexLike)
 </p>
@@ -395,7 +396,7 @@ Note
 </section>
 <section id="SimplexTree.collapse" class="level2">
 <h2 class="anchored" data-anchor-id="SimplexTree.collapse">SimplexTree.collapse</h2>
-<p><code>SimplexTree.collapse(self, tau: SimplexLike, sigma: SimplexLike)</code></p>
+<p><code>SimplexTree.collapse(self, tau: SimplexConvertible, sigma: SimplexConvertible)</code></p>
 <p>Checks whether its possible to collapse <span class="math inline">\sigma</span> through <span class="math inline">\tau</span>, and if so, both simplices are removed. A simplex <span class="math inline">\sigma</span> is said to be collapsible through one of its faces <span class="math inline">\tau</span> if <span class="math inline">\sigma</span> is the only coface of <span class="math inline">\tau</span> (excluding <span class="math inline">\tau</span> itself).</p>
 <section id="parameters-3" class="level3">
 <h3 class="anchored" data-anchor-id="parameters-3">Parameters</h3>
@@ -476,9 +477,9 @@ degree of each vertex id given in ‘vertices’
 </section>
 <section id="SimplexTree.traverse" class="level2">
 <h2 class="anchored" data-anchor-id="SimplexTree.traverse">SimplexTree.traverse</h2>
-<p><code>SimplexTree.traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)</code></p>
+<p><code>SimplexTree.traverse(self, order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)</code></p>
 <p>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered</p>
-<p>Supported traversals: - breadth-first (“bfs”)</p>
+<p>Supported traversals: - breadth-first / level order (“bfs”, “levelorder”) - depth-first / prefix (“dfs”, “preorder”) - faces (“faces”) - cofaces (“cofaces”) - coface roots - p-skeleton - p-simplices - maximal simplices - link To select one of these options, set order to one of [“bfs”, “levelorder”, “dfs”, “preorder”]</p>
 <section id="parameters-6" class="level3">
 <h3 class="anchored" data-anchor-id="parameters-6">Parameters</h3>
 <strong>order</strong> : optional (default=‘preorder’)
@@ -576,9 +577,49 @@ maximum dimension to expand to.
 Simplex Tree with (8, 28, 56) (0, 1, 2)-simplices</code></pre>
 </div>
 </div>
-
-
+<hr>
 </section>
+</section>
+<section id="SimplexTree.card" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.card">SimplexTree.card</h2>
+<p><code>SimplexTree.card(self, p: int = None)</code></p>
+<hr>
+</section>
+<section id="simplextree.simplextree-_simplextree.simplextree" class="level2">
+<h2 class="anchored" data-anchor-id="simplextree.simplextree-_simplextree.simplextree">_simplextree.SimplexTree { #_simplextree.SimplexTree }</h2>
+<p><code>_simplextree.SimplexTree()</code></p>
+<hr>
+</section>
+<section id="SimplexTree.clear" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.clear">SimplexTree.clear</h2>
+<p><code>SimplexTree.clear()</code></p>
+<p>clear(self: splex.complexes._simplextree.SimplexTree) -&gt; None</p>
+<hr>
+</section>
+<section id="SimplexTree.generate_ids" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.generate_ids">SimplexTree.generate_ids</h2>
+<p><code>SimplexTree.generate_ids()</code></p>
+<p>generate_ids(self: splex.complexes._simplextree.SimplexTree, arg0: int) -&gt; List[int]</p>
+<hr>
+</section>
+<section id="SimplexTree.is_tree" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.is_tree">SimplexTree.is_tree</h2>
+<p><code>SimplexTree.is_tree()</code></p>
+<p>is_tree(self: splex.complexes._simplextree.SimplexTree) -&gt; bool</p>
+<hr>
+</section>
+<section id="SimplexTree.print_cousins" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.print_cousins">SimplexTree.print_cousins</h2>
+<p><code>SimplexTree.print_cousins()</code></p>
+<p>print_cousins(self: splex.complexes._simplextree.SimplexTree) -&gt; None</p>
+<hr>
+</section>
+<section id="SimplexTree.print_tree" class="level2">
+<h2 class="anchored" data-anchor-id="SimplexTree.print_tree">SimplexTree.print_tree</h2>
+<p><code>SimplexTree.print_tree()</code></p>
+<p>print_tree(self: splex.complexes._simplextree.SimplexTree) -&gt; None</p>
+
+
 </section>
 </section>
 
@@ -833,11 +874,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../simplextree_ds.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Simplex Tree</span>
+      <a href="../overview.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../reference/SetComplex.html" class="pagination-link">
+        <span class="nav-page-text">SetComplex</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

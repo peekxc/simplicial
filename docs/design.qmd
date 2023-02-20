@@ -6,6 +6,7 @@ jupyter: python3
 execute: 
   freeze: auto
   enabled: false
+draft: true
 ---
 
 # Design Philosophy

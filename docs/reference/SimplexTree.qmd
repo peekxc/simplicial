@@ -2,9 +2,9 @@
 
  --- 
 
-## simplextree.SimplexTree { #simplextree.SimplexTree }
+## SimplexTree.SimplexTree { #SimplexTree.SimplexTree }
 
-`simplextree.SimplexTree(self, simplices: Iterable[SimplexLike] = None)`
+`SimplexTree.SimplexTree(self, simplices: Iterable[SimplexConvertible] = None)`
 
 SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex. 
 This class exposes a native extension module wrapping a simplex tree implemented with modern C++.
@@ -30,7 +30,7 @@ The Simplex Tree was originally introduced in the paper
 
 ## SimplexTree.insert { #SimplexTree.insert }
 
-`SimplexTree.insert(self, simplices: Iterable[SimplexLike])`
+`SimplexTree.insert(self, simplices: Iterable[SimplexConvertible])`
 
 Inserts simplices into the Simplex Tree. 
 
@@ -38,7 +38,7 @@ By definition, inserting a simplex also inserts all of its faces. If the simplex
 
 ### Parameters
 
-**simplices** : <span class='type_annotation'> Iterable[SimplexLike], </span>required<p> Iterable of simplices to insert (each of which are SimplexLike) </p>
+**simplices** : <span class='type_annotation'> Iterable[SimplexConvertible], </span>required<p> Iterable of simplices to insert (each of which are SimplexLike) </p>
 
 ::: {.callout-note}
         If the iterable is an 2-dim np.ndarray, then a p-simplex is inserted along each contiguous p+1 stride.
@@ -98,7 +98,7 @@ Checks for adjacencies between simplices
 
 ## SimplexTree.collapse { #SimplexTree.collapse }
 
-`SimplexTree.collapse(self, tau: SimplexLike, sigma: SimplexLike)`
+`SimplexTree.collapse(self, tau: SimplexConvertible, sigma: SimplexConvertible)`
 
 Checks whether its possible to collapse $\sigma$ through $\tau$, and if so, both simplices are removed. 
 A simplex $\sigma$ is said to be collapsible through one of its faces $\tau$ if $\sigma$ is the only coface of $\tau$ (excluding $\tau$ itself). 
@@ -162,12 +162,21 @@ If no vertices are specified, all degrees are computed. Non-existing vertices by
 
 ## SimplexTree.traverse { #SimplexTree.traverse }
 
-`SimplexTree.traverse(order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)`
+`SimplexTree.traverse(self, order: str = 'preorder', f: Callable = print, sigma: SimplexLike = [], p: int = 0)`
 
 Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered
 
 Supported traversals: 
-        - breadth-first ("bfs") 
+        - breadth-first / level order ("bfs", "levelorder") 
+        - depth-first / prefix ("dfs", "preorder")
+        - faces ("faces")
+        - cofaces ("cofaces")
+        - coface roots 
+        - p-skeleton
+        - p-simplices 
+        - maximal simplices 
+        - link 
+To select one of these options, set order to one of ["bfs", "levelorder", "dfs", "preorder"]
 
 ### Parameters
 
@@ -252,3 +261,55 @@ print(st)
 st.expand(k=2)
 print(st)
 ```
+
+ --- 
+
+## SimplexTree.card { #SimplexTree.card }
+
+`SimplexTree.card(self, p: int = None)`
+
+ --- 
+
+## _simplextree.SimplexTree { #_simplextree.SimplexTree }
+
+`_simplextree.SimplexTree()`
+
+ --- 
+
+## SimplexTree.clear { #SimplexTree.clear }
+
+`SimplexTree.clear()`
+
+clear(self: splex.complexes._simplextree.SimplexTree) -> None
+
+ --- 
+
+## SimplexTree.generate_ids { #SimplexTree.generate_ids }
+
+`SimplexTree.generate_ids()`
+
+generate_ids(self: splex.complexes._simplextree.SimplexTree, arg0: int) -> List[int]
+
+ --- 
+
+## SimplexTree.is_tree { #SimplexTree.is_tree }
+
+`SimplexTree.is_tree()`
+
+is_tree(self: splex.complexes._simplextree.SimplexTree) -> bool
+
+ --- 
+
+## SimplexTree.print_cousins { #SimplexTree.print_cousins }
+
+`SimplexTree.print_cousins()`
+
+print_cousins(self: splex.complexes._simplextree.SimplexTree) -> None
+
+ --- 
+
+## SimplexTree.print_tree { #SimplexTree.print_tree }
+
+`SimplexTree.print_tree()`
+
+print_tree(self: splex.complexes._simplextree.SimplexTree) -> None

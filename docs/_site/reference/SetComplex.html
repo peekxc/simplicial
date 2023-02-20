@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – comparable</title>
+<title>Splex – setcomplex</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../reference/RankComplex.md" rel="next">
+<link href="../reference/SimplexTree.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -139,7 +141,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/SetComplex.html" class="sidebar-item-text sidebar-link">SetComplex</a>
+  <a href="../reference/SetComplex.html" class="sidebar-item-text sidebar-link active">SetComplex</a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -159,13 +161,58 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="comparable" class="level1">
-<h1>Comparable</h1>
+<section id="setcomplex" class="level1">
+<h1>SetComplex</h1>
 <hr>
-<section id="meta.Comparable" class="level2">
-<h2 class="anchored" data-anchor-id="meta.Comparable">meta.Comparable</h2>
-<p><code>meta.Comparable()</code></p>
-<p>Protocol for annotating comparable types.</p>
+<section id="SetComplex.SetComplex" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.SetComplex">SetComplex.SetComplex</h2>
+<p><code>SetComplex.SetComplex(self, simplices: Iterable[SimplexConvertible] = None)</code></p>
+<p>Abstract Simplicial Complex</p>
+<hr>
+</section>
+<section id="SetComplex.dim" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.dim">SetComplex.dim</h2>
+<p><code>SetComplex.dim(self)</code></p>
+<hr>
+</section>
+<section id="SetComplex.faces" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.faces">SetComplex.faces</h2>
+<p><code>SetComplex.faces(self, p: Optional[int] = None)</code></p>
+<hr>
+</section>
+<section id="SetComplex.card" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.card">SetComplex.card</h2>
+<p><code>SetComplex.card(self, p: int = None)</code></p>
+<hr>
+</section>
+<section id="SetComplex.update" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.update">SetComplex.update</h2>
+<p><code>SetComplex.update(self, simplices: Iterable[SimplexLike])</code></p>
+<hr>
+</section>
+<section id="SetComplex.add" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.add">SetComplex.add</h2>
+<p><code>SetComplex.add(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="SetComplex.remove" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.remove">SetComplex.remove</h2>
+<p><code>SetComplex.remove(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="SetComplex.discard" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.discard">SetComplex.discard</h2>
+<p><code>SetComplex.discard(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="SetComplex.cofaces" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.cofaces">SetComplex.cofaces</h2>
+<p><code>SetComplex.cofaces(self, item: Collection[int])</code></p>
+<hr>
+</section>
+<section id="SetComplex.print" class="level2">
+<h2 class="anchored" data-anchor-id="SetComplex.print">SetComplex.print</h2>
+<p><code>SetComplex.print(self, kwargs)</code></p>
 
 
 </section>
@@ -420,6 +467,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../reference/SimplexTree.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">SimplexTree</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../reference/RankComplex.md" class="pagination-link">
+        <span class="nav-page-text">RankComplex</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

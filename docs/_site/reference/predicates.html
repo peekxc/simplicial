@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – comparable</title>
+<title>Splex – predicates</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -159,16 +159,44 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="comparable" class="level1">
-<h1>Comparable</h1>
+<section id="predicates.is_repeatable" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_repeatable">predicates.is_repeatable</h2>
+<p><code>predicates.is_repeatable(x: Iterable)</code></p>
 <hr>
-<section id="meta.Comparable" class="level2">
-<h2 class="anchored" data-anchor-id="meta.Comparable">meta.Comparable</h2>
-<p><code>meta.Comparable()</code></p>
-<p>Protocol for annotating comparable types.</p>
-
-
 </section>
+<section id="predicates.is_distance_matrix" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_distance_matrix">predicates.is_distance_matrix</h2>
+<p><code>predicates.is_distance_matrix(x: ArrayLike)</code></p>
+<p>Checks whether ‘x’ is a distance matrix, i.e.&nbsp;is square, symmetric, and that the diagonal is all 0.</p>
+<hr>
+</section>
+<section id="predicates.is_pairwise_distances" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_pairwise_distances">predicates.is_pairwise_distances</h2>
+<p><code>predicates.is_pairwise_distances(x: ArrayLike)</code></p>
+<p>Checks whether ‘x’ is a 1-d array of pairwise distances</p>
+<hr>
+</section>
+<section id="predicates.is_point_cloud" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_point_cloud">predicates.is_point_cloud</h2>
+<p><code>predicates.is_point_cloud(x: ArrayLike)</code></p>
+<p>Checks whether ‘x’ is a 2-d array of points</p>
+<hr>
+</section>
+<section id="predicates.as_dist_matrix" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.as_dist_matrix">predicates.as_dist_matrix</h2>
+<p><code>predicates.as_dist_matrix(x: ArrayLike, metric)</code></p>
+<hr>
+</section>
+<section id="predicates.is_dist_like" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_dist_like">predicates.is_dist_like</h2>
+<p><code>predicates.is_dist_like(x: ArrayLike)</code></p>
+<hr>
+</section>
+<section id="predicates.is_index_like" class="level2">
+<h2 class="anchored" data-anchor-id="predicates.is_index_like">predicates.is_index_like</h2>
+<p><code>predicates.is_index_like(x: ArrayLike)</code></p>
+
+
 </section>
 
 </main> <!-- /main -->

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – comparable</title>
+<title>Splex – geometry</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -159,16 +159,37 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="comparable" class="level1">
-<h1>Comparable</h1>
+<section id="geometry.as_pairwise_dist" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.as_pairwise_dist">geometry.as_pairwise_dist</h2>
+<p><code>geometry.as_pairwise_dist(x: ArrayLike)</code></p>
 <hr>
-<section id="meta.Comparable" class="level2">
-<h2 class="anchored" data-anchor-id="meta.Comparable">meta.Comparable</h2>
-<p><code>meta.Comparable()</code></p>
-<p>Protocol for annotating comparable types.</p>
-
-
 </section>
+<section id="geometry.enclosing_radius" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.enclosing_radius">geometry.enclosing_radius</h2>
+<p><code>geometry.enclosing_radius(x: ArrayLike)</code></p>
+<p>Returns the smallest ‘r’ such that the Rips complex on the union of balls of radius ‘r’ is contractible to a point.</p>
+<hr>
+</section>
+<section id="geometry.rips_complex" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.rips_complex">geometry.rips_complex</h2>
+<p><code>geometry.rips_complex(x: ArrayLike, radius: float = None, p: int = 1)</code></p>
+<hr>
+</section>
+<section id="geometry.flag_weight" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.flag_weight">geometry.flag_weight</h2>
+<p><code>geometry.flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None)</code></p>
+<hr>
+</section>
+<section id="geometry.rips_filtration" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.rips_filtration">geometry.rips_filtration</h2>
+<p><code>geometry.rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, kwargs)</code></p>
+<hr>
+</section>
+<section id="geometry.delaunay_complex" class="level2">
+<h2 class="anchored" data-anchor-id="geometry.delaunay_complex">geometry.delaunay_complex</h2>
+<p><code>geometry.delaunay_complex(x: ArrayLike)</code></p>
+
+
 </section>
 
 </main> <!-- /main -->
