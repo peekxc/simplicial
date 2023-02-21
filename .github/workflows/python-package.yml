@@ -54,7 +54,7 @@ jobs:
         label: Hello
         message: World
         color: orange
-        coverage: ${{ COV_RESULT }}
+        coverage: $COV_RESULT
     - name: Create status badges
       run: |
         echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
