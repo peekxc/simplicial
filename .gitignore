@@ -5,6 +5,7 @@ Dockerfile
 *docker
 .DS_Store
 .vscode
+mypy 
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,6 +1,7 @@
 [![Python package](https://github.com/peekxc/splex/actions/workflows/python-package.yml/badge.svg)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
+[![coverage_badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/peekxc/ef42349965f40edf4232737026690c5f/raw/coverage_info.json)](https://coveralls.io/github/peekxc/splex)
+[![python_badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)]
 
-![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/peekxc/ef42349965f40edf4232737026690c5f/raw/coverage_info.json)
 <!-- [![Appveyor Windows Build status](https://img.shields.io/appveyor/ci/peekxc/splex/master.svg?logo=windows&logoColor=DDDDDD)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
 [![Travis OS X Build status](https://img.shields.io/travis/peekxc/splex/master.svg?logo=Apple&logoColor=DDDDDD&env=BADGE=osx&label=build)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
 [![Travis Linux X Build status](https://github.com/peekxc/splex/actions/workflows/python-package.yml)](https://travis-ci.com/peekxc/splex) --> 
@@ -12,32 +13,28 @@
 
 What if there was a natural type for representing simplices? 
 ```python
-from splex import Simplex
 s, t = Simplex([0,1,2]),  Simplex([0,1])
 
 print(s.dim(), ":", s)
 # 2 : (0,1,2)
 
-## Supports face relations
-t < s 
-# True 
+t < s, t <= s, s < t
+# True, True, False
 
-## Has a boundary
 t in s.boundary()
 # True 
 
-## Can enumerate its faces
 print(list(s.faces()))
 # [(0), (1), (2), (0,1), (0,2), (1,2), (0,1,2)]
 ```
 
-What if said type was easy to work with, having no-fuss construction?
+What if said type was flexible and easy to work with, supporting no-fuss construction
 
 ```python
-Simplex(2) == Simplex([2])                        # value-types are always unboxed 
-Simplex([1,2]) == Simplex([1, 2, 2])              # simplices have set-like semantics, are hashable 
-Simplex((1,5,3)) == Simplex(np.array([5,3,1]))    # arrays, tuples, collections supported out of the box 
-Simplex((0,1,2)) == Simplex(range(3))             # ... as are generators and iterables 
+Simplex(2) == Simplex([2])                      # value-types are always unboxed 
+Simplex([1,2]) == Simplex([1, 2, 2])            # simplices have unique entries, are hashable 
+Simplex((1,5,3)) == Simplex(np.array([5,3,1]))  # arrays and tuples supported out of the box 
+Simplex((0,1,2)) == Simplex(range(3))           # ... as are generators, iterables, collections, etc
 ```
 
 What if it was easy to use with other native Python tools?
@@ -55,9 +52,6 @@ isinstance(s, Sized)     # True
 isinstance(s, Container) # True 
 isinstance(s, Iterable)  # True 
 isinstance(s, Mapping)   # False 
-
-# combinations yield Simplex types
-all([t <= s for t in combinations(s, 2)]) # True 
 ```
 
 What if there was a similar construction for simplicial complexes?
@@ -100,7 +94,7 @@ SR = simplicial_complex([[0,1,2,3]], form="rank") # simplices stored in arrays i
 faces(SS)           # calls overloaded .faces()
 faces(ST)           # same as above, but using a simplex tree
 faces(SR)           # same as above, but using a rank complex 
-faces([[0,1,2,3]])) # Equivalent! Falls back to combinations! 
+faces([[0,1,2,3]]) # Equivalent! Falls back to combinations! 
 # same goes for .card(), .dim(), .boundary(), ...
 ```
 
@@ -128,7 +122,8 @@ def MyCellComplex(ComplexLike):
 
 ```{python}
 
-``` -->
+``` 
+-->
 
 <!-- These are the goals of the `splex` package. Clean, extensible, performant.   -->
 
