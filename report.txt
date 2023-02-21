@@ -1,0 +1,24 @@
+Name                                      Stmts   Miss  Cover
+-------------------------------------------------------------
+src/splex/Simplex.py                         64     17    73%
+src/splex/UnionFind.py                        3      0   100%
+src/splex/__init__.py                        10      0   100%
+src/splex/combinatorial.py                   75     17    77%
+src/splex/complexes/RankComplex.py           27      6    78%
+src/splex/complexes/SetComplex.py            74     36    51%
+src/splex/complexes/SimplexTree.py          123     52    58%
+src/splex/complexes/__init__.py              17      1    94%
+src/splex/filtrations/RankFiltration.py      26     12    54%
+src/splex/filtrations/SetFiltration.py      137     71    48%
+src/splex/filtrations/__init__.py            10      3    70%
+src/splex/generics.py                        39     16    59%
+src/splex/geometry.py                        59     22    63%
+src/splex/meta.py                            37      8    78%
+src/splex/predicates.py                      33     11    67%
+src/splex/sparse.py                          33      4    88%
+tests/test_combinatorial.py                  27      0   100%
+tests/test_simplextree.py                    56      0   100%
+tests/test_splex_api.py                      59      6    90%
+tests/test_type_check.py                     16      0   100%
+-------------------------------------------------------------
+TOTAL                                       925    282    70%
