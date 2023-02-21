@@ -38,7 +38,7 @@ jobs:
       run: |
         python -m pytest tests/ --cov=./src
         coverage json -o test/test_results.json
-      if: matrix.os == 'ubuntu-latest'
+    - if: matrix.os == 'ubuntu-latest'
       run: |
         COV_RESULT=$(coverage report | tail -c 4)
         echo $COV_RESULT >> $GITHUB_ENV
