@@ -36,7 +36,7 @@ jobs:
         pip install --verbose .
     - name: Test with pytest
       run: |
-        python -m pytest tests/ --cov=./src
+        python -m pytest tests/ --cov=splex
         coverage run --source=./src -m pytest tests/
         coverage json -o tests/test_results.json
     - if: matrix.os == 'ubuntu-latest'
