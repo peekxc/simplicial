@@ -40,7 +40,8 @@ jobs:
         coverage json -o test/test_results.json
       if: matrix.os == 'ubuntu-latest'
       run: |
-        tail -c 4 report.txt
+        COV_RESULT=$(coverage report | tail -c 4)
+        echo $COV_RESULT >> $GITHUB_ENV
     - name: Send coverage report
       run: |
         coveralls --service=github
@@ -53,6 +54,7 @@ jobs:
         label: Hello
         message: World
         color: orange
+        coverage: ${{ COV_RESULT }}
     - name: Create status badges
       run: |
         echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
