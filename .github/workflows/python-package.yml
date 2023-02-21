@@ -56,18 +56,18 @@ jobs:
         valColorRange: ${{ env.COV_RESULT }}
         maxColorRange: 100
         minColorRange: 0
-    - name: Create status badges
-      run: |
-        echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
-        echo "Job URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true#job=${{ github.job }}"
-    - name: generate coverage badge
-      run: |
-        coverage-badge -o coverage-${{ matrix.python-version }}.svg
-    - name: Upload badges
-      uses: actions/upload-artifact@v1
-      with:
-        name: upload-status-badges
-        path: /home/runner/work/splex/splex/coverage-${{ matrix.python-version }}.svg
+#     - name: Create status badges
+#       run: |
+#         echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
+#         echo "Job URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}?check_suite_focus=true#job=${{ github.job }}"
+#     - name: generate coverage badge
+#       run: |
+#         coverage-badge -o coverage-${{ matrix.python-version }}.svg
+#     - name: Upload badges
+#       uses: actions/upload-artifact@v1
+#       with:
+#         name: upload-status-badges
+#         path: /home/runner/work/splex/splex/coverage-${{ matrix.python-version }}.svg
       # env:
       #   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #   COVERALLS_FLAG_NAME: ${{ matrix.python-version }}
