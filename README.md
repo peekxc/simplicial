@@ -11,7 +11,7 @@
 ## Quickstart 
 
 What if there was a natural type for representing simplices? 
-```{python}
+```python
 from splex import Simplex
 s, t = Simplex([0,1,2]),  Simplex([0,1])
 
@@ -33,7 +33,7 @@ print(list(s.faces()))
 
 What if said type was easy to work with, having no-fuss construction?
 
-```{python}
+```python
 Simplex(2) == Simplex([2])                        # value-types are always unboxed 
 Simplex([1,2]) == Simplex([1, 2, 2])              # simplices have set-like semantics, are hashable 
 Simplex((1,5,3)) == Simplex(np.array([5,3,1]))    # arrays, tuples, collections supported out of the box 
@@ -41,7 +41,7 @@ Simplex((0,1,2)) == Simplex(range(3))             # ... as are generators and it
 ```
 
 What if it was easy to use with other native Python tools?
-```{python}
+```python
 s = Simplex([0,1,3,4])
 np.array(s)          # native __array__ conversion enabled
 len(s)               # __len__ is as expected 
@@ -61,7 +61,7 @@ all([t <= s for t in combinations(s, 2)]) # True
 ```
 
 What if there was a similar construction for simplicial complexes?
-```{python}
+```python
 S = simplicial_complex([[0,1,2,3], [4,5], [6]])
 print(S)
 # 3-d complex with (7, 7, 4, 1)-simplices of dimension (0, 1, 2, 3)
@@ -71,51 +71,64 @@ S.add([5,6]) # adds Simplex([5,6]) to the complex
 ```
 
 .. and for filtered complexes as well?
-```{python}
-K = filtration()
+```python
+K = filtration(S)
 print(K)
+# 3-d filtered complex with (7, 7, 4, 1)-simplices of dimension (0, 1, 2, 3)
+print(format(K))
+# 3-d filtered complex with (7, 7, 4, 1)-simplices of dimension (0, 1, 2, 3)
+# I: 0   ≤ 1   ≤ 2   ≤ 3   ≤ 4   ≤  ...  ≤ 17      ≤ 18       
+# S: (0) ⊆ (1) ⊆ (2) ⊆ (3) ⊆ (4) ⊆  ...  ⊆ (1,2,3) ⊆ (0,1,2,3)
 
-
+[s for s in K.faces()] # [(0), (1), ..., (1,2,3), (0,1,2,3)]
 ```
 
 What if there were multiple choices in representation...
 
 
-```{python}
-
+```python
+SS = simplicial_complex([[0,1,2,3]], form="set")  # simplices stored as sets: simple and extensible
+ST = simplicial_complex([[0,1,2,3]], form="tree") # simplex trees are compact and efficient to modify
+SR = simplicial_complex([[0,1,2,3]], form="rank") # simplices stored in arrays integers: cache efficient to read
+# ... 
 ```
 
-...but every representation was supported through generics
+...but every representation was supported through _generics_
 
+
+```python
+faces(SS)           # calls overloaded .faces()
+faces(ST)           # same as above, but using a simplex tree
+faces(SR)           # same as above, but using a rank complex 
+faces([[0,1,2,3]])) # Equivalent! Falls back to combinations! 
+# same goes for .card(), .dim(), .boundary(), ...
+```
+
+What if extending support to all such types generically was as easy as
+
+```python
+def faces(S: ComplexLike) -> Iterator[SimplexConvertible]:
+  if hasattr(S, "faces"):
+    yield from S.faces()
+  else:
+    ...
+```
+
+...where `ComplexLike` is a protocol defining a minimal interface needed for Python types to be interpreted as complexes. 
+This is duck typing---no direct inheritance needed! Just define your type, make it _pythonic_ via abc.collections and go. 
+
+
+```python
+def MyCellComplex(ComplexLike):
+  def __iter__(self) -> Iterator[SimplexConvertible]:
+    ...
+```
+
+<!-- Of course, if the types could be *narrowed* for highly performant, type-specific algorithms?
 
 ```{python}
 
-```
+``` -->
 
-What if extending support to all such types was as easy as
-
-```{python}
-
-```
-
-...where `ComplexLike` is a protocol class defining a minimal interface, i.e. 
-
-```{python}
-
-```
-
-No direct inheritance needed. Just define your type, make it _pythonic_, and go. Just like Iterable! 
-
-
-```{python}
-
-```
-
-But what if the types could be *narrowed* for highly performant, type-specific algorithms?
-
-```{python}
-
-```
-
-These are the goals of the `splex` package. Clean, extensible, performant.  
+<!-- These are the goals of the `splex` package. Clean, extensible, performant.   -->
 
