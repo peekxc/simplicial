@@ -53,7 +53,7 @@ jobs:
         gistID: ef42349965f40edf4232737026690c5f
         filename: coverage_info.json
         label: coverage
-        message: ${{ env.COV_PERCENT }}
+        message: ${{ env.COV_PERCENT }}%
         valColorRange: ${{ env.COV_PERCENT }}
         maxColorRange: 100
         minColorRange: 0
