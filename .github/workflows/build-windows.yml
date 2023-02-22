@@ -8,7 +8,7 @@ on:
 
 jobs:
   build_windows:      
-    name: windows-latest - Python ${{ matrix.python-version }}
+    name: Windows - ${{ matrix.python-version }}
     runs-on: windows-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
