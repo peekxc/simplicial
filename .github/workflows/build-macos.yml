@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build_windows:      
+  build_osx:      
     name: OSX - ${{ matrix.python-version }}
     runs-on: macos-latest
     env:
