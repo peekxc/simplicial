@@ -1,4 +1,4 @@
-name: Python package
+name: Build linux
 
 on:
   push:
@@ -12,6 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      CC: g++
+      CXX: g++
     strategy:
       fail-fast: false
       matrix:
@@ -24,7 +26,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
         cache-dependency-path: setup.py
-    - if: matrix.os == 'ubuntu-latest'
+    - name: set flags 
       run: |
         echo "CC=g++" >> $GITHUB_ENV
         echo "CXX=g++" >> $GITHUB_ENV
