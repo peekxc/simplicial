@@ -1,6 +1,8 @@
 [![Python package](https://github.com/peekxc/splex/actions/workflows/python-package.yml/badge.svg)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
 [![coverage_badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/peekxc/ef42349965f40edf4232737026690c5f/raw/coverage_info.json)](https://coveralls.io/github/peekxc/splex)
-[![python_badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)]
+[![python_badge](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11-blue)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
+
+[![coverage_badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/peekxc/ef42349965f40edf4232737026690c5f/raw/windows_info.json)](https://coveralls.io/github/peekxc/splex)
 
 <!-- [![Appveyor Windows Build status](https://img.shields.io/appveyor/ci/peekxc/splex/master.svg?logo=windows&logoColor=DDDDDD)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
 [![Travis OS X Build status](https://img.shields.io/travis/peekxc/splex/master.svg?logo=Apple&logoColor=DDDDDD&env=BADGE=osx&label=build)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)

@@ -61,6 +61,21 @@ jobs:
     - name: Send coverage report
       run: |
         coveralls --service=github
+
+  update_coverage:
+    - if: matrix.os == 'windows-latest'  
+      name: Create coverage badge
+      uses: schneegans/dynamic-badges-action@v1.6.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ef42349965f40edf4232737026690c5f
+        filename: windows_info.json
+        label: build
+        message: ${{ env.COV_PERCENT }}
+        valColorRange: ${{ env.COV_PERCENT }}
+        maxColorRange: 100
+        minColorRange: 0
+        namedLogo: Pytest
 #     - name: Create status badges
 #       run: |
 #         echo "Results for job '${{ matrix.os }} - Python ${{ matrix.python-version }}':"
