@@ -16,8 +16,12 @@ class RankComplex(ComplexLike):
 
   Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations
   are computed on the fly by inverting the correspondence ('unranking') upon on access. 
+
+  Attributes:
+    simplices: structured ndarray of dtype [('rank', uint64), ('d', uint16)] containing the simplex ranks and dimensions, respectively. 
   """
   def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
+    """"""
     # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
     sset = unique(faces(simplices))
     s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
@@ -34,9 +38,18 @@ class RankComplex(ComplexLike):
     return rank_colex(x) in self.simplices['rank']
     
   def dim(self) -> int: 
+    """The maximal dimension of any simplex in the complex."""
     return max(self.simplices['d'])-1
 
   def faces(self, p: int = None) -> Iterable['SimplexLike']:
+    """Enumerates the faces of the complex.
+    
+    Parameters:
+      p: optional integer indicating which dimension of faces to enumerate. Default to None (enumerates all faces).
+    
+    Returns:
+      generator which yields on evaluation yields the simplex
+    """
     if p is not None: 
       assert isinstance(p, numbers.Integral)
       yield from unrank_combs(self.simplices['rank'][self.simplices['d'] == (p+1)], k=p+1)
@@ -44,6 +57,7 @@ class RankComplex(ComplexLike):
       yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
 
   def __iter__(self) -> Iterable[SimplexLike]:
+    """Enumerates the faces of the complex."""
     yield from unrank_combs(self.simplices['rank'], self.simplices['d'])
 
 

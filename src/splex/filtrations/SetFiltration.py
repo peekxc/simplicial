@@ -7,9 +7,10 @@ from ..complexes import *
 # Inferred: pop, clear, update, and setdefault
 # https://treyhunner.com/2019/04/why-you-shouldnt-inherit-from-list-and-dict-in-python/
 class SetFiltration(MutableMapping):
-  """
-  Simplicial Filtration 
+  """Filtered complex of simplices uses _SortedDict_.
 
+  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s 
+  of _Simplex_ instances. This class also implements the Mapping[Any, SimplexConvertible] 
   Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
   """
 
@@ -22,14 +23,13 @@ class SetFiltration(MutableMapping):
     key = SetFiltration._key_dim_lex_poset
     return SortedSet(None, key) if iterable is None else SortedSet(iter(map(Simplex, iterable)), key)
   
-  # simplices: Sequence[SimplexLike], I: Optional[Collection] = None
-  # Accept: 
-  # x simplices_iterable, f = None (this shouldnt work)
-  # simplices_iterable, f = Callable
-  # (index_iterable, simplices_iterable)
-  # SimplicialComplex, f = None 
-  # SimplicialComplex, f = Callable 
   def __init__(self, simplices: Union[ComplexLike, Iterable] = None, f: Optional[Callable] = None) -> None:
+    """
+    Accepts any of the following pairs: 
+      (index_iterable, simplices_iterable)
+      Iterable[SimplexConvertible], f = None
+      Iterable[SimplexConvertible], f = Callable
+    """
     self.data = SortedDict()
     self.shape = tuple()
     if isinstance(simplices, ComplexLike):
@@ -50,6 +50,9 @@ class SetFiltration(MutableMapping):
       pass
     else: 
       raise ValueError("Invalid input")
+
+  def dim(self) -> int:
+    return len(self.shape)-1
 
   ## delegate new behavior to new methods: __iadd__, __isub__
   def update(self, other: Iterable[Tuple[Any, Collection[Integral]]]):

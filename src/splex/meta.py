@@ -1,7 +1,7 @@
 ## meta.py
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
-from __future__ import annotations
+# from __future__ import annotations
 from abc import abstractmethod
 from typing import *
 from itertools import *
@@ -54,15 +54,13 @@ class ComplexLike(Collection[SimplexLike], Protocol):
 
 @runtime_checkable
 class FiltrationLike(Protocol):
-  """Protocol interface for types that represent (abstract) simplicial complexes 
+  """Protocol interface for types that represent _filtered_ simplicial complexes.
   
+  dionysus does __iter__() -> (Any, SimplexConvertible)
+
   A type is _FiltrationLike_ if it implements the Mapping[Any, SimplexLike] protocol. 
   """
-  def keys(self) -> Iterable[Any]:
-    pass
-  def values(self) -> Iterable[SimplexLike]:
-    raise NotImplementedError
-  def __getitem__(self, k: Any) -> SimplexLike:
+  def __getitem__(self, k: Any) -> SimplexConvertible:
     pass
   def __iter__(self) -> Iterator[Any]:
     pass
