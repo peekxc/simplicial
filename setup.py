@@ -5,7 +5,7 @@ import sysconfig
 from setuptools import setup, Extension, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
-__version__ = "0.2.2"
+__version__ = "0.1.0"
 
 base_path = os.path.dirname(__file__)
 # compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
