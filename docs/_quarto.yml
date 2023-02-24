@@ -43,7 +43,7 @@ website:
           - text: SetComplex
             href: reference/SetComplex.qmd
           - text: RankComplex
-            href: reference/RankComplex.md
+            href: reference/RankComplex.qmd
 
   page-navigation: true
   reader-mode: true

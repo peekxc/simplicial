@@ -9,7 +9,7 @@ from ..complexes import *
 class SetFiltration(MutableMapping):
   """Filtered complex of simplices uses _SortedDict_.
 
-  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s 
+  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_s 
   of _Simplex_ instances. This class also implements the Mapping[Any, SimplexConvertible] 
   Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
   """
@@ -189,7 +189,7 @@ class SetFiltration(MutableMapping):
   def validate(self, light: bool = True) -> bool:
     fs = list(self.values())
     for i, s in enumerate(fs): 
-      p = s.dimension() - 1 if light and len(s) >= 2 else None
+      p = dim(s) - 1 if light and len(s) >= 2 else None
       assert all([fs.index(face) <= i for face in s.faces(p)])
     assert all([k1 <= k2 for k1, k2 in pairwise(self.keys())])
 

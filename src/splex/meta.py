@@ -1,7 +1,7 @@
 ## meta.py
 ## Contains definitions and utilities for prescribing a structural type system on the 
 ## space of abstract simplicial complexes and on simplicial filtrations
-# from __future__ import annotations
+from __future__ import annotations
 from abc import abstractmethod
 from typing import *
 from itertools import *
@@ -24,6 +24,17 @@ class SimplexConvertible(Collection, Protocol[IT]):
   Any collection of integer-like values is convertible to a Simplex type.
   """
   pass
+
+# @runtime_checkable
+# class PropertySimplex(Tuple[SimplexConvertible, Mapping], Protocol):
+#   """Protocol class for simplex types with associated data.""" 
+#   pass 
+PropertySimplex = tuple[SimplexConvertible, Mapping]
+
+@runtime_checkable
+class SupportsFaces(Protocol):
+  def faces(S: Any, p: int, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplex]]:
+    raise NotImplementedError 
 
 @runtime_checkable
 class Comparable(Protocol):
@@ -53,16 +64,21 @@ class ComplexLike(Collection[SimplexLike], Protocol):
     raise NotImplementedError 
 
 @runtime_checkable
-class FiltrationLike(Protocol):
+class FiltrationLike(SupportsFaces, Protocol):
   """Protocol interface for types that represent _filtered_ simplicial complexes.
   
-  dionysus does __iter__() -> (Any, SimplexConvertible)
-
   A type is _FiltrationLike_ if it implements the Mapping[Any, SimplexLike] protocol. 
+
+  Should support either .faces() -> Union[...] or __iter__() -> (SimplexConvertible, Any)
+
+  Need not 
+
   """
   def __getitem__(self, k: Any) -> SimplexConvertible:
     pass
-  def __iter__(self) -> Iterator[Any]:
+  def __iter__(self) -> Iterator[PropertySimplex]:
     pass
+  # def index(self, k: Any) -> int:
+  #   pass
   def __len__(self) -> int: 
     pass 

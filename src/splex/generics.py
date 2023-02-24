@@ -35,8 +35,9 @@ def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented:
   if hasattr(s, "boundary"):
     return s.boundary(**kwargs)
   return combinations(s, len(s)-1)
-  
-def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) -> Iterator[SimplexConvertible]:
+
+
+def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplex]]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 

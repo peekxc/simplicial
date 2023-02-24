@@ -5,11 +5,6 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-<!-- [![Appveyor Windows Build status](https://img.shields.io/appveyor/ci/peekxc/splex/master.svg?logo=windows&logoColor=DDDDDD)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
-[![Travis OS X Build status](https://img.shields.io/travis/peekxc/splex/master.svg?logo=Apple&logoColor=DDDDDD&env=BADGE=osx&label=build)](https://github.com/peekxc/splex/actions/workflows/python-package.yml)
-[![Travis Linux X Build status](https://github.com/peekxc/splex/actions/workflows/python-package.yml)](https://travis-ci.com/peekxc/splex) --> 
-<!-- [![Coverage Status](https://coveralls.io/repos/github/peekxc/splex/badge.svg?branch=main)](https://coveralls.io/github/peekxc/splex?branch=main) -->
-
 `splex` is an experimental package for constructing, manipulating, and computing with simplicial complexes. 
 
 ## Quickstart 

@@ -7,13 +7,6 @@
     "text": "A simplicial complex S = (V, \\Sigma) is a collection of simplices s \\in \\Sigma satisfying:\n\nEach v \\in V is in S\nIf \\tau \\subset \\sigma and \\sigma \\in S, then \\tau \\in S\n\n\n\n\n\n\n\nTip\n\n\n\nThough highly related, this package is structured for representing abstract simplicial complexes, the purely combinatorial analog to the topological space obtained by ‘gluing’ together simplices.\n\n\n \\Delta = \\{\\sigma \\}\n\n\nkjbakdaok"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Splex",
-    "section": "",
-    "text": "Splex is an experimental Python package aimed at simplifying computation with simplicial complexes.\n\n\n\n\nimport splex"
-  },
-  {
     "objectID": "simplextree_ds.html",
     "href": "simplextree_ds.html",
     "title": "Splex",
