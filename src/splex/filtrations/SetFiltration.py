@@ -75,7 +75,7 @@ class SetFiltration(MutableMapping):
       return self[key]   # value type   
 
   def __delitem__(self, k: Any):
-    self.data.__del__(k)
+    self.data.pop(k)
   
   def __iter__(self) -> Iterator:
     return iter(self.keys())
@@ -182,16 +182,9 @@ class SetFiltration(MutableMapping):
       fs_s.append(f"{str(v): <{ks}}")
       assert len(fv_s[-1]) == len(fs_s[-1])
     sym_le, sym_inc = (' ≤ ', ' ⊆ ') if sys.getdefaultencoding()[:3] == 'utf' else (' <= ', ' <= ') 
-    print(repr(self))
+    print(repr(self), **kwargs)
     print("I: " + sym_le.join(fv_s[:5]) + sym_le + ' ... ' + sym_le + sym_le.join(fv_s[-2:]), **kwargs)
     print("S: " + sym_inc.join(fs_s[:5]) + sym_inc + ' ... ' + sym_inc + sym_inc.join(fs_s[-2:]), **kwargs)
-
-  def validate(self, light: bool = True) -> bool:
-    fs = list(self.values())
-    for i, s in enumerate(fs): 
-      p = dim(s) - 1 if light and len(s) >= 2 else None
-      assert all([fs.index(face) <= i for face in s.faces(p)])
-    assert all([k1 <= k2 for k1, k2 in pairwise(self.keys())])
 
   def __format__(self, format_spec = "default") -> str:
     from io import StringIO

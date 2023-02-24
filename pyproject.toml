@@ -8,6 +8,7 @@ name = "splex"
 authors = [
 	{ name = "Matt Piekenbrock", email = "matt.piekenbrock@gmail.com" }
 ]
+version = "0.0.0"
 readme = "README.md"
 description = "Type-aware package for representing, constructing, and manipulating simplicial complexes and filtrations."
 license = { file = "LICENSE" }
