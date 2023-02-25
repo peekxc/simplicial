@@ -25,21 +25,5 @@ def is_point_cloud(x: ArrayLike) -> bool:
 	''' Checks whether 'x' is a 2-d array of points '''
 	return(isinstance(x, np.ndarray) and x.ndim == 2)
 
-def as_dist_matrix(x: ArrayLike, metric="euclidean") -> ArrayLike:
-	if is_pairwise_distances(x):
-		n = inverse_choose(len(x), 2)
-		assert n == int(n)
-		D = np.zeros(shape=(n, n))
-		D[np.triu_indices(n, k=1)] = x
-		D = D.T + D
-		return(D)
-	elif is_distance_matrix(x):
-		return(x)
-	else:
-		raise ValueError("x should be a distance matrix or a set of pairwise distances")
-
 def is_dist_like(x: ArrayLike):
 	return(is_distance_matrix(x) or is_pairwise_distances(x))
-
-def is_index_like(x: ArrayLike):
-	return(np.all([isinstance(el, numbers.Integral) for el in x]))

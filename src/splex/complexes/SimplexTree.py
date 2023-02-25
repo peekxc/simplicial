@@ -66,6 +66,12 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		 	If the iterable is an 2-dim np.ndarray, then a p-simplex is removed along each contiguous p+1 stride.
 			Otherwise, each element of the iterable to casted to a Simplex and then removed from the tree. 
 		:::
+
+		Examples:
+			st = SimplexTree([range(3)])
+			print(st)
+			st.remove([[0,1]])
+			print(st)
 		"""
 		if isinstance(simplices, np.ndarray):
 			simplices = np.array(simplices, dtype=np.int8)
@@ -202,9 +208,9 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			order = 3
 		elif order == "coface_roots":
 			order = 4
-		elif order == "k_skeleton":
+		elif order == "p-skeleton":
 			order = 5
-		elif order == "k_simplices":
+		elif order == "p-simplices":
 			order = 6
 		elif order == "maximal":
 			order = 7
@@ -283,6 +289,8 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		self._expand(int(k))
 
 	def __repr__(self) -> str:
+		if len(self.n_simplices) == 0:
+			return "< Empty simplex tree >"
 		return f"Simplex Tree with {tuple(self.n_simplices)} {tuple(range(0,self.dimension+1))}-simplices"
 
 	def __iter__(self) -> Iterator[SimplexConvertible]:
@@ -296,7 +304,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 
 	def card(self, p: int = None):
 		if p is None: 
-			return self.n_simplices
+			return tuple(self.n_simplices)
 		else: 
 			assert isinstance(p, int), "Invalid p"
 			return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]

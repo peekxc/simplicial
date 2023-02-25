@@ -34,12 +34,16 @@ def test_simplicial_complex_api():
     assert isinstance(S, ComplexLike)
     check_poset(S)
 
+def test_set_complex():
+  S = simplicial_complex([[0,1,2,3]], form="set")
+  assert list(S.cofaces([0,1,2])) == [(0,1,2), (0,1,2,3)]
+  S.remove([0,1,2,3])
+  assert [0,1,2,3] not in S
+  assert dim(S) == 2
+  assert S.discard([0,1,2,3]) is None 
+  assert S.discard([0,1]) is None 
+  assert [0,1] not in S
 
-def test_rank_filtration():
-  pass
-  # S = simplicial_complex([[0,1,2,3,4]], "rank")
-  # C = CombinatorialComplex(S)
-  # K = CombinatorialFiltration(S)
 
 ## Testing reindexing capability 
 def test_filtration():
@@ -84,7 +88,6 @@ def test_rips():
   K = rips_filtration(X, radius)
   assert isinstance(K, FiltrationLike)
 
-
 def test_boundary():
   K = filtration(zip([0,1,2,3,4,5], [0,1,2,[0,1],[0,2],[1,2]]))
   D_test = boundary_matrix(K).todense()
@@ -97,3 +100,19 @@ def test_boundary():
     [ 0,  0,  0,  0,  0,  0]
   ])
   assert np.allclose(D_test - D_true, 0.0)
+
+def test_generics():
+  assert unique([[0], [0], [1], [0,1]]) == [[0], [1], [0,1]]
+  S = simplicial_complex([[0,1,2]])
+  assert card(S) == (3,3,1)
+  assert card(S,0) == 3
+  assert dim(S) == 2
+  assert list(faces(S)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
+  assert list(faces(S,0)) ==  list(map(Simplex, [(0),(1),(2)]))
+  K = filtration(S)
+  assert card(K) == (3,3,1)
+  assert card(K,0) == 3
+  assert dim(K) == 2
+  assert list(faces(K)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
+  assert list(faces(K,0)) ==  list(map(Simplex, [(0),(1),(2)]))
+

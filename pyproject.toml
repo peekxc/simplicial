@@ -8,7 +8,7 @@ name = "splex"
 authors = [
 	{ name = "Matt Piekenbrock", email = "matt.piekenbrock@gmail.com" }
 ]
-version = "0.0.0"
+version = "0.1.2"
 readme = "README.md"
 description = "Type-aware package for representing, constructing, and manipulating simplicial complexes and filtrations."
 license = { file = "LICENSE" }
@@ -22,5 +22,5 @@ dependencies = [
 ]
 
 [tool.semantic_release]
-version_variable = "setup.py:__version__"
+version_variable = "pyproject.toml:version"
 patch_without_tag = true

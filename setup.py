@@ -5,8 +5,6 @@ import sysconfig
 from setuptools import setup, Extension, find_packages
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 
-__version__ = "0.1.2"
-
 base_path = os.path.dirname(__file__)
 # compile_flags = list(dict.fromkeys(sysconfig.get_config_var('CFLAGS').split()))
 # compile_flags += list(dict.fromkeys(sysconfig.get_config_var('CPPFLAGS').split()))
@@ -45,7 +43,7 @@ from setuptools.command.build_ext import build_ext
 setup(
   name="splex",
   author="Matt Piekenbrock",
-  version=__version__,
+  # version=__version__,
   author_email="matt.piekenbrock@gmail.com",
   description="Package for manipulating simplicial complexes",
   long_description="",

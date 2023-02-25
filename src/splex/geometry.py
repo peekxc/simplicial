@@ -29,7 +29,7 @@ def enclosing_radius(x: ArrayLike) -> float:
     raise ValueError("Unknown input type")
 
 def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLike:
-  pd = pdist(x)
+  pd = as_pairwise_dist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
   st = SimplexTree(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))

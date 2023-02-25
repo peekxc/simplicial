@@ -77,7 +77,7 @@ def card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = Non
     if p is None: 
       from collections import Counter
       cc = Counter([dim(s, **kwargs) for s in faces(s, p, **kwargs)])
-      return np.array(list(cc.values()), dtype=int)
+      return tuple(cc.values())
     else: 
       assert isinstance(p, int)
       return int(sum([1 for s in faces(s, p, **kwargs) if dim(s, **kwargs) == p]))
