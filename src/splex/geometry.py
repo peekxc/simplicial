@@ -52,10 +52,11 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
 
 def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
   pd = as_pairwise_dist(x)
-  radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
+  radius = enclosing_radius(pd) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  st = SimplexTree([[i] for i in range(x.shape[0])])
-  st.insert(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))
+  n = inverse_choose(len(pd), 2)
+  st = SimplexTree([[i] for i in range(n)])
+  st.insert(unrank_combs(ind, n=n, k=2, order="lex"))
   st.expand(p)
   f = flag_weight(pd)
   G = ((f(s), s) for s in st)

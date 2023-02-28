@@ -12,4 +12,7 @@ def test_rips():
   assert isinstance(rips_filtration(X), FiltrationLike)
   from scipy.spatial.distance import pdist, squareform
   assert isinstance(rips_complex(pdist(X)), ComplexLike)
-  assert isinstance(rips_complex(squareform(pdist(X))), ComplexLike)
+  assert isinstance(rips_complex(squareform(pdist(X))), ComplexLike)  
+  assert isinstance(rips_filtration(pdist(X)), FiltrationLike)
+  assert isinstance(rips_filtration(squareform(pdist(X))), FiltrationLike)
+
