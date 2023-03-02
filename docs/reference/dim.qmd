@@ -1,0 +1,5 @@
+## dim { #dim }
+
+`dim(sigma: Union[SimplexConvertible, ComplexLike], kwargs)`
+
+Returns the dimension of a simplicial object, suitably defined.

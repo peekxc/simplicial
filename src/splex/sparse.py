@@ -5,7 +5,6 @@ from collections.abc import Sized
 from .generics import *
 from .predicates import *
 
-# See: https://stackoverflow.com/questions/70381559/ensure-that-an-argument-can-be-iterated-twice
 def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConvertible]] = None):
 
   ## Load faces. If not given, by definition, the given p-simplices contain their boundary faces.
@@ -43,8 +42,12 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
   """
   Constructs a sparse boundary matrix of a given simplicial object _K_
 
+  Parameters: 
+    K: simplicial complex (optionally filtered) or ComplexLike. 
+    p: dimension of the p-chains to form the columns. 
+  
   Returns: 
-    D := sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)
+    D: sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)
   """
   if isinstance(p, tuple):
     return (boundary_matrix(K, pi) for pi in p)

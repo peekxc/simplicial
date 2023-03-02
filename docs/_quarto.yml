@@ -6,8 +6,6 @@ project:
   type: website
   output-dir: _site
 
-# sphinx-build . ./_build/html -b html
-
 website:
   title: Splex
   search: 
@@ -29,27 +27,41 @@ website:
     collapse-level: 2
     contents: 
       - text: Overview 
-        href: overview.qmd
+        href: pages/overview.qmd
+      - section: API Reference
+        href: reference/index.qmd
+        contents:
+          - text: Faces
+            href: reference/faces.qmd
       # - text: Design 
       #   href: design.qmd
       # - text: Simplex Tree
       #   href: simplextree_ds.qmd
       # - text: API Overview
       #   href: reference/index.qmd
-      - section: API Reference
-        contents: 
-          - text: SimplexTree
-            href: reference/SimplexTree.qmd
-          - text: SetComplex
-            href: reference/SetComplex.qmd
-          - text: RankComplex
-            href: reference/RankComplex.qmd
+      # - section: API Reference
+      #   contents: 
+      #     - text: SimplexTree
+      #       href: reference/SimplexTree.qmd
+      #     - text: SetComplex
+      #       href: reference/SetComplex.qmd
+      #     - text: RankComplex
+      #       href: reference/RankComplex.qmd
 
   page-navigation: true
   reader-mode: true
   page-footer: 
     center: "Copyright 2023, Matthew Piekenbrock" 
     border: true
+
+latex-auto-install: true 
+
+execute:
+  cache: true
+
+theme: 
+  light: flatly
+  dark: darkly
 
 format:
   html: 
@@ -62,43 +74,38 @@ format:
     fontsize: 18px
     linestretch: 1.2
     margin-top: "0px" 
-    css: styles.css
+    css: static/styles.css
 
 # metadata-files:
 #   - _sidebar.yml
 
 quartodoc: 
-  title: API Reference
   package: splex
-  dir: reference
+  title: API Reference    # API only 
+  dir: reference          # API only 
+  style: pkgdown          # API only
   renderer: 
-    style: markdown
+    style: _renderer.py
     show_signature: true
     show_signature_annotations: true
     display_name: name 
-  # sidebar: "_sidebar.yml"
-  style: pkgdown
   sections:
-    - title: Explicit classes 
-      desc: Classes which represent simplicial complexes explicitly
-      contents:
-        - MutableFiltration
-        - SimplicialComplex
-        - SimplexTree
-    - title: Protocols 
-      desc: Structural subtypes for various types of simplicial complexes. 
+    - title: Simplex Tree 
+      desc: Simplex Tree data structure 
       contents: 
-        - SimplexLike 
-        - ComplexLike 
-        - FiltrationLike
-        
+        - complexes.SimplexTree
+    - title: Generics
+      desc: Generic functions
+      contents:
+        - generics.faces
+        - generics.dim
+        - generics.card
+        - generics.boundary
+    - title: UnionFind
+      desc: UnionFind data structure 
+      contents: 
+        - UnionFind.UnionFind
 
-latex-auto-install: true 
 
-execute:
-  cache: true
-
-theme: 
-  light: flatly
-  dark: darkly
-  
+# out_index: pages/index.qmd
+# sphinx-build . ./_build/html -b html

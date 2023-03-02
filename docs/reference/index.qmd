@@ -1,0 +1,20 @@
+# API Reference
+
+## Generics
+
+Generic functions
+
+| | |
+| --- | --- |
+| [faces](/reference/faces.qmd) | Returns the faces of a simplicial object, optionally restricted by dimension. |
+| [dim](/reference/dim.qmd) | Returns the dimension of a simplicial object, suitably defined. |
+| [card](/reference/card.qmd) | |
+| [boundary](/reference/boundary.qmd) | Returns the boundary of a simplicial object, optionally signed. |
+
+## UnionFind
+
+UnionFind data structure
+
+| | |
+| --- | --- |
+| [UnionFind](/reference/UnionFind.qmd) | |

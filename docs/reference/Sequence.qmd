@@ -1,7 +1,0 @@
-# Sequence
-
- --- 
-
-## meta.Sequence { #meta.Sequence }
-
-`meta.Sequence()`

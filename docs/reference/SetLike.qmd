@@ -1,9 +1,0 @@
-# SetLike
-
- --- 
-
-## meta.SetLike { #meta.SetLike }
-
-`meta.SetLike()`
-
-Protocol for annotating set-like types.

@@ -1,3 +1,0 @@
-## filtrations.filtration { #filtrations.filtration }
-
-`filtrations.filtration(simplices: Iterable[SimplexConvertible], f: Optional[Callable] = None, form: Optional[str] = 'default', kwargs)`
