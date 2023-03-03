@@ -1,13 +1,12 @@
 ## --- GENERICS --- 
 import numpy as np 
 from numbers import Integral
+from more_itertools import unique_everseen
 from .meta import *
 # from .complexes import * 
 # from .filtrations import * 
 
-def unique(sequence):
-  seen = set()
-  return [x for x in sequence if not(tuple(x) in seen or seen.add(tuple(x)))]
+
 
 def dim(sigma: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
   """Returns the dimension of a simplicial object, suitably defined."""
@@ -55,7 +54,7 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) ->
   elif isinstance(s, ComplexLike):
     complex_like = isinstance(next(iter(s)), SimplexConvertible) # first element is simplexconvertible -> complexLike
     if complex_like:
-      sset = unique(chain.from_iterable([faces(f, **kwargs) for f in s]))
+      sset = unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s]))
       if p is None:
         return iter(sset)
       else: 

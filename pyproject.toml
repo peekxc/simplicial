@@ -19,7 +19,8 @@ dependencies = [
 	"sortedcontainers",
 	"numpy",
 	"scipy", 
-	"hirola"
+	"hirola", 
+	"more_itertools"
 ]
 
 [tool.semantic_release]

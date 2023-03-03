@@ -2,6 +2,7 @@
 import numpy as np 
 from splex.complexes import SimplexTree
 from splex import * 
+from more_itertools import unique_everseen
 
 def test_construct():
   s = SimplexTree()
@@ -102,7 +103,7 @@ def test_link():
   from itertools import chain
   st = SimplexTree([[0,1,2,3,4]])
   closure_star = [[f for f in faces(s) if 0 not in Simplex(f)] for s in st.cofaces([0])]
-  link = list(map(Simplex, unique(chain.from_iterable(closure_star))))
+  link = list(map(Simplex, unique_everseen(chain.from_iterable(closure_star))))
   assert Simplex([0]) not in link
 
 

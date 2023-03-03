@@ -1,5 +1,6 @@
 import numpy as np 
 from splex import * 
+from more_itertools import unique_everseen
 
 def check_poset(S: ComplexLike):
   ## Reflexivity 
@@ -129,7 +130,7 @@ def test_boundary():
 
 
 def test_generics():
-  assert unique([[0], [0], [1], [0,1]]) == [[0], [1], [0,1]]
+  assert list(unique_everseen([[0], [0], [1], [0,1]])) == [[0], [1], [0,1]]
   S = simplicial_complex([[0,1,2]])
   assert card(S) == (3,3,1)
   assert card(S,0) == 3
