@@ -30,6 +30,8 @@ def test_simplex():
 
 def test_simplicial_complex_api():
   for form in ["set", "tree", "rank"]:
+    # S = simplicial_complex(form=form)
+    # assert isinstance(S, ComplexLike)
     S = simplicial_complex([[0,1,2,3,4]], form=form)
     assert isinstance(S, ComplexLike)
     check_poset(S)
@@ -69,6 +71,22 @@ def test_boundary_matrix():
   assert isinstance(F, FiltrationLike)
   assert len(list(F.faces())) == len(F)
 
+def test_boundary1_bench(benchmark):
+  from scipy.sparse import spmatrix
+  from itertools import combinations, chain
+  triangles = list(combinations(range(20),2))
+  S = simplicial_complex(triangles)
+  D1 = benchmark(boundary_matrix, S, p=1)
+  assert isinstance(D1, spmatrix),  "Is not sparse matrix"
+
+def test_boundary2_bench(benchmark): 
+  from scipy.sparse import spmatrix
+  from itertools import combinations, chain
+  triangles = list(combinations(range(16),3))
+  S = simplicial_complex(triangles)
+  D2 = benchmark(boundary_matrix, S, p=2)
+  assert isinstance(D2, spmatrix),  "Is not sparse matrix"
+
 def test_face_poset():
   from itertools import product
   S = simplicial_complex([[0,1,2,3,4]])
@@ -101,6 +119,7 @@ def test_boundary():
   ])
   assert np.allclose(D_test - D_true, 0.0)
 
+
 def test_generics():
   assert unique([[0], [0], [1], [0,1]]) == [[0], [1], [0,1]]
   S = simplicial_complex([[0,1,2]])
@@ -115,4 +134,3 @@ def test_generics():
   assert dim(K) == 2
   assert list(faces(K)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
   assert list(faces(K,0)) ==  list(map(Simplex, [(0),(1),(2)]))
-
