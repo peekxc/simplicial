@@ -59,6 +59,9 @@ class SetFiltration(MutableMapping):
     for k,v in other:
       self.data.__setitem__(k, self._sorted_set(v))
 
+  # def __contains__(self, k: SimplexConvertible) -> bool:
+
+
   def __getitem__(self, key: Any) -> Simplex: 
     return self.data.__getitem__(key)
 

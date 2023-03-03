@@ -17,7 +17,7 @@ def check_poset(S: ComplexLike):
 
   ## Test containment of faces 
   for s in S: 
-    for face in faces(s):
+    for face in faces(Simplex(s)):
       assert face in S
 
   return True 
@@ -35,6 +35,14 @@ def test_simplicial_complex_api():
     S = simplicial_complex([[0,1,2,3,4]], form=form)
     assert isinstance(S, ComplexLike)
     check_poset(S)
+
+# def test_filtration_api():
+#   for form in ["set", "tree", "rank"]:
+#     # S = simplicial_complex(form=form)
+#     # assert isinstance(S, ComplexLike)
+#     K = filtration(enumerate(faces([[0,1,2,3,4]])), form=form)
+#     assert isinstance(K, ComplexLike)
+#     check_poset(K)
 
 def test_set_complex():
   S = simplicial_complex([[0,1,2,3]], form="set")
@@ -60,16 +68,6 @@ def test_filtration():
   # assert len(L_simplices) == len(K_simplices)
   # assert L_simplices != K_simplices
   # assert list(sorted(K_simplices)) == list(sorted(L_simplices))
-
-def test_boundary_matrix():
-  S = simplicial_complex([[0,1,2,3,4]], "set")
-  D = boundary_matrix(S)
-  from scipy.sparse import spmatrix
-  assert isinstance(D, spmatrix), "Is not sparse matrix"
-  x = np.random.uniform(size=5, low = 0, high=5)
-  F = filtration(S, lambda s: max(x[s]))
-  assert isinstance(F, FiltrationLike)
-  assert len(list(F.faces())) == len(F)
 
 def test_boundary1_bench(benchmark):
   from scipy.sparse import spmatrix
@@ -118,6 +116,16 @@ def test_boundary():
     [ 0,  0,  0,  0,  0,  0]
   ])
   assert np.allclose(D_test - D_true, 0.0)
+
+  D1_test = boundary_matrix(K, p=1).todense()
+  D1_true = np.array([
+    [  1,  1,  0],
+    [ -1,  0,  1],
+    [  0, -1, -1],
+  ])
+  assert np.allclose(D1_test - D1_true, 0.0)
+
+  K = filtration([[0,1,2]], form="set")
 
 
 def test_generics():

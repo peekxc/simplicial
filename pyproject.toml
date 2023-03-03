@@ -18,7 +18,8 @@ dependencies = [
 	"pybind11",
 	"sortedcontainers",
 	"numpy",
-	"scipy"
+	"scipy", 
+	"hirola"
 ]
 
 [tool.semantic_release]

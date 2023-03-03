@@ -7,8 +7,8 @@ from ..combinatorial import *
 
 class RankFiltration(FiltrationLike):
   def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None):
-    simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
-    assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
+    # simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
+    # assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
     if f is not None:
       s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.float64)])
       self.simplices = np.array([(rank_colex(s), len(s), f(s)) for s in simplices], dtype=s_dtype)
