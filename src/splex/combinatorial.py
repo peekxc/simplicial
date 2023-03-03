@@ -27,12 +27,16 @@ def unrank_lex(r: int, k: int, n: int):
 
 def rank_lex(c: Iterable, n: int) -> int:
   c = tuple(sorted(c))
-  index = sum([comb((n-1)-cc, kk) for cc,kk in zip(c, reversed(range(1, len(c)+1)))])
-  return int((comb(n, len(c))-1) - int(index))
+  k = len(c)
+  index = sum([comb(n-ci-1,k-i) for i,ci in enumerate(c)])
+  #index = sum([comb((n-1)-cc, kk) for cc,kk in zip(c, reversed(range(1, len(c)+1)))])
+  return int(comb(n, k) - index - 1)
 
 def rank_colex(c: Iterable) -> int:
   c = tuple(sorted(c))
-  return sum([comb(ci, i+1) for i,ci in zip(reversed(range(len(c))), reversed(c))])
+  k = len(c)
+  #return sum([comb(ci, i+1) for i,ci in zip(reversed(range(len(c))), reversed(c))])
+  return sum([comb(ci,k-i) for i,ci in enumerate(reversed(c))])
 
 def unrank_colex(r: int, k: int) -> np.ndarray:
   """
