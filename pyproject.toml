@@ -24,3 +24,6 @@ dependencies = [
 [tool.semantic_release]
 version_variable = "pyproject.toml:version"
 patch_without_tag = true
+
+[tool.pytest.ini_options]
+addopts = "--benchmark-autosave"
