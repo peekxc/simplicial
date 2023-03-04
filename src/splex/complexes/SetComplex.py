@@ -10,7 +10,7 @@ class SetComplex(ComplexLike):
   def __init__(self, simplices: Iterable[SimplexConvertible] = None):
     """"""
     self.data = SortedSet([], key=lambda s: (len(s), tuple(s), s)) # for now, just use the lex/dim/face order 
-    self.shape = tuple()
+    self.n_simplices = tuple()
     self.update(simplices)
   
   def __len__(self, p: Optional[int] = None) -> int:
@@ -23,7 +23,7 @@ class SetComplex(ComplexLike):
     return iter(self.data)
   
   def dim(self) -> int:
-    return len(self.shape) - 1
+    return len(self.n_simplices) - 1
 
   def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
     if p is None:
@@ -34,10 +34,10 @@ class SetComplex(ComplexLike):
 
   def card(self, p: int = None):
     if p is None: 
-      return self.shape
+      return self.n_simplices
     else: 
       assert isinstance(p, int), "Invalid p"
-      return 0 if p < 0 or p >= len(self.shape) else self.shape[p]
+      return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
 
   def update(self, simplices: Iterable[SimplexLike]):
     for s in simplices:
@@ -48,11 +48,11 @@ class SetComplex(ComplexLike):
     for face in Simplex(item).faces():
       if not(face in self.data):
         self.data.add(face)
-        if len(face) > len(self.shape):
-          self.shape = tuple(list(self.shape) + [1])
+        if len(face) > len(self.n_simplices):
+          self.n_simplices = tuple(list(self.n_simplices) + [1])
         else:
-          t = self.shape
-          self.shape = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
+          t = self.n_simplices
+          self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
         
   def remove(self, item: Collection[int]):
     self.data.difference_update(set(self.cofaces(item)))

@@ -2,13 +2,12 @@ import numpy as np
 from ..meta import *
 from ..Simplex import *
 from ..complexes import * 
-from .filter_abcs import Filtration
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault
 # https://treyhunner.com/2019/04/why-you-shouldnt-inherit-from-list-and-dict-in-python/
-class SetFiltration(Filtration, Sequence):
-  """Filtered complex of simplices uses _SortedSet_.
+class SetFiltration(MutableMapping):
+  """Filtered complex of simplices uses _SortedDict_.
 
   This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_s 
   of _Simplex_ instances. This class also implements the Mapping[Any, SimplexConvertible] 
@@ -16,34 +15,23 @@ class SetFiltration(Filtration, Sequence):
   """
 
   @classmethod
-  def _key_dim_lex(cls, s: Simplex) -> bool:
-    return (len(s), tuple(s), s)
-  
-  @classmethod
-  def _key_dim_colex(cls, s: Simplex) -> bool:
+  def _key_dim_lex_poset(cls, s: Simplex) -> bool:
     return (len(s), tuple(s), s)
 
-  @classmethod
-  def _sorted_set(self, iterable: Iterable[SimplexConvertible] = None, order: str = "lex") -> SortedSet:
-    """Returns a newly allocated Sorted Set w/ lexicographical poset ordering."""
-    if order == "lex":
-      key = SetFiltration._key_dim_lex
-    elif order == "colex":
-      key = SetFiltration._key_dim_lex
-    else: 
-      raise ValueError(f"Invalid order '{str(order)}' given.")
+  ## Returns a newly allocated Sorted Set w/ lexicographical poset ordering
+  def _sorted_set(self, iterable: Iterable[Collection[Integral]] = None) -> SortedSet:
+    key = SetFiltration._key_dim_lex_poset
     return SortedSet(None, key) if iterable is None else SortedSet(iter(map(Simplex, iterable)), key)
   
   def __init__(self, simplices: Union[ComplexLike, Iterable] = None, f: Optional[Callable] = None) -> None:
-    """Constructs a filtration by storing simplices in a _SortedSet_ container.
-
-    Accepts any of the following pairs: 
-      - Iterable of (key, simplex) pairs
-      - Iterable[SimplexConvertible], f = None
-      - Iterable[SimplexConvertible], f = Callable
     """
-    self.data = SortedSet()
-    self.n_simplices = tuple()
+    Accepts any of the following pairs: 
+      (index_iterable, simplices_iterable)
+      Iterable[SimplexConvertible], f = None
+      Iterable[SimplexConvertible], f = Callable
+    """
+    self.data = SortedDict()
+    self.shape = tuple()
     if isinstance(simplices, ComplexLike):
       if isinstance(f, Callable):
         self += ((f(s), s) for s in simplices)
@@ -63,24 +51,15 @@ class SetFiltration(Filtration, Sequence):
     else: 
       raise ValueError("Invalid input")
 
-  ## --- Collection requirements --- 
-  def __iter__(self) -> Iterator:
-    return iter(self.data)
-
-  def __len__(self) -> int:
-    return sum(self.shape)
-
-  def __contains__(self, k: SimplexConvertible) -> bool:
-    return Simplex(k) in self.data
-
-
   def dim(self) -> int:
-    return len(self.n_simplices)-1
+    return len(self.shape)-1
 
   ## delegate new behavior to new methods: __iadd__, __isub__
   def update(self, other: Iterable[Tuple[Any, Collection[Integral]]]):
     for k,v in other:
       self.data.__setitem__(k, self._sorted_set(v))
+
+  # def __contains__(self, k: SimplexConvertible) -> bool:
 
 
   def __getitem__(self, key: Any) -> Simplex: 
@@ -101,7 +80,11 @@ class SetFiltration(Filtration, Sequence):
   def __delitem__(self, k: Any):
     self.data.pop(k)
   
+  def __iter__(self) -> Iterator:
+    return iter(self.keys())
 
+  def __len__(self) -> int:
+    return sum(self.shape)
     #return self.data.__len__()
 
   # https://peps.python.org/pep-0584/

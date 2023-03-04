@@ -1,6 +1,6 @@
 from abc import ABC
 from ..meta import * 
-from ..generic import * 
+from ..generics import * 
 
 
 class Filtration(ComplexLike, ABC):
@@ -8,7 +8,7 @@ class Filtration(ComplexLike, ABC):
   def print(self, **kwargs) -> None:
     import sys
     fv_s, fs_s = [], []
-    for k,v in self.items():
+    for k,v in iter(self):
       ks = len(str(v))
       fv_s.append(f"{str(k):<{ks}.{ks}}")
       fs_s.append(f"{str(v): <{ks}}")

@@ -36,7 +36,7 @@ def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented:
   return combinations(s, len(s)-1)
 
 
-def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplex]]:
+def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 

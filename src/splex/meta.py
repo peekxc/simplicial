@@ -29,11 +29,11 @@ class SimplexConvertible(Collection, Protocol[IT]):
 # class PropertySimplex(Tuple[SimplexConvertible, Mapping], Protocol):
 #   """Protocol class for simplex types with associated data.""" 
 #   pass 
-PropertySimplex = tuple[SimplexConvertible, Mapping]
+PropertySimplexConvertible = tuple[SimplexConvertible, Mapping]
 
 @runtime_checkable
 class SupportsFaces(Protocol):
-  def faces(S: Any, p: int, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplex]]:
+  def faces(S: Any, p: int, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
     raise NotImplementedError 
 
 @runtime_checkable
@@ -75,7 +75,7 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
   ## --- Collection requirements ---
   def __len__(self) -> int: 
     pass 
-  def __iter__(self) -> Iterator[PropertySimplex]:
+  def __iter__(self) -> Iterator[PropertySimplexConvertible]:
     pass
   def __contains__(self, item):
     pass
