@@ -22,7 +22,6 @@ class SetComplex(ComplexLike):
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
 
-
   ## --- Generics support --- 
   def dim(self) -> int:
     return len(self.n_simplices) - 1
@@ -58,17 +57,17 @@ class SetComplex(ComplexLike):
         
   def remove(self, item: Collection[int]):
     self.data.difference_update(set(self.cofaces(item)))
-    self._update_shape()
+    self._update_n_simplices()
 
   def discard(self, item: Collection[int]):
     self.data.discard(Simplex(item))
-    self._update_shape()
+    self._update_n_simplices()
   
-  def _update_shape(self) -> None:
+  def _update_n_simplices(self) -> None:
     """ Bulk update to shape """
     from collections import Counter
     cc = Counter([len(s)-1 for s in self.data])
-    self.shape = tuple(dict(sorted(cc.items())).values())
+    self.n_simplices = tuple(dict(sorted(cc.items())).values())
 
   def cofaces(self, item: Collection[int]):
     s = Simplex(item)

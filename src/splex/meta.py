@@ -74,18 +74,18 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
   """
   ## --- Collection requirements ---
   def __len__(self) -> int: 
-    pass 
+    raise NotImplementedError  
   def __iter__(self) -> Iterator[PropertySimplexConvertible]:
-    pass
+    raise NotImplementedError 
   def __contains__(self, item):
-    pass
+    raise NotImplementedError 
 
   ## --- Sequence requirements ---
   def __getitem__(self, k: Any) -> SimplexConvertible:
-    pass
+    raise NotImplementedError 
 
   ## --- Sequence mixins --- 
   def index(self, k: Any) -> int:
-    pass
+    raise NotImplementedError 
   # def __reversed__(self): -> Iterator[PropertySimplex]:
   #   pass

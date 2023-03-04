@@ -85,7 +85,7 @@ class SimplexBase():
     return len(self.vertices)-1
     
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class Simplex(SimplexBase, Generic[IT]):
   '''Dataclass for representing a simplex. 
 
@@ -101,15 +101,9 @@ class Simplex(SimplexBase, Generic[IT]):
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
 
-  def __repr__(self) -> str:
-    return SimplexBase.__repr__(self)
-
-@dataclass(frozen=False, slots=False)
+@dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
 class PropertySimplex(SimplexBase):
-
   def __init__(self, v: SimplexConvertible) -> None:
+    super(SimplexBase, self).__init__()
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
-
-  def __repr__(self) -> str:
-    return SimplexBase.__repr__(self)

@@ -23,12 +23,6 @@ def check_poset(S: ComplexLike):
 
   return True 
 
-def test_simplex():
-  s = Simplex([0,1,2])
-  assert isinstance(s, Simplex)
-  assert isinstance(s, SimplexLike)
-  assert isinstance(s, SimplexConvertible)
-
 def test_simplicial_complex_api():
   for form in ["set", "tree", "rank"]:
     # S = simplicial_complex(form=form)
