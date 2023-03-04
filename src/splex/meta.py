@@ -64,21 +64,28 @@ class ComplexLike(Collection[SimplexLike], Protocol):
     raise NotImplementedError 
 
 @runtime_checkable
-class FiltrationLike(SupportsFaces, Protocol):
+class FiltrationLike(SupportsFaces, Collection, Protocol):
   """Protocol interface for types that represent _filtered_ simplicial complexes.
   
-  A type is _FiltrationLike_ if it implements the Mapping[Any, SimplexLike] protocol. 
+  A type is _FiltrationLike_ if it implements Sequence protocol. 
 
   Should support either .faces() -> Union[...] or __iter__() -> (SimplexConvertible, Any)
 
-  Need not 
-
   """
-  def __getitem__(self, k: Any) -> SimplexConvertible:
-    pass
-  def __iter__(self) -> Iterator[PropertySimplex]:
-    pass
-  # def index(self, k: Any) -> int:
-  #   pass
+  ## --- Collection requirements ---
   def __len__(self) -> int: 
     pass 
+  def __iter__(self) -> Iterator[PropertySimplex]:
+    pass
+  def __contains__(self, item):
+    pass
+
+  ## --- Sequence requirements ---
+  def __getitem__(self, k: Any) -> SimplexConvertible:
+    pass
+
+  ## --- Sequence mixins --- 
+  def index(self, k: Any) -> int:
+    pass
+  # def __reversed__(self): -> Iterator[PropertySimplex]:
+  #   pass

@@ -101,9 +101,9 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       simplices = list(faces(K)) # to ensure repeatable
       D = _boundary(simplices)
     else:
-      # p_simplices = faces(K, p=p)
-      # p_faces = list(faces(K, p=p-1))
-      # D = _boundary(p_simplices, p_faces)
-      D = _fast_boundary(faces(K, p=p), dtype=(np.uint16, p+1))
+      p_simplices = faces(K, p=p)
+      p_faces = list(faces(K, p=p-1))
+      D = _boundary(p_simplices, p_faces)
+      # D = _fast_boundary(faces(K, p=p), dtype=(np.uint16, p+1))
     return D
 
