@@ -3,6 +3,7 @@ from ..meta import *
 from ..Simplex import *
 from ..complexes import * 
 from .filter_abcs import Filtration
+from sortedcontainers import SortedSet
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault

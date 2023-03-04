@@ -3,7 +3,6 @@ from ..meta import *
 from ..Simplex import *
 from sortedcontainers import SortedSet 
 
-## TODO: implement a simplex |-> attribute system like networkx graphs
 class SetComplex(ComplexLike):
   """ Abstract Simplicial Complex"""
 
@@ -13,19 +12,22 @@ class SetComplex(ComplexLike):
     self.n_simplices = tuple()
     self.update(simplices)
   
+  ## --- Collection requirements --- 
+  def __iter__(self) -> Iterator[Simplex]:
+    return iter(self.data)
+  
   def __len__(self, p: Optional[int] = None) -> int:
     return len(self.data)
 
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
 
-  def __iter__(self) -> Iterator:
-    return iter(self.data)
-  
+
+  ## --- Generics support --- 
   def dim(self) -> int:
     return len(self.n_simplices) - 1
 
-  def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
+  def faces(self, p: Optional[int] = None) -> Iterator[Simplex]:
     if p is None:
       yield from iter(self)
     else: 
@@ -71,36 +73,3 @@ class SetComplex(ComplexLike):
   def cofaces(self, item: Collection[int]):
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))
-
-  def __repr__(self) -> str:
-    if self.data.__len__() <= 15:
-      return repr(self.data)
-    else:
-      from collections import Counter
-      cc = Counter([s.dim() for s in iter(self)])
-      cc = dict(sorted(cc.items()))
-      return f"{max(cc)}-d complex with {tuple(cc.values())}-simplices of dimension {tuple(cc.keys())}"
-
-  def __format__(self, format_spec = "default") -> str:
-    from io import StringIO
-    s = StringIO()
-    self.print(file=s)
-    res = s.getvalue()
-    s.close()
-    return res
-
-  def print(self, **kwargs) -> None:
-    ST = np.zeros(shape=(self.__len__(), self.dim()+1), dtype='<U15')
-    ST.fill(' ')
-    for i,s in enumerate(self):
-      ST[i,:len(s)] = str(s)[1:-1].split(',')
-    SC = np.apply_along_axis(lambda x: ' '.join(x), axis=0, arr=ST)
-    for i, s in enumerate(SC): 
-      ending = '\n' if i != (len(SC)-1) else ''
-      print(s, sep='', end=ending, **kwargs)
-
-# Pythonic version: https://grantjenks.com/docs/sortedcontainers/#features
-
-# The OrderedDict was designed to be good at reordering operations. Space efficiency, iteration speed, and the performance of update operations were secondary.
-# A mapping object maps hashable values to arbitrary objects
-# https://stackoverflow.com/questions/798442/what-is-the-correct-or-best-way-to-subclass-the-python-set-class-adding-a-new

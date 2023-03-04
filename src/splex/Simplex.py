@@ -1,30 +1,12 @@
 from __future__ import annotations # for mypy to recognize self return types
-# import numpy as np
 from numbers import Number, Integral
 from dataclasses import dataclass
 from more_itertools import collapse, unique_justseen
 from .meta import *   
 
-@dataclass(frozen=True, slots=False)
-class Simplex(Generic[IT]):
-  '''Dataclass for representing a simplex. 
-
-  A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
-  
-  This class is also SimplexLike.
-  
-  Magics:
-    __hash__  
-    __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
-  '''
+class SimplexBase():
   vertices: Union[tuple[int], Tuple[()]] = ()
-  
-  def __init__(self, v: SimplexConvertible) -> None:
-    #t = tuple([int(v)]) if isinstance(v, Number) else tuple(np.unique(np.sort(np.ravel(tuple(v)))))
-    t = tuple(unique_justseen(sorted(collapse(v))))
-    object.__setattr__(self, 'vertices', t)
-    # assert all([isinstance(v, IT) for v in self.vertices]), "Simplex must be comprised of integral types."
-  
+
   def __eq__(self, other: object) -> bool: 
     if not isinstance(other, SimplexConvertible):
       return False
@@ -103,6 +85,31 @@ class Simplex(Generic[IT]):
     return len(self.vertices)-1
     
 
-# @dataclass(frozen=True)
-# class PropertySimplex(Simplex):
-#   __slots__ = ('__dict__')
+@dataclass(frozen=True, slots=True)
+class Simplex(SimplexBase, Generic[IT]):
+  '''Dataclass for representing a simplex. 
+
+  A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
+  
+  This class is also SimplexLike.
+  
+  Magics:
+    __hash__  
+    __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
+  '''
+  def __init__(self, v: SimplexConvertible) -> None:
+    t = tuple(unique_justseen(sorted(collapse(v))))
+    object.__setattr__(self, 'vertices', t)
+
+  def __repr__(self) -> str:
+    return SimplexBase.__repr__(self)
+
+@dataclass(frozen=False, slots=False)
+class PropertySimplex(SimplexBase):
+
+  def __init__(self, v: SimplexConvertible) -> None:
+    t = tuple(unique_justseen(sorted(collapse(v))))
+    object.__setattr__(self, 'vertices', t)
+
+  def __repr__(self) -> str:
+    return SimplexBase.__repr__(self)
