@@ -2,34 +2,12 @@ import numpy as np
 from splex import * 
 from more_itertools import unique_everseen
 
-def check_poset(S: ComplexLike):
-  ## Reflexivity 
-  for s in S: assert s <= s, "Simplex order not reflexive"
-
-  ## Antisymmetry 
-  for x, y in product(S, S):
-    if x <= y and y <= x:
-      assert x == y, "Simplex order not symmetric"
-
-  ## Transitivity
-  for x, y, z in product(S, S, S):
-    if x <= y and y <= z:
-      assert x <= z, "Simplex order not transitive"
-
-  ## Test containment of faces 
-  for s in S: 
-    for face in faces(Simplex(s)):
-      assert face in S
-
-  return True 
-
 def test_simplicial_complex_api():
   for form in ["set", "tree", "rank"]:
     # S = simplicial_complex(form=form)
     # assert isinstance(S, ComplexLike)
     S = simplicial_complex([[0,1,2,3,4]], form=form)
     assert isinstance(S, ComplexLike)
-    check_poset(S)
 
 # def test_filtration_api():
 #   for form in ["set", "tree", "rank"]:

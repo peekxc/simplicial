@@ -10,7 +10,8 @@ class SetComplex(ComplexLike):
     """"""
     self.data = SortedSet([], key=lambda s: (len(s), tuple(s), s)) # for now, just use the lex/dim/face order 
     self.n_simplices = tuple()
-    self.update(simplices)
+    if simplices is not None: 
+      self.update(simplices)
   
   ## --- Collection requirements --- 
   def __iter__(self) -> Iterator[Simplex]:
@@ -21,6 +22,12 @@ class SetComplex(ComplexLike):
 
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
+
+  # MutableSequence 
+  # __getitem__, __setitem__, __delitem__, __len__, insert, append, reverse, extend, pop, remove, and __iadd__
+
+  # MutableSet 
+  # __contains__, __iter__, __len__, add, discard, clear, pop, remove, __ior__, __iand__, __ixor__, and __isub__
 
   ## --- Generics support --- 
   def dim(self) -> int:
@@ -39,6 +46,11 @@ class SetComplex(ComplexLike):
     else: 
       assert isinstance(p, int), "Invalid p"
       return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
+
+  # --- Additional complex support functions ---
+  def cofaces(self, item: Collection[int]):
+    s = Simplex(item)
+    yield from filter(lambda t: t >= s, iter(self))
 
   def update(self, simplices: Iterable[SimplexLike]):
     for s in simplices:
@@ -68,7 +80,3 @@ class SetComplex(ComplexLike):
     from collections import Counter
     cc = Counter([len(s)-1 for s in self.data])
     self.n_simplices = tuple(dict(sorted(cc.items())).values())
-
-  def cofaces(self, item: Collection[int]):
-    s = Simplex(item)
-    yield from filter(lambda t: t >= s, iter(self))
