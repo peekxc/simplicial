@@ -6,6 +6,7 @@ from array import array
 from .generics import *
 from .predicates import *
 
+from more_itertools import flatten
 
 # def iterable2sequence(S: Iterable[Hashable], dtype): # dtype = (np.uint16, 3)
 #   """Converts an arbitrary iterable of homogenous types to Sequence"""
@@ -19,33 +20,30 @@ from .predicates import *
 #   S_arr[]
 # qr = np.array(rank_combs(S), dtype=np.uint64)
 
-def _fast_boundary(simplices: Iterable[SimplexConvertible], dtype) -> spmatrix:
+def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertible], dtype) -> spmatrix:
   assert len(dtype) == 2
   from hirola import HashTable
+  S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(S, dtype=dtype[0])
   if dtype[1] == 1:
-    return coo_array((0, len(simplices)), dtype=dtype[0])
-  elif dtype[1] == 2:
-    S_arr = np.fromiter(simplices, dtype=dtype)
-    m = S_arr.shape[0]
-    h = HashTable((3*m)*1.25, dtype=S_arr.dtype)
-    ind = np.arange(S_arr.shape[1]).astype(int)
-    I,J,X = array('I'), array('I'), array('i')
-    for i, idx in enumerate(combinations(ind, len(ind)-1)):
-      I.extend(h.add(S_arr[:,int(idx[0])]))
-      J.extend(range(m))
-      X.extend(repeat((-1)**i, m))
-    return coo_array((X, (I,J)), shape=(len(h.keys), m))
+    return coo_array((0, len(S_arr)), dtype=dtype[0])
   else:
-    S_arr = np.fromiter(simplices, dtype=dtype)
-    m = S_arr.shape[0]
-    h = HashTable((3*m)*1.25, dtype=(S_arr.dtype, S_arr.shape[1]-1))
-    ind = np.arange(S_arr.shape[1]).astype(int)
-    #I, J, X = [],[],[]
-    I,J,X = array('I'), array('I'), array('i')
+    m, d = S_arr.shape
+    F_arr = np.fromiter(F, dtype=(S_arr.dtype, d-1)) if d > 2 else np.fromiter(F, dtype=S_arr.dtype)
+    if m == 0:
+      return coo_array((F_arr.shape[0], 0), dtype=dtype[0])
+    h = HashTable((3*m)*1.25, dtype=(S_arr.dtype, d-1)) if d > 2 else HashTable((3*m)*1.25, dtype=S_arr.dtype)
+    h.add(F_arr)
+    ind = np.arange(d).astype(int)
+    I = np.empty(m*d, dtype=S_arr.dtype)
+    J = np.empty(m*d, dtype=S_arr.dtype)
     for i, idx in enumerate(combinations(ind, len(ind)-1)):
-      I.extend(h.add(S_arr[:,idx]))
-      J.extend(range(m))
-      X.extend(repeat((-1)**i, m))
+      f_ind = h[S_arr[:,idx]] if d > 2 else np.ravel(h[S_arr[:,idx]])
+      I[i*m:(i+1)*m] = f_ind
+      J[i*m:(i+1)*m] = np.fromiter(range(m), dtype=S_arr.dtype)
+    #X = np.fromiter(flatten([(-1)**np.argsort(I[J == j]) for j in range(m)]), dtype=int)
+    X = np.empty(m*d, dtype=int)
+    for j in range(m):
+      X[J==j] = (-1)**np.argsort(I[J == j])
     return coo_array((X, (I,J)), shape=(len(h.keys), m))
 
 
@@ -104,6 +102,6 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       # p_simplices = faces(K, p=p)
       # p_faces = list(faces(K, p=p-1))
       # D = _boundary(p_simplices, p_faces)
-      D = _fast_boundary(faces(K, p=p), dtype=(np.uint16, p+1))
+      D = _fast_boundary(faces(K, p=p), faces(K, p=p-1), dtype=(np.uint16, p+1))
     return D
 

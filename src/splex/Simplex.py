@@ -1,10 +1,10 @@
 from __future__ import annotations
 import numpy as np
-from numbers import Integral
+from numbers import Integral, Number
 from dataclasses import dataclass
 from sortedcontainers import SortedDict, SortedSet
 from .meta import *   
-
+from .combinatorial import rank_colex
 
 
 
@@ -29,9 +29,13 @@ class Simplex(Generic[IT]): #  Generic[IT]
     # assert all([isinstance(v, IT) for v in self.vertices]), "Simplex must be comprised of integral types."
   
   def __eq__(self, other) -> bool: 
+    if len(self) == 1 and isinstance(other, Number): return self.vertices[0] == other
     if len(self) != len(other): return False
     return(all(v == w for (v,w) in zip(iter(self.vertices), iter(other))))
   
+  def __int__(self) -> int:
+    return rank_colex(self.vertices)
+
   def __len__(self):
     return len(self.vertices)
   

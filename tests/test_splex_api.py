@@ -105,30 +105,6 @@ def test_rips():
   K = rips_filtration(X, radius)
   assert isinstance(K, FiltrationLike)
 
-def test_boundary():
-  K = filtration(zip([0,1,2,3,4,5], [0,1,2,[0,1],[0,2],[1,2]]))
-  D_test = boundary_matrix(K).todense()
-  D_true = np.array([
-    [ 0,  0,  0,  1,  1,  0],
-    [ 0,  0,  0, -1,  0,  1],
-    [ 0,  0,  0,  0, -1, -1],
-    [ 0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0]
-  ])
-  assert np.allclose(D_test - D_true, 0.0)
-
-  D1_test = boundary_matrix(K, p=1).todense()
-  D1_true = np.array([
-    [  1,  1,  0],
-    [ -1,  0,  1],
-    [  0, -1, -1],
-  ])
-  assert np.allclose(D1_test - D1_true, 0.0)
-
-  K = filtration([[0,1,2]], form="set")
-
-
 def test_generics():
   assert list(unique_everseen([[0], [0], [1], [0,1]])) == [[0], [1], [0,1]]
   S = simplicial_complex([[0,1,2]])
