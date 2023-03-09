@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from more_itertools import collapse, unique_justseen
 from .meta import *   
 
-class SimplexBase():
+class SimplexBase(Hashable):
   vertices: Union[tuple[int], Tuple[()]] = ()
 
   def __eq__(self, other: object) -> bool: 
@@ -90,16 +90,27 @@ class Simplex(SimplexBase, Generic[IT]):
   '''Dataclass for representing a simplex. 
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
-  
-  This class is also SimplexLike.
-  
-  Magics:
-    __hash__  
-    __contains__(self, v: int) <=> Returns whether integer 'v' is a vertex in 'self'
   '''
   def __init__(self, v: SimplexConvertible) -> None:
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
+
+@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+class ValueSimplex(SimplexBase, Generic[IT]):
+  '''Dataclass for representing a simplex associated with a value. 
+
+  A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
+  '''
+  value: Number
+  def __init__(self, v: SimplexConvertible, value: Number) -> None:
+    t = tuple(unique_justseen(sorted(collapse(v))))
+    object.__setattr__(self, 'value', value)
+    object.__setattr__(self, 'vertices', t)
+
+  def __repr__(self) -> str:
+    idx_str = f"{self.value}" if isinstance(self.value, Integral) else f"{self.value:.2f}"
+    return idx_str+":"+str(self.vertices).replace(',','') if self.dim() == 0 else idx_str+":"+str(self.vertices).replace(' ','')
+  
 
 @dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
 class PropertySimplex(SimplexBase):

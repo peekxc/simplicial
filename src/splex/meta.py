@@ -14,7 +14,7 @@ import numpy as np
 
 # IT = TypeVar('IT', bound=Union[int, np.integer, Integral])
 IT = TypeVar('IT', int, np.integer, Integral, covariant=True)
-
+# FT = TypeVar('FT', float, np.floating, Number, covariant=True)
 
 # Based on https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
 @runtime_checkable
@@ -80,12 +80,16 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
   def __contains__(self, item):
     raise NotImplementedError 
 
+  # --- Set requirements --- 
+
+  # --- Mutable Set --- 
+
   ## --- Sequence requirements ---
   def __getitem__(self, k: Any) -> SimplexConvertible:
     raise NotImplementedError 
 
   ## --- Sequence mixins --- 
-  def index(self, k: Any) -> int:
-    raise NotImplementedError 
+  # def index(self, k: Any) -> int:
+  #   raise NotImplementedError 
   # def __reversed__(self): -> Iterator[PropertySimplex]:
   #   pass
