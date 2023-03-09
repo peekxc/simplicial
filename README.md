@@ -40,7 +40,7 @@ What if it was easy to use with other native Python tools?
 s = Simplex([0,1,3,4])
 np.array(s)          # native __array__ conversion enabled
 len(s)               # __len__ is as expected 
-3 in 3               # __contains__ acts vertex-wise
+3 in s               # __contains__ acts vertex-wise
 list(iter(s))        # __iter__ also acts vertex-wise
 s[0]                 # __getitem__ as well 
 s[0] = 5             # __setitem__ is *not*: Simplices are immutable!

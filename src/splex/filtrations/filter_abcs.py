@@ -18,11 +18,12 @@ class Filtration(Set, ComplexLike):
     if len(self) == 0:
       return f"Empty filtration"
     d = dim(self)
-    return f"{d}-d filtered complex with {card(self)}-simplices of dimension {tuple(range(d))}"
+    return f"{d}-d filtered complex with {card(self)}-simplices of dimension {tuple(range(d+1))}"
 
   def print(self, **kwargs) -> None:
     fv_s, fs_s = [], []
-    for k,v in iter(self):
+    for v in faces(self):
+      k = v.value
       ks = len(str(v))
       fv_s.append(f"{str(k):<{ks}.{ks}}")
       fs_s.append(f"{str(v): <{ks}}")

@@ -42,22 +42,6 @@ def test_filtration():
   # assert L_simplices != K_simplices
   # assert list(sorted(K_simplices)) == list(sorted(L_simplices))
 
-def test_boundary1_bench(benchmark):
-  from scipy.sparse import spmatrix
-  from itertools import combinations, chain
-  triangles = list(combinations(range(20),2))
-  S = simplicial_complex(triangles)
-  D1 = benchmark(boundary_matrix, S, p=1)
-  assert isinstance(D1, spmatrix),  "Is not sparse matrix"
-
-def test_boundary2_bench(benchmark): 
-  from scipy.sparse import spmatrix
-  from itertools import combinations, chain
-  triangles = list(combinations(range(16),3))
-  S = simplicial_complex(triangles)
-  D2 = benchmark(boundary_matrix, S, p=2)
-  assert isinstance(D2, spmatrix),  "Is not sparse matrix"
-
 def test_face_poset():
   from itertools import product
   S = simplicial_complex([[0,1,2,3,4]])

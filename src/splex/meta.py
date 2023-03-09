@@ -16,6 +16,12 @@ import numpy as np
 IT = TypeVar('IT', int, np.integer, Integral, covariant=True)
 # FT = TypeVar('FT', float, np.floating, Number, covariant=True)
 
+def _data_attributes(s: Any) -> list: 
+  slots = list(chain.from_iterable(getattr(cls, '__slots__', []) for cls in type(s).__mro__))
+  attributes = [attr for attr in filter(lambda a: a[0] != "_", dir(s)) if not isinstance(getattr(s, attr), Callable)]
+  attributes = set(slots) | set(attributes)
+  return list(sorted(attributes))
+
 # Based on https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
 @runtime_checkable
 class SimplexConvertible(Collection, Protocol[IT]):

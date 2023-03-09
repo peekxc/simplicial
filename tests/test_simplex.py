@@ -20,4 +20,16 @@ def test_simplex():
   assert len(list(s.boundary())) == 3
   assert s - t == Simplex(2)
   assert hash(s) is not None
+
+
+def test_simplex_varieties():
+  s = Simplex([0,1,2])
+  f = ValueSimplex([0,1,2], 1)
+  p = PropertySimplex([0,1,2])
+  p.color = 'red'
+  p.data = 1
+  assert _data_attributes(s) == ['vertices']
+  assert _data_attributes(f) == ['value', 'vertices']
+  assert _data_attributes(p) == ['color', 'data', 'vertices']
+
   

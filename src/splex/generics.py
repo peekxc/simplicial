@@ -47,6 +47,7 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) ->
   - if _s_ is ComplexLike, then a generator enumerating _p_-faces of _s_ is created. 
   - if _s_ is FiltrationLike, then a generator enumerating _p_-faces of _s_ in filtration order is created.
   """
+  # list(chain.from_iterable(getattr(cls, '__slots__', []) for cls in type(s).__mro__))
   if hasattr(s, "faces"):
     return s.faces(p, **kwargs)
   if isinstance(s, FiltrationLike):
