@@ -36,6 +36,12 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   st.expand(p)
   return st
 
+## TODO: revamp to include index tracking with hirola 
+def lower_star_weight(x: ArrayLike) -> Callable[SimplexConvertible, float]:
+  def _weight(s: SimplexConvertible) -> float:
+    return max(x[np.asarray(s)])
+  return _weight
+
 def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Callable:
   pd = as_pairwise_dist(x)
   n = inverse_choose(len(pd), 2)
