@@ -6,7 +6,7 @@ from array import array
 from .generics import *
 from .predicates import *
 
-from more_itertools import flatten
+from more_itertools import flatten, collapse, chunked, unique_everseen 
 
 # def iterable2sequence(S: Iterable[Hashable], dtype): # dtype = (np.uint16, 3)
 #   """Converts an arbitrary iterable of homogenous types to Sequence"""
@@ -102,6 +102,12 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       # p_simplices = faces(K, p=p)
       # p_faces = list(faces(K, p=p-1))
       # D = _boundary(p_simplices, p_faces)
-      D = _fast_boundary(faces(K, p=p), faces(K, p=p-1), dtype=(np.uint16, p+1))
+      p_faces = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
+      if p == 1:
+        p_faces = list(collapse(p_faces))
+      D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
+      K_shape = card(K,p-1), card(K,p)
+      if D.shape != K_shape:
+        D = D.reshape(K_shape) # handles degenerate cases, otherwise should error
     return D
 
