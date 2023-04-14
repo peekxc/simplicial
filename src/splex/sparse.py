@@ -93,7 +93,7 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
   if isinstance(p, tuple):
     return (boundary_matrix(K, pi) for pi in p)
   else: 
-    assert p is None or isinstance(p, Integral), "p must be integer, or None"
+    assert p is None or isinstance(p, Integral) and p >= 0, "p must be non-negative integer, or None"
     assert isinstance(K, ComplexLike) or isinstance(K, FiltrationLike), f"Unknown input type '{type(K)}'"
     if p is None:
       simplices = list(faces(K)) # to ensure repeatable
@@ -102,9 +102,17 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       # p_simplices = faces(K, p=p)
       # p_faces = list(faces(K, p=p-1))
       # D = _boundary(p_simplices, p_faces)
-      p_faces = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
+      face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
+      face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
       if p == 1:
-        p_faces = list(collapse(p_faces))
+        face_gen = collapse(face_gen)
+        p_faces = np.fromiter(face_gen, dtype=np.uint16)
+        p_faces = p_faces[np.argsort(face_ranks)] # lex order
+      elif p > 1: 
+        p_faces = np.fromiter(face_gen, dtype=(np.uint16, p))
+        p_faces = p_faces[np.argsort(face_ranks)] # lex order
+      else: 
+        p_faces = face_ranks
       D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
       K_shape = card(K,p-1), card(K,p)
       if D.shape != K_shape:
