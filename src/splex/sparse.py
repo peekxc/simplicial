@@ -99,23 +99,24 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       simplices = list(faces(K)) # to ensure repeatable
       D = _boundary(simplices)
     else:
-      # p_simplices = faces(K, p=p)
-      # p_faces = list(faces(K, p=p-1))
+      p_simplices = faces(K, p=p)
+      p_faces = list(faces(K, p=p-1))
       # D = _boundary(p_simplices, p_faces)
-      face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
-      face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
-      if p == 1:
-        face_gen = collapse(face_gen)
-        p_faces = np.fromiter(face_gen, dtype=np.uint16)
-        p_faces = p_faces[np.argsort(face_ranks)] # lex order
-      elif p > 1: 
-        p_faces = np.fromiter(face_gen, dtype=(np.uint16, p))
-        p_faces = p_faces[np.argsort(face_ranks)] # lex order
-      else: 
-        p_faces = face_ranks
       D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
-      K_shape = card(K,p-1), card(K,p)
-      if D.shape != K_shape:
-        D = D.reshape(K_shape) # handles degenerate cases, otherwise should error
+      # face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
+      # face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
+      # if p == 1:
+      #   face_gen = collapse(face_gen)
+      #   p_faces = np.fromiter(face_gen, dtype=np.uint16)
+      #   p_faces = p_faces[np.argsort(face_ranks)] # lex order
+      # elif p > 1: 
+      #   p_faces = np.fromiter(face_gen, dtype=(np.uint16, p))
+      #   p_faces = p_faces[np.argsort(face_ranks)] # lex order
+      # else: 
+      #   p_faces = face_ranks
+      # D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
+      # K_shape = card(K,p-1), card(K,p)
+      # if D.shape != K_shape:
+      #   D = D.reshape(K_shape) # handles degenerate cases, otherwise should error
     return D
 
