@@ -22,7 +22,7 @@ ext_modules = [
     sources = ['src/splex/complexes/simplextree_module.cpp'], 
     include_dirs=[
       'extern/pybind11/include',
-      'src/splex/include'
+      'include'
     ], 
     extra_compile_args=compile_flags,
     language=cpp_version

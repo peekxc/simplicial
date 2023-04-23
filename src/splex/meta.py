@@ -37,6 +37,7 @@ class SimplexConvertible(Collection, Protocol[IT]):
 #   pass 
 PropertySimplexConvertible = tuple[SimplexConvertible, Mapping]
 
+
 @runtime_checkable
 class SupportsFaces(Protocol):
   def faces(S: Any, p: int, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
@@ -47,7 +48,6 @@ class Comparable(Protocol):
   """Protocol for annotating comparable types."""
   def __lt__(self, other) -> bool:
     raise NotImplementedError 
-
 
 @runtime_checkable
 class SimplexLike(SimplexConvertible[IT], Comparable, Protocol):
@@ -64,7 +64,7 @@ class SimplexLike(SimplexConvertible[IT], Comparable, Protocol):
 class ComplexLike(Collection[SimplexLike], Protocol):
   """Protocol interface for types that represent (abstract) simplicial complexes
 
-  A type is _ComplexLike_ if it implements the Collection[SimplexLike] protocol.
+  A type is _ComplexLike_ if it implements the Collection[SimplexLike] protocol. (contains, iter, len)
   """
   def __iter__(self) -> Iterator[SimplexLike]: 
     raise NotImplementedError 
@@ -99,3 +99,4 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
   #   raise NotImplementedError 
   # def __reversed__(self): -> Iterator[PropertySimplex]:
   #   pass
+

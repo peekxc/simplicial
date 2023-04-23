@@ -7,31 +7,41 @@ from .meta import *
 # from .filtrations import * 
 
 
+def dim(s: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
+  """Returns the dimension of a simplicial object.
+  
+  If _s_ has an existing method _s.dim(...)_, then that method is called with additional keyword arguments _kwargs_.
 
-def dim(sigma: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
-  """Returns the dimension of a simplicial object, suitably defined."""
-  if hasattr(sigma, "dim"):
-    return sigma.dim(**kwargs)
+  Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
+  - if _s_ is SimplexLike with dimension _p_, then _p_ is returned. 
+  - if _s_ is ComplexLike, then the largest dimension _p_ of any face in _s_ is returned.
+  - if _s_ is none of the above but is Sized, len(_s_) - 1 is returned. 
+  """
+  if hasattr(s, "dim"):
+    return s.dim(**kwargs)
   else:
-    complex_like = isinstance(next(iter(sigma)), SimplexConvertible) # first element is simplexconvertible -> complexLike
+    complex_like = isinstance(next(iter(s)), SimplexConvertible) # first element is simplexconvertible -> complexLike
     if complex_like:
-      return max((dim(s, **kwargs) for s in sigma))
+      return max((dim(s, **kwargs) for s in s))
     else: 
-      return len(sigma) - 1
+      return len(s) - 1
 
 def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented: bool = False, **kwargs) -> Iterable['SimplexConvertible']:
   """
   Returns the boundary of a simplicial object, optionally signed.
 
   If _s_ has an existing method _s.boundary(p, oriented)_, then that method is called with additional keyword args _kwargs_.
-  
+
   Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
   - if _s_ is SimplexLike with dimension _p_, then a generator enumerating _(p-1)_-faces of _s_ is created. 
   - if _s_ is ComplexLike, then a sparse boundary matrix whose columns represent boundary chains is returned. 
   - if _s_ is FiltrationLike, then a sparse boundary matrix whose columns represent boundary chains in filtration order is returned.
+  - if _s_ is none of the above but is Sized and Iterable, all len(s)-1 combinations are returned of _s_ are returned. 
 
+  TODO: finish this
   """
   if hasattr(s, "boundary"):
+    kwargs |= dict(p=p, oriented=oriented)
     return s.boundary(**kwargs)
   return combinations(s, len(s)-1)
 
@@ -40,12 +50,13 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) ->
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 
-  If _s_ has an existing method _s.faces(p)_, then that method is called with additional keyword args _kwargs_.
+  If _s_ has an existing method _s.faces(p)_, then that method is called with additional keyword arguments _kwargs_. 
   
   Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
-  - if _s_ is SimplexLike, then a generator enumerating _p_-combinations of _s_ is created. 
-  - if _s_ is ComplexLike, then a generator enumerating _p_-faces of _s_ is created. 
-  - if _s_ is FiltrationLike, then a generator enumerating _p_-faces of _s_ in filtration order is created.
+  - if _s_ is SimplexLike, then a generator enumerating _p_-combinations of _s_ is returned. 
+  - if _s_ is ComplexLike, then a generator enumerating _p_-faces of _s_ (in any order) is returned. 
+  - if _s_ is FiltrationLike, then a generator enumerating _p_-faces of _s_ in filtration order is returned.
+  - if _s_ is none of the above but is Sized and Iterable, all combinations of _s_ of length _p+1_ are chained and returned. 
   """
   # list(chain.from_iterable(getattr(cls, '__slots__', []) for cls in type(s).__mro__))
   if hasattr(s, "faces"):
@@ -71,8 +82,16 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) ->
     raise ValueError("Unknown type")
 
 def card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = None, **kwargs):
+  """Counts the number of _p_-dimensional simplices of a simplicial object _s_. 
+  
+  If _s_ has an existing method _s.card(p)_, then that method is called with additional keyword arguments _kwargs_. 
+
+  Otherwise, the behavior of this function depends on the type-class of _s_ and whether _p_ is specified. Namely, 
+   - If _s_ is _complex like_, then card(s) returns a tuple containing the number of simplices in _s_ in each dimension, and _card(s, p)_ the number of simplices in _s_ with dimension p.
+  """
   if hasattr(s, "card"):
-    return s.card(p)
+    kwargs |= dict(p=p)
+    return s.card(**kwargs)
   else:
     if p is None: 
       from collections import Counter

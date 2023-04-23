@@ -257,6 +257,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return F
 	
 	def maximal(self) -> Iterable['SimplexLike']:
+		"""Maximal simplices."""
 		F = []
 		self._traverse(7, lambda s: F.append(s), [], 0)
 		return F
@@ -267,8 +268,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return F
 
 	def expand(self, k: int) -> None:
-		""" 
-		Performs a k-expansion of the complex.
+		"""Performs a k-expansion of the complex.
 
 		This function is particularly useful for expanding clique complexes beyond their 1-skeleton. 
 		

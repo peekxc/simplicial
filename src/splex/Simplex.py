@@ -5,6 +5,7 @@ from more_itertools import collapse, unique_justseen
 from .meta import *   
 
 class SimplexBase(Hashable):
+  """Base class for comparable simplex-like classes with integer vertex labels."""
   vertices: Union[tuple[int], Tuple[()]] = ()
 
   def __eq__(self, other: object) -> bool: 
@@ -39,30 +40,35 @@ class SimplexBase(Hashable):
       return self > other
   
   def __gt__(self, other: Collection[IT]) -> bool:
+    """Simplex-wise comparison."""
     if len(self) <= len(other): 
       return(False)
     else:
       return(all([v in self.vertices for v in other]))
   
   def __contains__(self, __x: int) -> bool:
-    """ Reports vertex-wise inclusion """
+    """Vertex-wise membership test."""
     if not isinstance(__x, Number): 
       return False
     return self.vertices.__contains__(__x)
   
   def __iter__(self) -> Iterator[int]:
+    """Vertex-wise iteration."""
     return iter(self.vertices)
   
   def __repr__(self) -> str:
     return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
   
   def __getitem__(self, index: int) -> int:
+    """Vertex-wise indexing."""
     return self.vertices[index] # auto handles IndexError exception 
   
   def __sub__(self, other: SimplexConvertible) -> Simplex:
+    """Vertex-wise set difference."""
     return Simplex(set(self.vertices) - set(Simplex(other).vertices))
   
   def __add__(self, other: SimplexConvertible) -> Simplex:
+    """Vertex-wise set union."""
     return Simplex(set(self.vertices) | set(Simplex(other).vertices))
 
   def __hash__(self) -> int:
@@ -87,7 +93,7 @@ class SimplexBase(Hashable):
 
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class Simplex(SimplexBase, Generic[IT]):
-  '''Dataclass for representing a simplex. 
+  '''Simplex dataclass.
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
   '''
@@ -114,6 +120,7 @@ class ValueSimplex(SimplexBase, Generic[IT]):
 
 @dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
 class PropertySimplex(SimplexBase):
+  """ """
   def __init__(self, v: SimplexConvertible) -> None:
     super(SimplexBase, self).__init__()
     t = tuple(unique_justseen(sorted(collapse(v))))

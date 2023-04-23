@@ -40,15 +40,15 @@ class SetComplex(ComplexLike):
       assert isinstance(p, Number)
       yield from filter(lambda s: len(s) == p + 1, iter(self))
 
-  def card(self, p: int = None):
+  def card(self, p: int = None) -> tuple:
     if p is None: 
-      return self.n_simplices
+      return tuple(self.n_simplices)
     else: 
       assert isinstance(p, int), "Invalid p"
       return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
 
   # --- Additional complex support functions ---
-  def cofaces(self, item: Collection[int]):
+  def cofaces(self, item: Collection[int]) -> Iterator[Simplex]:
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))
 

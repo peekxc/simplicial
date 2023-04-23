@@ -21,9 +21,22 @@ def check_poset(S: ComplexLike):
 
   return True 
 
-
 def test_set_complex():
   S = SetComplex()
+  S.add([[0,1,2,3]])
+  assert list(S.cofaces([0,1,2])) == [(0,1,2), (0,1,2,3)]
+  S.remove([0,1,2,3])
+  assert [0,1,2,3] not in S
+  assert dim(S) == 2
+  assert S.discard([0,1,2,3]) is None 
+  assert S.discard([0,1]) is None 
+  assert [0,1] not in S
+
+def test_rank_complex():
+  S = RankComplex([[0,1,2]])
+  S.add([[0,1,2,3]])
+  assert check_poset(S)
+  assert card(S) == tuple(4,6,4,1)
   assert list(S.cofaces([0,1,2])) == [(0,1,2), (0,1,2,3)]
   S.remove([0,1,2,3])
   assert [0,1,2,3] not in S
