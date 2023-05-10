@@ -8,7 +8,7 @@ from ..generics import *
 from ..predicates import *
 from more_itertools import unique_everseen
 
-
+# todo: https://numpy.org/doc/stable/user/basics.dispatch.html
 class RankComplex(ComplexLike):
   """Simplicial complex represented via the combinatorial number system.
   
