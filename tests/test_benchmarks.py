@@ -1,6 +1,5 @@
 import numpy as np 
-from splex import Simplex
-
+from splex import *
 
 def test_simplex_bench(benchmark):
   benchmark([Simplex(np.random.choice(range(10), size=8)) for i in range(1000)])

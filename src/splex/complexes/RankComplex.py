@@ -51,12 +51,13 @@ class RankComplex(ComplexLike):
     Returns:
       generator which yields on evaluation yields the simplex
     """
+    print("WE ARE HERE")
     if p is not None: 
       assert isinstance(p, numbers.Integral)
-      p_ranks = self.simplices['rank'][self.simplices['dim'] == (p+1)]
-      yield from unrank_combs(p_ranks, k=p+1, order='colex')
+      p_ranks = self.simplices['rank'][self.simplices['dim'] == p]
+      return unrank_combs(p_ranks, k=p+1, order='colex')
     else:
-      yield from unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex')
+      return unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex')
 
   def card(self, p: int = None) -> Union[tuple, int]:
     if p is None: 
@@ -71,20 +72,48 @@ class RankComplex(ComplexLike):
   def add(self, simplices: Iterable[SimplexConvertible]): ## TODO: consider array module with numpy array fcasting 
     new_faces = []
     for s in simplices:
-      face_ranks = np.array([(rank_colex(f), dim(f)) for f in faces(s)], dtype=self.s_dtype)
+      face_ranks = [(rank_colex(f), dim(f)) for f in faces(s)]
       new_faces.extend(face_ranks)
+    new_faces = np.array(new_faces, dtype=self.s_dtype)
     self.simplices = np.unique(np.append(self.simplices, new_faces))
 
-  def cofaces():
-    pass
+  # def cofaces():
+  #   pass
 
-  def remove(self, simplices: Iterable[SimplexConvertible]):
-    pass
+  def remove(self, simplices: Iterable[SimplexConvertible]) -> None:
+    """Removes simplices from the complex. They must exist.
 
+    If any of the supplied _simplices_ are not in the complex, raise a KeyError.
+    """
+    faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
+    in_complex = np.array([s in self.simplices for s in faces_to_remove])
+    if any(~in_complex):
+      bad = list(simplices)[np.flatnonzero(~in_complex)[0]]
+      raise KeyError(f"{bad} not in complex.")
+    self.simplices = np.setdiff1d(self.simplices, faces_to_remove)
+
+  def discard(self, simplices: Iterable[SimplexConvertible]) -> None:
+    """Removes simplices from the complex, if they exist.
+    
+    If none of the supplied _simplices_ are in the complex, the simplices are not modified.  
+    """
+    faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
+    self.simplices = np.setdiff1d(self.simplices, faces_to_remove)
+
+  def __contains__(self, item: SimplexConvertible) -> bool :
+    # s = Simplex(item)
+    s = np.array((rank_colex(item),dim(item)), self.s_dtype)
+    return self.simplices.__contains__(s)
+    # return self.data.__contains__()
+
+  def __len__(self) -> int: 
+    return len(self.simplices)
+  
   def __repr__(self) -> str:
     if len(self) == 0:
       return "< Empty simplicial complex >"
     return f"{type(self).__name__} with {card(self)} {tuple(range(0,dim(self)+1))}-simplices"
 
-
+  def __array__(self, dtype=None):
+    return self.simplices
   

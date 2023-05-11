@@ -31,7 +31,8 @@ ext_modules = [
     '_union_find', 
     sources = ['src/splex/UnionFind.cpp'], 
     include_dirs=[
-      'extern/pybind11/include'
+      'extern/pybind11/include', 
+      'include'
     ], 
     extra_compile_args=compile_flags,
     language=cpp_version
