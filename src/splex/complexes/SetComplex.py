@@ -1,7 +1,7 @@
 import numpy as np
 from ..meta import * 
 from ..Simplex import *
-from sortedcontainers import SortedSet 
+from sortedcontainers import SortedSet # SortedSet is a vaid Sequence! 
 
 class SetComplex(ComplexLike):
   """ Abstract Simplicial Complex"""
@@ -22,6 +22,10 @@ class SetComplex(ComplexLike):
 
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
+
+  ## --- Sequence requirements --- 
+  def __getitem__(self, index: Union[int, slice]):
+    return self.data[index]
 
   # MutableSequence 
   # __getitem__, __setitem__, __delitem__, __len__, insert, append, reverse, extend, pop, remove, and __iadd__
@@ -56,16 +60,21 @@ class SetComplex(ComplexLike):
     for s in simplices:
       self.add(s)
 
-  def add(self, item: Collection[int]):
+  def add(self, item: Collection[int]) -> None:
     # self_set = super(SimplicialComplex, self)
-    for face in Simplex(item).faces():
+    s = Simplex(item)       # cast to Simplex for comparability
+    ns = np.zeros(dim(s)+1) # array to update num. simplices
+    ns[:len(self.n_simplices)] = self.n_simplices
+    for face in faces(s):
       if not(face in self.data):
         self.data.add(face)
-        if len(face) > len(self.n_simplices):
-          self.n_simplices = tuple(list(self.n_simplices) + [1])
-        else:
-          t = self.n_simplices
-          self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
+        ns[dim(face)] += 1
+    self.n_simplices = tuple(ns)
+        # if len(face) > len(self.n_simplices):
+        #   # self.n_simplices = tuple(list(self.n_simplices) + [1])
+        # else:
+        #   t = self.n_simplices
+          # self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
         
   def remove(self, item: Collection[int]):
     self.data.difference_update(set(self.cofaces(item)))

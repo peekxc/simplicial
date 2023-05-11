@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from more_itertools import collapse, unique_justseen
 from .meta import *   
 
+import numpy as np 
+
 class SimplexBase(Hashable):
   """Base class for comparable simplex-like classes with integer vertex labels."""
   vertices: Union[tuple[int], Tuple[()]] = ()
@@ -56,9 +58,6 @@ class SimplexBase(Hashable):
     """Vertex-wise iteration."""
     return iter(self.vertices)
   
-  def __repr__(self) -> str:
-    return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
-  
   def __getitem__(self, index: int) -> int:
     """Vertex-wise indexing."""
     return self.vertices[index] # auto handles IndexError exception 
@@ -70,10 +69,14 @@ class SimplexBase(Hashable):
   def __add__(self, other: SimplexConvertible) -> Simplex:
     """Vertex-wise set union."""
     return Simplex(set(self.vertices) | set(Simplex(other).vertices))
-
+  
   def __hash__(self) -> int:
-    # Because Python has no idea about mutability of an object.
+    """ Vertex-wise hashing to support equality tests and hashability """
     return hash(self.vertices)
+
+  def __repr__(self) -> str:
+    """ Default str representation prints the vertex labels delimited by commas """
+    return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
 
   def faces(self, p: Optional[int] = None) -> Iterator[Simplex]:
     dim: int = len(self.vertices)
@@ -89,24 +92,77 @@ class SimplexBase(Hashable):
 
   def dim(self) -> int: 
     return len(self.vertices)-1
-    
 
+  def __array__(self) -> np.ndarray: 
+    """Support native array conversion."""
+    return np.asarray(self.vertices)
+
+  
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class Simplex(SimplexBase, Generic[IT]):
-  '''Simplex dataclass.
+  """Simplex dataclass.
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
-  '''
+  """
   def __init__(self, v: SimplexConvertible) -> None:
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
 
-@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
-class ValueSimplex(SimplexBase, Generic[IT]):
-  '''Dataclass for representing a simplex associated with a value. 
+@dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
+class PropertySimplex(SimplexBase):
+  """Dataclass for representing a simplex associated with arbitrary properties. 
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
-  '''
+
+  Unlike the _Simplex_ class, this class is neither frozen nor slotted, thus it supports arbitrary field assignments.  
+  """
+  def __init__(self, v: SimplexConvertible) -> None:
+    super(SimplexBase, self).__init__()
+    t = tuple(unique_justseen(sorted(collapse(v))))
+    object.__setattr__(self, 'vertices', t)
+
+
+
+## TODO: Is this entire class not worth it?
+## 1. inequality tests become muddled. could inherit all the same behavior but then augment to use value to break ties
+## 2. ... but then the value is not a filter value, should be first comparison made 
+## 3. boundary and face enumeration become an issue---do they inherit the value? Or are they just simplex's? 
+## the former must be done at the filtration class level, whereas the latter can be done simply by downcasts in the process 
+## 4. ... the distinction between the typical Simplex is that although a regular simplex in a complex might have faces not taking the same 
+## memory as the ones enumerated by a given simplex, we call them equivalent via the hashable equality test. In essence, a Simplex really is a value-type, 
+## in the sense that it is an r-type, whereas a Filtered Simplex acts more like an l-value. In the context of C#, (https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/value-types), 
+## Simplex's are structure types that support value semantics. In contrast, one could have several ValueSimplexes of the same underlying simplex, but different values. 
+## Moreover, **two filtrations could have identical ValueSimplexes with different faces/boundaries**
+## -----
+## Suppose we just inherit all the struct-like behavior of a regular simplex. 
+## 1. Equality testing is still vertex-wise. Values are ignored.
+## 2. Inequality ordering is unchanged and valid. It is up to the class that uses Value Simplices to ensure they are ordered correctly. 
+## 3. boundary and face enumeration would just downcast / discard values. 
+## 4. faces(S, p=1, data=True) would yield something like 
+## (o) for s in faces(S, p=1, data=False) => default behavior
+## (a) for s,d in faces(S, p=1, data=True) => d is empty dict view {} for Simplex 
+## (b) for s,d in faces(S, p=1, data=True) => d is { 'value' : ... } for ValueSimplex 
+## (c) for s,d in faces(S, p=1, data=True) => d is dict view for PropertySimplex
+## If (b) is changed such that d is a Number type, code would be simpler, but changes the interface. 
+## ... https://networkx.org/documentation/stable/developer/nxeps/nxep-0002.html
+## S.faces(data=True) should return a FaceDataView such that S.faces(data=True)[s] return the attribute dictionary of s 
+## Note: Should use more_itertools Sequence views to support indexing, slicing, and length queries.
+## ahh but then, S.faces() should in actuality return a VIEW 
+## more_itertools supports constructing SequenceViews which support indexing, slicing, and length queries, though they likely require a Sequence input, 
+## which demands __get_item__, which SimplexTree doesn't necessary have. 
+## SequenceView's are iterable though, so the contract of faces is still in place. Suggests faces(..., p = Number, ...) could be potentially very multi-pronged:
+## - Supports __iter__ + __array__ + __array_interface__ + Sequence + SequenceView + w/ Rank Complex 
+## - Supports __iter__ + __array__ + Sequence + SequenceView for SetComplex 
+## - Supports __iter__ + __array__ for SimplexTree
+
+@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+class ValueSimplex(SimplexBase, Generic[IT]):
+  """Dataclass for representing a simplex associated with a single numerical value. 
+
+  A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous.
+
+  Unlike the _Simplex_ class, this class is has an additional value slot to change the poset
+  """
   value: Number
   def __init__(self, v: SimplexConvertible, value: Number) -> None:
     t = tuple(unique_justseen(sorted(collapse(v))))
@@ -117,11 +173,3 @@ class ValueSimplex(SimplexBase, Generic[IT]):
     idx_str = f"{self.value}" if isinstance(self.value, Integral) else f"{self.value:.2f}"
     return idx_str+":"+str(self.vertices).replace(',','') if self.dim() == 0 else idx_str+":"+str(self.vertices).replace(' ','')
   
-
-@dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
-class PropertySimplex(SimplexBase):
-  """ """
-  def __init__(self, v: SimplexConvertible) -> None:
-    super(SimplexBase, self).__init__()
-    t = tuple(unique_justseen(sorted(collapse(v))))
-    object.__setattr__(self, 'vertices', t)

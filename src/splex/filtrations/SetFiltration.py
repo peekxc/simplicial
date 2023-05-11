@@ -106,17 +106,15 @@ class SetFiltration(Filtration, Sequence):
     for s in simplices: 
       self.add(s)
 
-  def discard(self, simplex: ValueSimplex):
-    assert isinstance(simplex, ValueSimplex) or isinstance(simplex, tuple)
-    simplex = ValueSimplex(simplex[1], simplex[0]) if isinstance(simplex, tuple) else simplex
-    s_cofaces = list(self.cofaces(simplex))
-    ns = list(self.n_simplices) 
-    for c in s_cofaces:
-      self.data.discard(c)
-      ns[dim(c)] -= 1
-    self.n_simplices = tuple(rstrip(ns, lambda x: x <= 0))
-
-
+  # def discard(self, simplex: ValueSimplex):
+  #   assert isinstance(simplex, ValueSimplex) or isinstance(simplex, tuple)
+  #   simplex = ValueSimplex(simplex[1], simplex[0]) if isinstance(simplex, tuple) else simplex
+  #   s_cofaces = list(self.cofaces(simplex))
+  #   ns = list(self.n_simplices) 
+  #   for c in s_cofaces:
+  #     self.data.discard(c)
+  #     ns[dim(c)] -= 1
+  #   self.n_simplices = tuple(rstrip(ns, lambda x: x <= 0))
 
   ## --- splex generics support --- 
   def dim(self) -> int:

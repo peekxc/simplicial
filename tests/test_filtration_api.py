@@ -3,7 +3,6 @@ from typing import *
 from splex import * 
 from splex.filtrations import * 
 
-
 def validate_filtration(index_values: Iterable, simplices: Iterable, light: bool = True) -> bool:
   index_values = list(index_values)
   simplices = list(simplices)
@@ -17,7 +16,7 @@ def test_set_filtration_simple():
   K = SetFiltration(enumerate(S))
   assert K.n_simplices == (4,6,4,1), "simplex cardinality tracking not working properly"
   assert [0,1,2,3] in K, "contains not working properly"
-  K.discard([0,1,2,3])
+  # K.discard([0,1,2,3])
 
 def test_filtration_api():
   S = simplicial_complex([[0,1,2,3]])

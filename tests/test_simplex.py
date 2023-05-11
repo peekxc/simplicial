@@ -1,4 +1,5 @@
 from splex import * 
+from splex.meta import _data_attributes 
 
 def test_simplex():
   s = Simplex([0,1,2])

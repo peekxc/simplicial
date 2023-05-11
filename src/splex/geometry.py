@@ -6,6 +6,7 @@ from .complexes import *
 from .filtrations import *
 from .combinatorial import rank_combs, unrank_combs
 from .predicates import *
+from dataclasses import dataclass
 
 def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
   if is_point_cloud(x):
@@ -49,6 +50,33 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
     else: 
       return float(max(pd[np.array(rank_combs(faces(s,1), n=n, order='lex'), dtype=int)]))
   return _clique_weight
+
+## TODO: revamp to include support for arbitrary simplicial complexes via index tracking with hirola 
+def lower_star_weight(x: ArrayLike) -> Callable:
+  """Constructs a simplex-parameterized _Callable_ that evaluates its lower star value based on _x_. 
+
+  Vertex labels are assumed to be 0-indexed for now. 
+  
+  If simplex-like, use 0-indexed vertex labels to index vertex values directly. 
+  
+  Otherwise assumes a 2d array of simplex labels is given and vectorizes the computation.
+  """
+  @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+  class LS:
+    vertex_weights: np.ndarray = np.empty(0, dtype=np.float32)
+
+    def __init__(self, v: np.ndarray) -> None:
+      object.__setattr__(self, 'vertex_weights', v)
+    
+    def __call__(self, s: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+      # assert hasattr(faces(S, 1), "__array__")
+      s = np.asarray(s)
+      return np.max(self.vertex_weights[s], axis=-1) ## vectorized form
+      # if s.ndim == 2:
+      #   return self.vertex_weights[s].max(axis=1) 
+      # return np.max(self.vertex_weights[s])
+    # def __array_function__(self, func, types, args, kwargs):
+  return LS(x)
 
 def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
   pd = as_pairwise_dist(x)

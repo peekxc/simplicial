@@ -4,6 +4,28 @@ from typing import *
 from numpy.typing import ArrayLike 
  
 from .combinatorial import * 
+from .meta import *
+
+def is_simplex_like(x: Any) -> bool:
+	return isinstance(x, SimplexConvertible) # is a Collection supporting __contains__, __iter__, and __len__
+
+def is_complex_like(x: Any) -> bool: 
+	if isinstance(x, ComplexLike): # is iterable
+		item, iterable = spy(x)
+		return is_simplex_like(item)
+	return False
+
+def is_filtration_like(x: Any) -> bool:
+	return isinstance(x, FiltrationLike) and is_complex_like(x)
+
+def is_iterable_of_simplex_like(x: Any) -> bool:
+	if isinstance(x, Iterable):
+		item, iterable = spy(x)
+		return is_simplex_like(item)
+	return False
+
+def is_array_convertible(x: Any) -> bool:
+	return hasattr(x, "__array__")
 
 def is_repeatable(x: Iterable) -> bool:
   return not(iter(x) is x)

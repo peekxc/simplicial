@@ -9,8 +9,9 @@ from ..predicates import *
 # from ..Complex import *
 from more_itertools import unique_everseen
 from collections import Counter
+from .Complex_ABCs import Complex
 
-class RankComplex(ComplexLike):
+class RankComplex(Complex, Sequence, ComplexLike):
   """Simplicial complex represented via the combinatorial number system.
   
   A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers 
@@ -23,19 +24,24 @@ class RankComplex(ComplexLike):
   Attributes:
     simplices: structured ndarray of dtype [('rank', uint64), ('dim', uint8)] containing the simplex ranks and dimensions, respectively. 
   """
+  
+  @staticmethod 
+  def _str_rank(item: SimplexConvertible) -> tuple:
+    return rank_colex(item), dim(item)
+
   def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
     self.s_dtype= np.dtype([('rank', np.uint64), ('dim', np.uint8)])
     if simplices is not None:
       sset = unique_everseen(faces(simplices))
       assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"
-      self.simplices = np.unique(np.array([(rank_colex(s), len(s)-1) for s in sset], dtype=self.s_dtype))
+      self.simplices = np.unique(np.array([RankComplex._str_rank(s) for s in sset], dtype=self.s_dtype))
     else:
       self.simplices = np.empty(dtype=self.s_dtype, shape=(0,0))
 
   def __len__(self) -> int: 
     return len(self.simplices)
   
-  def __contains__(self, x: SimplexLike) -> bool:
+  def __contains__(self, x: SimplexConvertible) -> bool:
     return rank_colex(x) in self.simplices['rank']
     
   def dim(self) -> int: 
@@ -51,7 +57,6 @@ class RankComplex(ComplexLike):
     Returns:
       generator which yields on evaluation yields the simplex
     """
-    print("WE ARE HERE")
     if p is not None: 
       assert isinstance(p, numbers.Integral)
       p_ranks = self.simplices['rank'][self.simplices['dim'] == p]
@@ -69,40 +74,68 @@ class RankComplex(ComplexLike):
     """Enumerates the faces of the complex."""
     yield from unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex')
 
-  def add(self, simplices: Iterable[SimplexConvertible]): ## TODO: consider array module with numpy array fcasting 
-    new_faces = []
-    for s in simplices:
-      face_ranks = [(rank_colex(f), dim(f)) for f in faces(s)]
-      new_faces.extend(face_ranks)
-    new_faces = np.array(new_faces, dtype=self.s_dtype)
-    self.simplices = np.unique(np.append(self.simplices, new_faces))
+  def __getitem__(self, index: Union[int, slice]) -> Union[SimplexConvertible, Iterable]:
+    """Retrieves a simplex at some index position. 
+    
+    Note this constructs the simplex on demand. 
+    """
+    if isinstance(index, Integral):
+      s = unrank_colex(self.simplices['rank'][index], self.simplices['dim'][index]+1)
+      return s
+    elif isinstance(index, slice):
+      return unrank_combs(self.simplices['rank'][index], self.simplices['dim'][index]+1, order='colex')
+    else:
+      raise ValueError(f"Invalid index type '{type(index)}' given.")
 
-  # def cofaces():
-  #   pass
+  def add(self, item: SimplexConvertible) -> None: ## TODO: consider array module with numpy array fcasting 
+    """Adds a simplex and its faces to the complex, if they do not already exist.
+    
+    If _item_ is already in the complex, the underlying complex is not modified. 
+    """
+    if item not in self:
+      face_ranks = np.array([RankComplex._str_rank(f) for f in faces(s)], dtype=self.s_dtype)
+      self.simplices = np.unique(np.append(self.simplices, face_ranks))
+    # new_faces = []
+    # for s in simplices:
+    #   face_ranks = [RankComplex._str_rank(f) for f in faces(s)]
+    #   new_faces.extend(face_ranks)
+    # new_faces = np.array(new_faces, dtype=self.s_dtype)
+    # self.simplices = np.unique(np.append(self.simplices, new_faces))
 
-  def remove(self, simplices: Iterable[SimplexConvertible]) -> None:
+  def cofaces(self, item: SimplexConvertible):
+    s = Simplex(item)
+    yield from filter(lambda t: Simplex(t) >= s, iter(self))
+
+  ## TODO: need to add cofaces to enable remove 
+  ## TODO: distinguish simplex convertible from Iterable of simplices--need to revisit the predicates
+  def remove(self, item: SimplexConvertible) -> None:
     """Removes simplices from the complex. They must exist.
 
     If any of the supplied _simplices_ are not in the complex, raise a KeyError.
     """
-    faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
-    in_complex = np.array([s in self.simplices for s in faces_to_remove])
-    if any(~in_complex):
-      bad = list(simplices)[np.flatnonzero(~in_complex)[0]]
-      raise KeyError(f"{bad} not in complex.")
-    self.simplices = np.setdiff1d(self.simplices, faces_to_remove)
+    s_item = np.array([RankComplex._str_rank(item)], dtype=self.s_dtype)
+    if s_item not in self.simplices:
+      raise KeyError(f"{str(item)} not in complex.")
+    self.simplices = np.setdiff1d(self.simplices, np.array(list(self.cofaces(item), dtype=self.s_dtype)))
+    # faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
+    # in_complex = np.array([s in self.simplices for s in faces_to_remove])
+    # if any(~in_complex):
+    #   bad = list(simplices)[np.flatnonzero(~in_complex)[0]]
+    #   raise KeyError(f"{bad} not in complex.")
+    # self.simplices = np.setdiff1d(self.simplices, faces_to_remove)
 
-  def discard(self, simplices: Iterable[SimplexConvertible]) -> None:
+  def discard(self, item: SimplexConvertible) -> None:
     """Removes simplices from the complex, if they exist.
     
     If none of the supplied _simplices_ are in the complex, the simplices are not modified.  
     """
-    faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
-    self.simplices = np.setdiff1d(self.simplices, faces_to_remove)
+    s_cofaces = np.array(list(self.cofaces(item), dtype=self.s_dtype))
+    if len(s_cofaces) > 0:
+      self.simplices = np.setdiff1d(self.simplices, s_cofaces)
 
-  def __contains__(self, item: SimplexConvertible) -> bool :
+  def __contains__(self, item: SimplexConvertible) -> bool:
     # s = Simplex(item)
-    s = np.array((rank_colex(item),dim(item)), self.s_dtype)
+    s = np.array([RankComplex._str_rank(item)], self.s_dtype)
     return self.simplices.__contains__(s)
     # return self.data.__contains__()
 

@@ -31,10 +31,6 @@ class SimplexConvertible(Collection, Protocol[IT]):
   """
   pass
 
-# @runtime_checkable
-# class PropertySimplex(Tuple[SimplexConvertible, Mapping], Protocol):
-#   """Protocol class for simplex types with associated data.""" 
-#   pass 
 PropertySimplexConvertible = tuple[SimplexConvertible, Mapping]
 
 
@@ -69,6 +65,19 @@ class ComplexLike(Collection[SimplexLike], Protocol):
   def __iter__(self) -> Iterator[SimplexLike]: 
     raise NotImplementedError 
 
+## Python typing is just not strong enough to use isinstance with @runtime_checkable.
+## Need to be able to peek at an iterable and see something about it. 
+# def is_simplex_like() -> bool:
+
+
+
+# def is_complex_like(S: ComplexLike) -> bool:
+#   if not isinstance(S, ComplexLike): return False # checks __iter__
+#   from more_itertools import spy
+#   spy()
+
+
+
 @runtime_checkable
 class FiltrationLike(SupportsFaces, Collection, Protocol):
   """Protocol interface for types that represent _filtered_ simplicial complexes.
@@ -86,14 +95,14 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
   def __contains__(self, item):
     raise NotImplementedError 
 
+  ## --- Sequence requirements --- 
+  def __getitem__(self, index) -> PropertySimplexConvertible:
+    raise NotImplementedError
+
   # --- Set requirements --- 
 
   # --- Mutable Set --- 
-
-  ## --- Sequence requirements ---
-  def __getitem__(self, k: Any) -> SimplexConvertible:
-    raise NotImplementedError 
-
+  
   ## --- Sequence mixins --- 
   # def index(self, k: Any) -> int:
   #   raise NotImplementedError 

@@ -94,7 +94,7 @@ def unrank_combs(R: Iterable, k: Union[int, Iterable], n: int = None, order: str
   
   Parameters: 
     R : Iterable of integer ranks 
-    n : cardinality of the set (lex order only)
+    n : cardinality of the set (only required for lex order)
     order : the bijection to use
   
   Returns: 
