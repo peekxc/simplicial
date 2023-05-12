@@ -69,7 +69,8 @@ class SetFiltration(Filtration, Sequence):
 
   ## --- Collection/Set requirements --- 
   def __iter__(self) -> Iterator[ValueSimplex]:
-    return iter(self.data)
+    yield from ((s.value, Simplex(s)) for s in self.data)
+    # return iter(self.data)
 
   def __len__(self) -> int:
     return len(self.data)

@@ -2,9 +2,29 @@ from __future__ import annotations # for mypy to recognize self return types
 from numbers import Number, Integral
 from dataclasses import dataclass
 from more_itertools import collapse, unique_justseen
+from typing import *
 from .meta import *   
-
+from itertools import * 
 import numpy as np 
+# data_attributes
+from more_itertools import seekable, spy
+
+
+
+def handle_data(Iterable: g, Union[bool, dict, str]: data) -> Iterable:
+  if isinstance(data, bool):
+    if data == False: 
+      yield from g
+    # g = seekable(g)
+    extract_data = lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) }
+    for el in g: 
+      yield el, extract_data(el)
+    # return zip(g, (extract_data(e) for e in g))
+  elif isinstance():
+    pass
+  elif isinstance():
+    pass 
+  pass
 
 class SimplexBase(Hashable):
   """Base class for comparable simplex-like classes with integer vertex labels."""
@@ -78,12 +98,15 @@ class SimplexBase(Hashable):
     """ Default str representation prints the vertex labels delimited by commas """
     return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
 
-  def faces(self, p: Optional[int] = None) -> Iterator[Simplex]:
+  def faces(self, p: Optional[int] = None, data: bool = False, **kwargs) -> Iterator[Simplex]:
     dim: int = len(self.vertices)
     if p is None:
-      yield from map(Simplex, chain(*[combinations(self.vertices, d) for d in range(1, dim+1)]))
+      g = map(Simplex, chain(*[combinations(self.vertices, d) for d in range(1, dim+1)]))
     else: 
-      yield from filter(lambda s: len(s) == p+1, self.faces()) # type: ignore
+      g = filter(lambda s: len(s) == p+1, self.faces()) # type: ignore
+    g = g if data == False else handle_data(g, data)
+    yield from g 
+    
 
   def boundary(self) -> Iterator[Simplex]: 
     if len(self.vertices) == 0: 
@@ -116,10 +139,12 @@ class PropertySimplex(SimplexBase):
 
   Unlike the _Simplex_ class, this class is neither frozen nor slotted, thus it supports arbitrary field assignments.  
   """
-  def __init__(self, v: SimplexConvertible) -> None:
-    super(SimplexBase, self).__init__()
+  def __init__(self, v: SimplexConvertible, **kwargs) -> None:
+    # super(SimplexBase, self).__init__()
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
+    self.__dict__.update(kwargs)
+    # object.__setattr__(self, )
 
 
 

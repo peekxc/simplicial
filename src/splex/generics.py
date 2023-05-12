@@ -46,7 +46,9 @@ def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented:
   return combinations(s, len(s)-1)
 
 
-def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
+
+
+def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool = False, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 
@@ -59,27 +61,29 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, **kwargs) ->
   - if _s_ is none of the above but is Sized and Iterable, all combinations of _s_ of length _p+1_ are chained and returned. 
   """
   # list(chain.from_iterable(getattr(cls, '__slots__', []) for cls in type(s).__mro__))
+  kwargs |= dict(p=p, data=data)
   if hasattr(s, "faces"):
-    return s.faces(p, **kwargs)
-  if isinstance(s, FiltrationLike):
-    return(iter(s.values()))
-  elif isinstance(s, ComplexLike):
-    complex_like = isinstance(next(iter(s)), SimplexConvertible) # first element is simplexconvertible -> complexLike
-    if complex_like:
-      sset = unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s]))
-      if p is None:
-        return iter(sset)
-      else: 
-        return iter(filter(lambda s: len(s) == p+1, iter(sset)))
-    else: # is simplex convertible
-      k = len(s)
-      if p is None:
-        return chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
-      else:
-        assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
-        return iter(combinations(s, p+1))
+    return s.faces(**kwargs)
+  elif is_complex_like(s):
+    sset = unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s]))
+    if p is None:
+      return iter(sset)
+    else: 
+      return iter(filter(lambda s: len(s) == p+1, iter(sset)))
+  elif is_filtration_like(s):
+    if not data:
+      yield from (f for i,f in s)
+    else:
+      yield from ((f, dict(index=i)) for i,f in s)
+  elif is_simplex_like(s): # is simplex convertible
+    k = len(s)
+    if p is None:
+      return chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
+    else:
+      assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
+      return iter(combinations(s, p+1))
   else:
-    raise ValueError("Unknown type")
+    raise ValueError(f"Unknown type supplied '{type(s)}'")
 
 def card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = None, **kwargs):
   """Counts the number of _p_-dimensional simplices of a simplicial object _s_. 

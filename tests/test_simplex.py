@@ -22,7 +22,6 @@ def test_simplex():
   assert s - t == Simplex(2)
   assert hash(s) is not None
 
-
 def test_simplex_varieties():
   s = Simplex([0,1,2])
   f = ValueSimplex([0,1,2], 1)
@@ -33,4 +32,7 @@ def test_simplex_varieties():
   assert _data_attributes(f) == ['value', 'vertices']
   assert _data_attributes(p) == ['color', 'data', 'vertices']
 
+  ## New: retain the value-semantics with the Property and Value simplices
+  assert s == p and f == s
+  
   

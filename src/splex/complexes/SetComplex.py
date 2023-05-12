@@ -1,9 +1,11 @@
 import numpy as np
 from ..meta import * 
+from ..generics import *
 from ..Simplex import *
+from .Complex_ABCs import Complex 
 from sortedcontainers import SortedSet # SortedSet is a vaid Sequence! 
 
-class SetComplex(ComplexLike):
+class SetComplex(Complex, ComplexLike):
   """ Abstract Simplicial Complex"""
 
   def __init__(self, simplices: Iterable[SimplexConvertible] = None):
@@ -46,7 +48,7 @@ class SetComplex(ComplexLike):
 
   def card(self, p: int = None) -> tuple:
     if p is None: 
-      return tuple(self.n_simplices)
+      return self.n_simplices
     else: 
       assert isinstance(p, int), "Invalid p"
       return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
@@ -56,14 +58,13 @@ class SetComplex(ComplexLike):
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))
 
-  def update(self, simplices: Iterable[SimplexLike]):
+  def update(self, simplices: Iterable[SimplexConvertible]):
     for s in simplices:
       self.add(s)
 
-  def add(self, item: Collection[int]) -> None:
-    # self_set = super(SimplicialComplex, self)
-    s = Simplex(item)       # cast to Simplex for comparability
-    ns = np.zeros(dim(s)+1) # array to update num. simplices
+  def add(self, item: SimplexConvertible) -> None:
+    s = Simplex(item)         # cast to Simplex for comparability
+    ns = np.zeros(dim(s)+1)   # array to update num. simplices
     ns[:len(self.n_simplices)] = self.n_simplices
     for face in faces(s):
       if not(face in self.data):
@@ -76,12 +77,12 @@ class SetComplex(ComplexLike):
         #   t = self.n_simplices
           # self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
         
-  def remove(self, item: Collection[int]):
+  def remove(self, item: SimplexConvertible):
     self.data.difference_update(set(self.cofaces(item)))
     self._update_n_simplices()
 
-  def discard(self, item: Collection[int]):
-    self.data.discard(Simplex(item))
+  def discard(self, item: SimplexConvertible):
+    self.data.difference_update(set(self.cofaces(item)))
     self._update_n_simplices()
   
   def _update_n_simplices(self) -> None:

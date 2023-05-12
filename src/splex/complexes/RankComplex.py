@@ -6,6 +6,7 @@ from ..meta import *
 from ..combinatorial import * 
 from ..generics import *
 from ..predicates import *
+from ..Simplex import *
 # from ..Complex import *
 from more_itertools import unique_everseen
 from collections import Counter
@@ -93,7 +94,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     If _item_ is already in the complex, the underlying complex is not modified. 
     """
     if item not in self:
-      face_ranks = np.array([RankComplex._str_rank(f) for f in faces(s)], dtype=self.s_dtype)
+      face_ranks = np.array([RankComplex._str_rank(f) for f in faces(item)], dtype=self.s_dtype)
       self.simplices = np.unique(np.append(self.simplices, face_ranks))
     # new_faces = []
     # for s in simplices:
@@ -116,7 +117,8 @@ class RankComplex(Complex, Sequence, ComplexLike):
     s_item = np.array([RankComplex._str_rank(item)], dtype=self.s_dtype)
     if s_item not in self.simplices:
       raise KeyError(f"{str(item)} not in complex.")
-    self.simplices = np.setdiff1d(self.simplices, np.array(list(self.cofaces(item), dtype=self.s_dtype)))
+    s_cofaces = np.array([RankComplex._str_rank(item) for f in self.cofaces(item)], dtype=self.s_dtype)
+    self.simplices = np.setdiff1d(self.simplices, s_cofaces)
     # faces_to_remove = np.array([(rank_colex(s), dim(s)) for s in simplices], dtype=self.s_dtype)
     # in_complex = np.array([s in self.simplices for s in faces_to_remove])
     # if any(~in_complex):
@@ -129,7 +131,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     
     If none of the supplied _simplices_ are in the complex, the simplices are not modified.  
     """
-    s_cofaces = np.array(list(self.cofaces(item), dtype=self.s_dtype))
+    s_cofaces = np.array([RankComplex._str_rank(f) for f in self.cofaces(item)], dtype=self.s_dtype)
     if len(s_cofaces) > 0:
       self.simplices = np.setdiff1d(self.simplices, s_cofaces)
 

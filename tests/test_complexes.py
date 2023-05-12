@@ -31,19 +31,22 @@ def test_set_complex():
   assert S.discard([0,1,2,3]) is None 
   assert S.discard([0,1]) is None 
   assert [0,1] not in S
+  assert len(list(S.cofaces([0,1]))) == 0
+  assert card(S) == (4,5,2)
 
 def test_rank_complex():
   S = RankComplex([[0,1,2]])
-  S.add([[0,1,2,3]])
+  S.add([0,1,2,3])
   assert check_poset(S)
   assert card(S) == (4,6,4,1)
   # assert list(S.cofaces([0,1,2])) == [(0,1,2), (0,1,2,3)]
-  S.remove([[0,1,2,3]])
+  S.remove([0,1,2,3])
   assert [0,1,2,3] not in S
   # assert S.remove([[0,1,2,3]]) == KeyError
   assert dim(S) == 2
-  assert S.discard([[0,1,2,3]]) is None 
-  assert S.discard([[0,1]]) is None 
+  assert S.discard([0,1,2,3]) is None 
+  assert S.discard([0,1]) is None 
   assert [0,1] not in S
+  assert len(list(S.cofaces([0,1]))) == 0
   assert np.all(np.array(S) == S.simplices), "Array conversion doesn't work"
-  assert card(S) == (4,4,5)
+  assert card(S) == (4,5,2)

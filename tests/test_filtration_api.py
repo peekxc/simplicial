@@ -24,7 +24,7 @@ def test_filtration_api():
   assert isinstance(filtration(S, form="rank"), RankFiltration)
   K = SetFiltration(S, f=lambda s: max(s))
   assert isinstance(K, SetFiltration)
-  m_vals = [max(s) for s in K.values()]
+  m_vals = [max(s) for s in K]
   assert sorted(m_vals) == m_vals
   assert validate_filtration(K.keys(), faces(K))
 
