@@ -5,7 +5,7 @@ from more_itertools import unique_everseen
 from .meta import *
 # from .complexes import * 
 # from .filtrations import * 
-
+from .predicates import *
 
 def dim(s: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
   """Returns the dimension of a simplicial object.
@@ -45,9 +45,6 @@ def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented:
     return s.boundary(**kwargs)
   return combinations(s, len(s)-1)
 
-
-
-
 def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool = False, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
@@ -60,9 +57,9 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
   - if _s_ is FiltrationLike, then a generator enumerating _p_-faces of _s_ in filtration order is returned.
   - if _s_ is none of the above but is Sized and Iterable, all combinations of _s_ of length _p+1_ are chained and returned. 
   """
-  # list(chain.from_iterable(getattr(cls, '__slots__', []) for cls in type(s).__mro__))
   kwargs |= dict(p=p, data=data)
   if hasattr(s, "faces"):
+    print(kwargs)
     return s.faces(**kwargs)
   elif is_complex_like(s):
     sset = unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s]))
@@ -72,9 +69,9 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
       return iter(filter(lambda s: len(s) == p+1, iter(sset)))
   elif is_filtration_like(s):
     if not data:
-      yield from (f for i,f in s)
+      return (f for i,f in s)
     else:
-      yield from ((f, dict(index=i)) for i,f in s)
+      return ((f, dict(index=i)) for i,f in s)
   elif is_simplex_like(s): # is simplex convertible
     k = len(s)
     if p is None:

@@ -1,0 +1,3 @@
+# complexes.SimplexTree { #splex.complexes.SimplexTree }
+
+`complexes.SimplexTree`

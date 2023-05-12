@@ -1,20 +1,20 @@
 # API Reference
 
+## Simplex Tree
+
+Simplex Tree data structure
+
+| | |
+| --- | --- |
+| [complexes.SimplexTree](complexes.SimplexTree.qmd#splex.complexes.SimplexTree) |  |
+
 ## Generics
 
 Generic functions
 
 | | |
 | --- | --- |
-| [faces](/reference/faces.qmd) | Returns the faces of a simplicial object, optionally restricted by dimension. |
-| [dim](/reference/dim.qmd) | Returns the dimension of a simplicial object, suitably defined. |
-| [card](/reference/card.qmd) | |
-| [boundary](/reference/boundary.qmd) | Returns the boundary of a simplicial object, optionally signed. |
-
-## UnionFind
-
-UnionFind data structure
-
-| | |
-| --- | --- |
-| [UnionFind](/reference/UnionFind.qmd) | |
+| [generics.faces](generics.faces.qmd#splex.generics.faces) | Returns the faces of a simplicial object, optionally restricted by dimension. |
+| [generics.dim](generics.dim.qmd#splex.generics.dim) | Returns the dimension of a simplicial object. |
+| [generics.card](generics.card.qmd#splex.generics.card) | Counts the number of _p_-dimensional simplices of a simplicial object _s_.  |
+| [generics.boundary](generics.boundary.qmd#splex.generics.boundary) | Returns the boundary of a simplicial object, optionally signed. |

@@ -13,7 +13,7 @@ def is_simplex_like(x: Any) -> bool:
 def is_complex_like(x: Any) -> bool: 
 	if isinstance(x, ComplexLike): # is iterable
 		item, iterable = spy(x)
-		return is_simplex_like(item)
+		return is_simplex_like(item[0])
 	return False
 
 def is_filtration_like(x: Any) -> bool:
@@ -23,10 +23,11 @@ def is_array_convertible(x: Any) -> bool:
 	return hasattr(x, "__array__")
 
 def is_repeatable(x: Iterable) -> bool:
-  return not(iter(x) is x)
+	"""Checks whether _x_ is Iterable and repeateable as an Iterable (generators fail this test)."""
+	return not(iter(x) is x)
 
 def is_distance_matrix(x: ArrayLike) -> bool:
-	"""Checks whether 'x' is a distance matrix, i.e. is square, symmetric, and that the diagonal is all 0."""
+	"""Checks whether _x_ is a distance matrix, i.e. is square, symmetric, and that the diagonal is all 0."""
 	x = np.array(x, copy=False)
 	is_square = x.ndim == 2	and (x.shape[0] == x.shape[1])
 	return(False if not(is_square) else np.all(np.diag(x) == 0))

@@ -32,7 +32,7 @@
     "href": "reference/index.html",
     "title": "API Reference",
     "section": "",
-    "text": "Generic functions\n\n\n\nfaces\nReturns the faces of a simplicial object, optionally restricted by dimension.\n\n\ndim\nReturns the dimension of a simplicial object, suitably defined.\n\n\ncard\n\n\n\nboundary\nReturns the boundary of a simplicial object, optionally signed.\n\n\n\n\n\n\nUnionFind data structure\n\n\n\nUnionFind"
+    "text": "Simplex Tree data structure\n\n\n\ncomplexes.SimplexTree\n\n\n\n\n\n\n\nGeneric functions\n\n\n\ngenerics.faces\nReturns the faces of a simplicial object, optionally restricted by dimension.\n\n\ngenerics.dim\nReturns the dimension of a simplicial object.\n\n\ngenerics.card\nCounts the number of p-dimensional simplices of a simplicial object s.\n\n\ngenerics.boundary\nReturns the boundary of a simplicial object, optionally signed."
   },
   {
     "objectID": "reference/faces.html",
@@ -54,5 +54,40 @@
     "title": "Splex",
     "section": "",
     "text": "UnionFind()"
+  },
+  {
+    "objectID": "reference/generics.boundary.html",
+    "href": "reference/generics.boundary.html",
+    "title": "generics.boundary",
+    "section": "",
+    "text": "generics.boundary\ngenerics.boundary(s, p=None, oriented=False, **kwargs)\nReturns the boundary of a simplicial object, optionally signed.\nIf s has an existing method s.boundary(p, oriented), then that method is called with additional keyword args kwargs.\nOtherwise, the behavior of this function depends on the type-class of s. Namely, - if s is SimplexLike with dimension p, then a generator enumerating (p-1)-faces of s is created. - if s is ComplexLike, then a sparse boundary matrix whose columns represent boundary chains is returned. - if s is FiltrationLike, then a sparse boundary matrix whose columns represent boundary chains in filtration order is returned. - if s is none of the above but is Sized and Iterable, all len(s)-1 combinations are returned of s are returned.\nTODO: finish this"
+  },
+  {
+    "objectID": "reference/generics.dim.html",
+    "href": "reference/generics.dim.html",
+    "title": "generics.dim",
+    "section": "",
+    "text": "generics.dim\ngenerics.dim(s, **kwargs)\nReturns the dimension of a simplicial object.\nIf s has an existing method s.dim(…), then that method is called with additional keyword arguments kwargs.\nOtherwise, the behavior of this function depends on the type-class of s. Namely, - if s is SimplexLike with dimension p, then p is returned. - if s is ComplexLike, then the largest dimension p of any face in s is returned. - if s is none of the above but is Sized, len(s) - 1 is returned."
+  },
+  {
+    "objectID": "reference/generics.faces.html",
+    "href": "reference/generics.faces.html",
+    "title": "generics.faces",
+    "section": "",
+    "text": "generics.faces\ngenerics.faces(s, p=None, data=False, **kwargs)\nReturns the faces of a simplicial object, optionally restricted by dimension.\nIf s has an existing method s.faces(p), then that method is called with additional keyword arguments kwargs.\nOtherwise, the behavior of this function depends on the type-class of s. Namely, - if s is SimplexLike, then a generator enumerating p-combinations of s is returned. - if s is ComplexLike, then a generator enumerating p-faces of s (in any order) is returned. - if s is FiltrationLike, then a generator enumerating p-faces of s in filtration order is returned. - if s is none of the above but is Sized and Iterable, all combinations of s of length p+1 are chained and returned."
+  },
+  {
+    "objectID": "reference/generics.card.html",
+    "href": "reference/generics.card.html",
+    "title": "generics.card",
+    "section": "",
+    "text": "generics.card\ngenerics.card(s, p=None, **kwargs)\nCounts the number of p-dimensional simplices of a simplicial object s.\nIf s has an existing method s.card(p), then that method is called with additional keyword arguments kwargs.\nOtherwise, the behavior of this function depends on the type-class of s and whether p is specified. Namely, - If s is complex like, then card(s) returns a tuple containing the number of simplices in s in each dimension, and card(s, p) the number of simplices in s with dimension p."
+  },
+  {
+    "objectID": "reference/complexes.SimplexTree.html",
+    "href": "reference/complexes.SimplexTree.html",
+    "title": "complexes.SimplexTree",
+    "section": "",
+    "text": "complexes.SimplexTree\ncomplexes.SimplexTree"
   }
 ]

@@ -1,0 +1,10 @@
+# generics.card { #splex.generics.card }
+
+`generics.card(s, p=None, **kwargs)`
+
+Counts the number of _p_-dimensional simplices of a simplicial object _s_. 
+
+If _s_ has an existing method _s.card(p)_, then that method is called with additional keyword arguments _kwargs_. 
+
+Otherwise, the behavior of this function depends on the type-class of _s_ and whether _p_ is specified. Namely, 
+ - If _s_ is _complex like_, then card(s) returns a tuple containing the number of simplices in _s_ in each dimension, and _card(s, p)_ the number of simplices in _s_ with dimension p.

@@ -92,20 +92,19 @@ class FiltrationLike(SupportsFaces, Collection, Protocol):
     raise NotImplementedError  
   def __iter__(self) -> Iterator[tuple]:
     raise NotImplementedError 
-  def __contains__(self, item):
+  def __contains__(self, item: SimplexConvertible):
     raise NotImplementedError 
 
   ## --- Sequence requirements --- 
-  def __getitem__(self, index) -> tuple:
+  def __getitem__(self, index: Any) -> tuple:
+    raise NotImplementedError
+
+  # Mixin method for Sequence, but should be required for FiltrationLike's
+  def index(self, value: SimplexConvertible) -> Any:
     raise NotImplementedError
 
   # --- Set requirements --- 
 
   # --- Mutable Set --- 
 
-  ## --- Sequence mixins --- 
-  # def index(self, k: Any) -> int:
-  #   raise NotImplementedError 
-  # def __reversed__(self): -> Iterator[PropertySimplex]:
-  #   pass
 

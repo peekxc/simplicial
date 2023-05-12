@@ -1,0 +1,15 @@
+# generics.boundary { #splex.generics.boundary }
+
+`generics.boundary(s, p=None, oriented=False, **kwargs)`
+
+Returns the boundary of a simplicial object, optionally signed.
+
+If _s_ has an existing method _s.boundary(p, oriented)_, then that method is called with additional keyword args _kwargs_.
+
+Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
+- if _s_ is SimplexLike with dimension _p_, then a generator enumerating _(p-1)_-faces of _s_ is created. 
+- if _s_ is ComplexLike, then a sparse boundary matrix whose columns represent boundary chains is returned. 
+- if _s_ is FiltrationLike, then a sparse boundary matrix whose columns represent boundary chains in filtration order is returned.
+- if _s_ is none of the above but is Sized and Iterable, all len(s)-1 combinations are returned of _s_ are returned. 
+
+TODO: finish this

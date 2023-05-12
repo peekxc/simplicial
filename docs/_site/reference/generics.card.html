@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – index</title>
+<title>Splex – generics.card</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/faces.html" rel="next">
-<link href="../pages/overview.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -106,7 +104,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/index.html">API Reference</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
       <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -133,7 +131,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/index.html" class="sidebar-item-text sidebar-link active">API Reference</a>
+            <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -157,46 +155,14 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="api-reference" class="level1">
-<h1>API Reference</h1>
-<section id="simplex-tree" class="level2">
-<h2 class="anchored" data-anchor-id="simplex-tree">Simplex Tree</h2>
-<p>Simplex Tree data structure</p>
-<table class="table">
-<tbody>
-<tr class="odd">
-<td><a href="../reference/complexes.SimplexTree.html#splex.complexes.SimplexTree">complexes.SimplexTree</a></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="generics" class="level2">
-<h2 class="anchored" data-anchor-id="generics">Generics</h2>
-<p>Generic functions</p>
-<table class="table">
-<tbody>
-<tr class="odd">
-<td><a href="../reference/generics.faces.html#splex.generics.faces">generics.faces</a></td>
-<td>Returns the faces of a simplicial object, optionally restricted by dimension.</td>
-</tr>
-<tr class="even">
-<td><a href="../reference/generics.dim.html#splex.generics.dim">generics.dim</a></td>
-<td>Returns the dimension of a simplicial object.</td>
-</tr>
-<tr class="odd">
-<td><a href="../reference/generics.card.html#splex.generics.card">generics.card</a></td>
-<td>Counts the number of <em>p</em>-dimensional simplices of a simplicial object <em>s</em>.</td>
-</tr>
-<tr class="even">
-<td><a href="../reference/generics.boundary.html#splex.generics.boundary">generics.boundary</a></td>
-<td>Returns the boundary of a simplicial object, optionally signed.</td>
-</tr>
-</tbody>
-</table>
+<section id="splex.generics.card" class="level1">
+<h1>generics.card</h1>
+<p><code>generics.card(s, p=None, **kwargs)</code></p>
+<p>Counts the number of <em>p</em>-dimensional simplices of a simplicial object <em>s</em>.</p>
+<p>If <em>s</em> has an existing method <em>s.card(p)</em>, then that method is called with additional keyword arguments <em>kwargs</em>.</p>
+<p>Otherwise, the behavior of this function depends on the type-class of <em>s</em> and whether <em>p</em> is specified. Namely, - If <em>s</em> is <em>complex like</em>, then card(s) returns a tuple containing the number of simplices in <em>s</em> in each dimension, and <em>card(s, p)</em> the number of simplices in <em>s</em> with dimension p.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -534,18 +500,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
-      <a href="../pages/overview.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
-      </a>          
-  </div>
-  <div class="nav-page nav-page-next">
-      <a href="../reference/faces.html" class="pagination-link">
-        <span class="nav-page-text">Faces</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
-  </div>
-</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

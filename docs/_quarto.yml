@@ -71,8 +71,8 @@ format:
     html-math-method: katex
     code-overflow: wrap 
     highlight-style: printing 
-    fontsize: 18px
-    linestretch: 1.2
+    fontsize: 14px
+    linestretch: 1.1
     margin-top: "0px" 
     css: static/styles.css
 
@@ -84,11 +84,12 @@ quartodoc:
   title: API Reference    # API only 
   dir: reference          # API only 
   style: pkgdown          # API only
-  renderer: 
-    style: _renderer.py
-    show_signature: true
-    show_signature_annotations: true
-    display_name: name 
+  sidebar: None 
+  # renderer: 
+  #   # style: _renderer.py
+  #   show_signature: true
+  #   show_signature_annotations: true
+  #   display_name: name 
   sections:
     - title: Simplex Tree 
       desc: Simplex Tree data structure 
@@ -101,10 +102,10 @@ quartodoc:
         - generics.dim
         - generics.card
         - generics.boundary
-    - title: UnionFind
-      desc: UnionFind data structure 
-      contents: 
-        - UnionFind.UnionFind
+    # - title: UnionFind
+    #   desc: UnionFind data structure 
+    #   contents: 
+    #     - UnionFind.UnionFind
 
 
 # out_index: pages/index.qmd

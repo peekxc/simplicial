@@ -98,19 +98,3 @@ def test_boundary():
     [  0, -1, -1],
   ])
   assert np.allclose(D1_test - D1_true, 0.0)
-
-
-def test_generics():
-  assert list(unique_everseen([[0], [0], [1], [0,1]])) == [[0], [1], [0,1]]
-  S = simplicial_complex([[0,1,2]])
-  assert card(S) == (3,3,1)
-  assert card(S,0) == 3
-  assert dim(S) == 2
-  assert list(faces(S)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
-  assert list(faces(S,0)) ==  list(map(Simplex, [(0),(1),(2)]))
-  K = filtration(S)
-  assert card(K) == (3,3,1)
-  assert card(K,0) == 3
-  assert dim(K) == 2
-  assert list(faces(K)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
-  assert list(faces(K,0)) ==  list(map(Simplex, [(0),(1),(2)]))

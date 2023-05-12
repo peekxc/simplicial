@@ -11,20 +11,22 @@ from more_itertools import seekable, spy
 
 
 
-def handle_data(Iterable: g, Union[bool, dict, str]: data) -> Iterable:
+def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:
+  print("here5")
   if isinstance(data, bool):
     if data == False: 
       yield from g
-    # g = seekable(g)
     extract_data = lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) }
     for el in g: 
       yield el, extract_data(el)
     # return zip(g, (extract_data(e) for e in g))
-  elif isinstance():
-    pass
-  elif isinstance():
-    pass 
-  pass
+  elif isinstance(data, str):
+    for el in g: 
+      yield el, getattr(el, data) if hasattr(el, data) else None
+  elif isinstance(data, list):
+    raise NotImplementedError
+  else: 
+    raise ValueError(f"Invalid data input of type '{type(data)}'")
 
 class SimplexBase(Hashable):
   """Base class for comparable simplex-like classes with integer vertex labels."""
@@ -98,16 +100,16 @@ class SimplexBase(Hashable):
     """ Default str representation prints the vertex labels delimited by commas """
     return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
 
-  def faces(self, p: Optional[int] = None, data: bool = False, **kwargs) -> Iterator[Simplex]:
+  def faces(self, p: Optional[int] = None, data: bool = False, **kwargs) -> Iterator[Simplex]: 
     dim: int = len(self.vertices)
     if p is None:
       g = map(Simplex, chain(*[combinations(self.vertices, d) for d in range(1, dim+1)]))
     else: 
-      g = filter(lambda s: len(s) == p+1, self.faces()) # type: ignore
-    g = g if data == False else handle_data(g, data)
-    yield from g 
-    
-
+      g = map(Simplex, combinations(self.vertices, p+1))
+      # g = filter(lambda s: len(s) == p+1, self.faces()) # type: ignore
+    return handle_data(g, data)
+    # g = g if data == False else handle_data(g, data)
+  
   def boundary(self) -> Iterator[Simplex]: 
     if len(self.vertices) == 0: 
       return self.vertices
