@@ -6,6 +6,7 @@ from ..complexes import *
 from .filter_abcs import Filtration
 from sortedcontainers import SortedSet
 from more_itertools import spy
+import bisect
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault
@@ -52,7 +53,7 @@ class SetFiltration(Filtration, Sequence):
     """
     self.data = SetFiltration._sorted_set()
     self.n_simplices = tuple()
-    if isinstance(simplices, ComplexLike):
+    if is_complex_like(simplices):
       if isinstance(f, Callable):
         self.update((ValueSimplex(s, f(s)) for s in simplices))
       else:
@@ -82,6 +83,15 @@ class SetFiltration(Filtration, Sequence):
   def __getitem__(self, key: Any) -> Simplex: 
     return self.data.__getitem__(key)
 
+  def index(self, item: SimplexConvertible) -> int:  
+    s = Simplex(item)
+    for i,x in iter(s):
+      if x == s:
+        return i
+    return -1
+    # return True # self.data.
+    # bisect.bisect_left(self.data, Simplex(item), key=lambda vs: Simplex(vs))
+
   ## --- MutableSequence requirements --- 
   # def __setitem__(self, key: Any, value: Union[Collection[Integral], SortedSet]):
   #   self.data.__setitem__(key, self._sorted_set(v))
@@ -95,7 +105,7 @@ class SetFiltration(Filtration, Sequence):
   ## --- MutableSet requirements ---
   def add(self, simplex: SimplexConvertible) -> None:
     assert isinstance(simplex, SimplexConvertible) # or isinstance(simplex, tuple)
-    simplex = ValueSimplex(simplex, 1.0) if not hasattr(simplex, "value") else simplex
+    simplex = ValueSimplex(simplex, 0.0) if not hasattr(simplex, "value") else simplex
     ns = list(self.n_simplices) + [0]*(dim(simplex)-self.dim())
     for f in faces(simplex):
       if f not in self.data:
@@ -121,22 +131,27 @@ class SetFiltration(Filtration, Sequence):
   def dim(self) -> int:
     return len(self.n_simplices)-1
 
-  def faces(self, p: int = None) -> Iterator[ValueSimplex]:
+  def faces(self, p: int = None, **kwargs) -> Iterator[ValueSimplex]:
     assert isinstance(p, Integral) or p is None, f"Invalid p:{p} given"
     #return self.values() if p is None else filter(lambda s: len(s) == p+1, self.values())
     return iter(self.data) if p is None else filter(lambda s: len(s) == p+1, iter(self.data))
 
   ## --- Filtration specific enhancements --- 
+  def indices(self) -> Iterator[Any]:
+    return (i for i,s in iter(self))
+
   def reindex(self, index_set: Union[Iterable, Callable]) -> None:
     """Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration"""
     if isinstance(index_set, Iterable):
       assert len(index_set) == len(self), "Index set length not match the number of simplices in the filtration!"
       assert all((i <= j for i,j in pairwise(index_set))), "Index set is not totally ordered!"
-      new = SetFiltration(zip(iter(index_set), self.values()))
+      new = SetFiltration(zip(iter(index_set), faces(self)))
       self.data = new.data
+      assert self.n_simplices == new.n_simplices, "Invalid reindexing; simplex counts changed"
     elif isinstance(index_set, Callable):
-      new = SetFiltration(simplices=self.values(), f=index_set)
+      new = SetFiltration(simplices=faces(self), f=index_set)
       self.data = new.data
+      assert self.n_simplices == new.n_simplices, "Invalid reindexing; simplex counts changed"
     else:
       raise ValueError("invalid index set supplied")
 

@@ -4,7 +4,7 @@ from functools import partial
 
 def filtration(simplices: Iterable[SimplexConvertible], f: Optional[Callable] = None, form: Optional[str] = "default", **kwargs):
   form = "set" if form is None or form == "default" else form
-  if f is None: 
+  if f is None and is_complex_like(simplices): 
     index_map = { s:i for i, s in enumerate(simplices) }
     f = partial(lambda s, d: d[s], d=index_map)
   if form == "set":

@@ -6,6 +6,23 @@ from .meta import *
 # from .complexes import * 
 # from .filtrations import * 
 from .predicates import *
+from .meta import _data_attributes
+
+def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:
+  if isinstance(data, bool):
+    if data == False: 
+      yield from g
+    extract_data = lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) }
+    for el in g: 
+      yield el, extract_data(el)
+    # return zip(g, (extract_data(e) for e in g))
+  elif isinstance(data, str):
+    for el in g: 
+      yield el, getattr(el, data) if hasattr(el, data) else None
+  elif isinstance(data, list):
+    raise NotImplementedError
+  else: 
+    raise ValueError(f"Invalid data input of type '{type(data)}'")
 
 def dim(s: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
   """Returns the dimension of a simplicial object.
@@ -20,8 +37,7 @@ def dim(s: Union[SimplexConvertible, ComplexLike], **kwargs) -> int:
   if hasattr(s, "dim"):
     return s.dim(**kwargs)
   else:
-    complex_like = isinstance(next(iter(s)), SimplexConvertible) # first element is simplexconvertible -> complexLike
-    if complex_like:
+    if is_complex_like(s):
       return max((dim(s, **kwargs) for s in s))
     else: 
       return len(s) - 1
@@ -59,14 +75,13 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
   """
   kwargs |= dict(p=p, data=data)
   if hasattr(s, "faces"):
-    print(kwargs)
     return s.faces(**kwargs)
   elif is_complex_like(s):
-    sset = unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s]))
-    if p is None:
-      return iter(sset)
-    else: 
-      return iter(filter(lambda s: len(s) == p+1, iter(sset)))
+    return unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s])) # handles data implicitly, though faces may not store data
+    # if p is None:
+    #   g = iter(sset)
+    # else: 
+    #   g = iter(filter(lambda s: len(s) == p+1, iter(sset)))
   elif is_filtration_like(s):
     if not data:
       return (f for i,f in s)
@@ -75,10 +90,11 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
   elif is_simplex_like(s): # is simplex convertible
     k = len(s)
     if p is None:
-      return chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
+      g = chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
     else:
       assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
-      return iter(combinations(s, p+1))
+      g = iter(combinations(s, p+1))
+    return handle_data(g, data)
   else:
     raise ValueError(f"Unknown type supplied '{type(s)}'")
 

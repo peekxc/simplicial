@@ -39,7 +39,7 @@ class SetComplex(Complex, ComplexLike):
   def dim(self) -> int:
     return len(self.n_simplices) - 1
 
-  def faces(self, p: Optional[int] = None) -> Iterator[Simplex]:
+  def faces(self, p: Optional[int] = None, **kwargs) -> Iterator[Simplex]:
     if p is None:
       yield from iter(self)
     else: 
@@ -53,7 +53,7 @@ class SetComplex(Complex, ComplexLike):
       assert isinstance(p, int), "Invalid p"
       return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
 
-  # --- Additional complex support functions ---
+  # --- Additional support functions ---
   def cofaces(self, item: Collection[int]) -> Iterator[Simplex]:
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))

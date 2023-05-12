@@ -18,11 +18,11 @@ def test_lower_star_array():
 ## TODO: improve this massively
 def test_rips():
   X = np.random.uniform(size=(15,2))
-  assert isinstance(rips_complex(X), ComplexLike)
-  assert isinstance(rips_filtration(X), FiltrationLike)
+  assert is_complex_like(rips_complex(X))
+  assert is_filtration_like(rips_filtration(X))
   from scipy.spatial.distance import pdist, squareform
-  assert isinstance(rips_complex(pdist(X)), ComplexLike)
-  assert isinstance(rips_complex(squareform(pdist(X))), ComplexLike)  
-  assert isinstance(rips_filtration(pdist(X)), FiltrationLike)
-  assert isinstance(rips_filtration(squareform(pdist(X))), FiltrationLike)
+  assert is_complex_like(rips_complex(pdist(X)))
+  assert is_complex_like(rips_complex(squareform(pdist(X))))  
+  assert is_filtration_like(rips_filtration(pdist(X)))
+  assert is_filtration_like(rips_filtration(squareform(pdist(X))))
 

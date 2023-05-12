@@ -1,11 +1,15 @@
 import numpy as np 
-from splex.complexes import SimplexTree
 from splex import * 
 from more_itertools import unique_everseen
 
 
 def test_faces():
   assert list(faces([0,1,2])) == [Simplex([0]), Simplex([1]), Simplex([2]), Simplex((0, 1)), Simplex((0, 2)), Simplex((1, 2)), Simplex((0, 1, 2))]
+  assert list(faces([0,1], data=True)) == [(Simplex([0]), {}), (Simplex([1]), {}), (Simplex([0, 1]), {})]
+  s = ValueSimplex([0,1,2], 1)
+  ## intended 
+  assert list(faces(s)) == [Simplex([0]), Simplex([1]), Simplex([2]), Simplex((0, 1)), Simplex((0, 2)), Simplex((1, 2)), Simplex((0, 1, 2))]
+  
 
 def test_generics():
   assert list(unique_everseen([[0], [0], [1], [0,1]])) == [[0], [1], [0,1]]

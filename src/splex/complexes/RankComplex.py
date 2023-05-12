@@ -49,7 +49,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     """The maximal dimension of any simplex in the complex."""
     return np.max(self.simplices['dim'])
 
-  def faces(self, p: int = None) -> Iterable['SimplexLike']:
+  def faces(self, p: int = None, **kwargs) -> Iterable['SimplexLike']:
     """Enumerates the faces of the complex.
     
     Parameters:

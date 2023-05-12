@@ -4,29 +4,10 @@ from dataclasses import dataclass
 from more_itertools import collapse, unique_justseen
 from typing import *
 from .meta import *   
+from .generics import *
 from itertools import * 
 import numpy as np 
-# data_attributes
 from more_itertools import seekable, spy
-
-
-
-def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:
-  print("here5")
-  if isinstance(data, bool):
-    if data == False: 
-      yield from g
-    extract_data = lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) }
-    for el in g: 
-      yield el, extract_data(el)
-    # return zip(g, (extract_data(e) for e in g))
-  elif isinstance(data, str):
-    for el in g: 
-      yield el, getattr(el, data) if hasattr(el, data) else None
-  elif isinstance(data, list):
-    raise NotImplementedError
-  else: 
-    raise ValueError(f"Invalid data input of type '{type(data)}'")
 
 class SimplexBase(Hashable):
   """Base class for comparable simplex-like classes with integer vertex labels."""
