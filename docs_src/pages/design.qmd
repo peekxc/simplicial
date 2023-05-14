@@ -1,0 +1,109 @@
+---
+format:
+  html:
+    code-fold: true
+jupyter: python3
+execute: 
+  freeze: auto
+  enabled: false
+draft: true
+---
+
+# Design Philosophy
+
+It is often the case in programming that a well-designed data structure ought to not only be simple, 
+
+Suppose you wanted a data structure to represent a [combinatorial n-simplex](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). 
+
+One's first intuition might be to use a built-in [sequence](https://docs.python.org/3/glossary.html#term-sequence) type, like a list:
+
+```python
+simplex = [0,1,2] # why note use a list? 
+```
+
+While this is plausible, I would argue simplices should treated as value types with [value semantics](https://en.wikipedia.org/wiki/Value_semantics), just like strings (`'abc'`) or integers (`123`), which are [immutable](https://docs.python.org/3/faq/design.html#why-are-python-strings-immutable) and [hashable](https://docs.python.org/3/library/collections.abc.html#collections.abc.Hashable). The next natural candidate is a `tuple`: 
+
+```python
+simplex = (0,1,2)
+```
+
+While they are close, tuples do not have the correct semantics either: `(0,1,1,1,1,2)` is clearly not a simplex, as simplices are _set-like_: they have unique entries and are [comparable](https://portingguide.readthedocs.io/en/latest/comparisons.html). Sets actually are naturally comparable and have unique entries: 
+
+```python
+face = set([1,2])
+face <= simplex # True
+set([2,1,0,1]) == simplex # True 
+```
+
+Sets are mutable, though. One could siwtch to a `frozenset`, except but then one remaining issue _homogeneity_, i.e. a `frozenset` can contain arbitrary element types:
+
+```python
+simplex = frozenset([0,1,'a',2,'b'])
+```
+
+Indeed, it seems the Python data model [doesn't have an immutable, homogenous, set-like container](https://stackoverflow.com/questions/66874287/python-data-model-type-protocols-magic-methods). 
+
+- [lists](https://docs.python.org/3/library/stdtypes.html#lists) are mutable, non-homogenous, and non-hashable
+- [tuples](https://docs.python.org/3/library/stdtypes.html#tuples) are comparable and immutable, but they are not _set like_
+- [frozensets](https://docs.python.org/3/library/stdtypes.html#frozenset) are comparable, immutable, and set-like, but are neither homogenous nor ordered
+- [SortedSet](https://grantjenks.com/docs/sortedcontainers/sortedset.html) comes close, but is neither _immutable_ nor _hashable_.
+- [array](https://docs.python.org/3/library/array.html) & [np.array](https://numpy.org/doc/stable/reference/generated/numpy.array.html) are homogenous but not immutable and not _set like_
+- [bytes](https://docs.python.org/3/library/stdtypes.html#bytes) lack only _set like_ functionality---however their values are limited to [0, 255]
+
+There seems to be no built-in Python sequence appropriate for a _simplex_. So, why not make our own! 
+
+## The Simplex Class
+
+```python
+class Simplex(Hashable):
+  pass
+```
+
+
+As an aside, Python affectuionados may point to the fact that most of the above process of designing a class can be heavily side-stepped using various decorators patterns, like Python's [dataclasses](https://docs.python.org/3/library/dataclasses.html). For example, here's a very similar class to the one above. 
+
+```python
+@dataclass(frozen=True)
+class Simplex(Collection[int]):
+  vertices = field(default_factory=SortedSet, compare=True) 
+```
+
+## Simplicial Complexes 
+
+Now that we have a 'nice' representation of a Simplex, let's build a simplicial complex. 
+
+## Performance
+
+And now onto the elephant in the room: let's see how performant our types are. 
+
+```{code-block}
+
+s = Simplex([0,1,2])
+
+```
+
+Now suppose, we replace this with a simple numpy-based solution. 
+
+```{code-block}
+
+```
+
+After all this effort, our class design of a simplex is at best _complex_ and at worst _monolithic_. Although it seems elegant and natural to use, its simply not a very practical from a performance perspective. Indeed, if we're going to be operating on 1e8+ simplices at a time, it's _far more efficient_ to simply stream operations with a \[numpy\] array!
+
+Of course, with the numpy solution, it seems we lose all the structure we built into the classes. Searching takes... This is a seemingly fundamental tradeoff. Why can't we have the best of both worlds?
+
+An entirely different structure, such as a numpy array, may be more performant in some settings... but in others, perhaps a memory efficient solution using the combinatorial number system makes sense. 
+
+## Structural Subtyping & Generics
+
+Convertibles 
+https://www.timekl.com/blog/2014/12/14/learning-swift-convertibles/
+
+This is a common pattern that exists in other languages. In Haskell, they're called _typeclasses_. In Rust, they're _traits_. In Swift, they're called _protocols_. In D, a related thing is called _type constraints_. These appear over and over in other languages. Swift celebrates itself as a _protocol_-oriented language. 
+https://www.youtube.com/watch?v=E-2y1qHQvTg
+
+Wadler, Philip, and Stephen Blott. "How to make ad-hoc polymorphism less ad hoc." Proceedings of the 16th ACM SIGPLAN-SIGACT symposium on Principles of programming languages. 1989.
+
+With all of these types, its clear there are going to be memory and time complexity tradeoffs associated with each type. Searcing might take longer in one, but shorter in the other... One representation might be extremely compact and great for read-only streaming.... another might be more suitable for a time-varying setting, where the underlying complex is constantly changing via simplex insertions, deletions, and reorderings. 
+
+It would be nice to have a interface to unify all of these sturctures, such that primitive operations on them are carried out in a DRY-manner. Ideally, the interface should be minimal---requiring only what is strictly necessary---but also performant, taking advantage of structure wherever it exists. Moreover, the interface should ideally be easily extensible, type flexible, and open source fruendly. 

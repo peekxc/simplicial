@@ -5,10 +5,10 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-`splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to 
+`splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to provide a common, _pythonic_ interface for manipulating simplicial complexes in ways that is efficient and independent of their internal representation. The package comes equipped with a variety of simplicial data structures whose interfaces themselves are partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  Moreover, like NetworkX, the goal is `splex` longer-term is to provied simple and performant scientific calculations on simplicial complexes, like random-complex generation or complex-sparsification, in ways that is highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
 
 ```{note}
-`splex` is early stage software primarily used for research and playing around. 
+`splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
 ```
 
 ## Installation 
@@ -17,8 +17,40 @@
 python -m pip install -e git+https://github.com/peekxc/splex.git#egg=splex
 ```
 
+## Documentation 
+
+Documentation available [here](https://peekxc.github.io/splex/)
 
 ## Quickstart 
+
+```python
+s = Simplex([0,1,2])                       # Explicit simplex class for value and set-like semantics
+S = simplicial_complex([[0,1,2], [4,5]])   # Complexes are constructible from myriad of types
+K = filtration(S, weight=lambda s: max(s)) # Filtrations are easy to specify via functions 
+
+
+## All the types are pythonic and easy to use  
+K.print()
+K.add(...)
+K.remove(...)
+K.update(...)
+
+## But also come with specific functionality 
+K.reindex(...)
+
+## Complexes are representation-independent..
+S = simplicial_complex(S, form='tree') # convert to tree-based
+S = simplicial_complex(S, form='tree') # convert to array-based
+
+## as are generic 
+from splex.generics import faces, card, dim
+for s in faces(S):
+  ...
+```
+
+For more details, see the documentation. 
+
+## Motivation 
 
 What if there was a natural type for representing simplices? 
 ```python
@@ -75,7 +107,7 @@ S.add([5,6]) # adds Simplex([5,6]) to the complex
 
 .. and for filtered complexes as well?
 ```python
-K = filtration(S)
+K = filtration(enumerate(S)) # index-ordered filtration
 print(K)
 # 3-d filtered complex with (7, 7, 4, 1)-simplices of dimension (0, 1, 2, 3)
 print(format(K))
@@ -90,9 +122,9 @@ What if there were multiple choices in representation...
 
 
 ```python
-SS = simplicial_complex([[0,1,2,3]], form="set")  # simplices stored as sets: simple and extensible
-ST = simplicial_complex([[0,1,2,3]], form="tree") # simplex trees are compact and efficient to modify
-SR = simplicial_complex([[0,1,2,3]], form="rank") # simplices stored in arrays integers: cache efficient to read
+SS = simplicial_complex([[0,1,2,3]], form="set")  # simplices stored as collections in a set 
+ST = simplicial_complex([[0,1,2,3]], form="tree") # simplices stored as nodes in a tree 
+SR = simplicial_complex([[0,1,2,3]], form="rank") # simplices stored as integers in an array 
 # ... 
 ```
 
@@ -103,7 +135,7 @@ SR = simplicial_complex([[0,1,2,3]], form="rank") # simplices stored in arrays i
 faces(SS)           # calls overloaded .faces()
 faces(ST)           # same as above, but using a simplex tree
 faces(SR)           # same as above, but using a rank complex 
-faces([[0,1,2,3]]) # Equivalent! Falls back to combinations! 
+faces([[0,1,2,3]])  # same as above! Falls back to combinations! 
 # same goes for .card(), .dim(), .boundary(), ...
 ```
 
@@ -117,22 +149,17 @@ def faces(S: ComplexLike) -> Iterator[SimplexConvertible]:
     ...
 ```
 
-...where `ComplexLike` is a protocol defining a minimal interface needed for Python types to be interpreted as complexes. 
-This is duck typing---no direct inheritance needed! Just define your type, make it _pythonic_ via abc.collections and go. 
+...where `ComplexLike` is a [protocol](https://mypy.readthedocs.io/en/stable/protocols.html) defining a minimal interface needed for Python types to be interpreted as complexes. This is duck typing---no nominal inheritance needed! Just define your type, make it _pythonic_ via abc.collections and go. 
 
 
 ```python
-def MyCellComplex(ComplexLike):
+from typing import *
+from splex.meta import SimplexConvertible, ComplexLike 
+
+class MyCellComplex:
   def __iter__(self) -> Iterator[SimplexConvertible]:
-    ...
+    ... # < specific implementation > 
 ```
 
-<!-- Of course, if the types could be *narrowed* for highly performant, type-specific algorithms?
 
-```{python}
-
-``` 
--->
-
-<!-- These are the goals of the `splex` package. Clean, extensible, performant.   -->
 
