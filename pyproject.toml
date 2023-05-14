@@ -20,7 +20,8 @@ dependencies = [
 	"numpy",
 	"scipy", 
 	"hirola", 
-	"more_itertools"
+	"more_itertools", 
+	"dataclassy"
 ]
 
 [tool.semantic_release]
