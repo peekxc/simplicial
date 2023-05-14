@@ -5,6 +5,7 @@ from collections.abc import Sized
 from array import array
 from .generics import *
 from .predicates import *
+from .Simplex import Simplex
 
 from more_itertools import flatten, collapse, chunked, unique_everseen 
 
@@ -23,14 +24,15 @@ from more_itertools import flatten, collapse, chunked, unique_everseen
 def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertible], dtype) -> spmatrix:
   assert len(dtype) == 2
   from hirola import HashTable
-  S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(S, dtype=dtype[0])
+  S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(collapse(S), dtype=dtype[0])
   if dtype[1] == 1:
     return coo_array((0, len(S_arr)), dtype=dtype[0])
   else:
     m, d = S_arr.shape
-    F_arr = np.fromiter(F, dtype=(S_arr.dtype, d-1)) if d > 2 else np.fromiter(F, dtype=S_arr.dtype)
+    F_arr = np.fromiter(F, dtype=(S_arr.dtype, d-1)) if d > 2 else np.fromiter(collapse(F), dtype=S_arr.dtype)
     if m == 0:
       return coo_array((F_arr.shape[0], 0), dtype=dtype[0])
+    ## Use euler characteristic bound
     h = HashTable((3*m)*1.25, dtype=(S_arr.dtype, d-1)) if d > 2 else HashTable((3*m)*1.25, dtype=S_arr.dtype)
     h.add(F_arr)
     ind = np.arange(d).astype(int)
@@ -99,10 +101,10 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       simplices = list(faces(K)) # to ensure repeatable
       D = _boundary(simplices)
     else:
-      p_simplices = faces(K, p=p)
-      p_faces = list(faces(K, p=p-1))
+      p_simplices = map(Simplex, faces(K, p=p))
+      p_faces = list(map(Simplex, faces(K, p=p-1)))
       # D = _boundary(p_simplices, p_faces)
-      D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
+      D = _fast_boundary(p_simplices, p_faces, dtype=(np.uint16, p+1))
       # face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
       # face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
       # if p == 1:

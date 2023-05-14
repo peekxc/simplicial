@@ -34,7 +34,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     """"""
     # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
     sset = unique_everseen(faces(simplices))
-    s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16)])
+    self.s_dtype = np.dtype([('rank', np.uint64), ('dim', np.uint16)])
     if simplices is not None:
       sset = unique_everseen(faces(simplices))
       assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"

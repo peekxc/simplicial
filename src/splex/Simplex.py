@@ -99,9 +99,10 @@ class SimplexBase(Hashable):
   def dim(self) -> int: 
     return len(self.vertices)-1
 
-  def __array__(self) -> np.ndarray: 
+  def __array__(self, dtype = None) -> np.ndarray: 
     """Support native array conversion."""
-    return np.asarray(self.vertices)
+    dtype = np.uint16 if dtype is None else dtype
+    return np.asarray(self.vertices, dtype = dtype)
 
   
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)

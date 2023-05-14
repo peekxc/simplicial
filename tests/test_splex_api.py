@@ -92,6 +92,7 @@ def test_generics():
   assert dim(K) == 2
   assert list(faces(K)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
   assert list(faces(K,0)) ==  list(map(Simplex, [(0),(1),(2)]))
+  
 def test_boundary():
   K = filtration(enumerate([0,1,2,[0,1],[0,2],[1,2]]))
   D_test = boundary_matrix(K).todense()
