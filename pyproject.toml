@@ -16,11 +16,12 @@ requires-python = ">=3.8"
 keywords = ["TDA"]
 dependencies = [
 	"pybind11",
-	"sortedcontainers",
 	"numpy",
 	"scipy", 
 	"hirola", 
-	"more_itertools"
+	"sortedcontainers",
+	"more_itertools", 
+	"dataclassy"
 ]
 
 [tool.semantic_release]
