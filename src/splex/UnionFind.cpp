@@ -13,7 +13,7 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-#include "include/UnionFind.h"
+#include "UnionFind.h"
                    
 void printCC(UnionFind& uf){
   for (size_t j = 0; j < uf.size; ++j){ py::print(uf.Find(j), " "); }

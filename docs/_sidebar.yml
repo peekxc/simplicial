@@ -1,0 +1,31 @@
+website:
+  sidebar:
+    contents:
+    - reference/index.qmd
+    - contents:
+      - reference/complexes.SetComplex.SetComplex.qmd
+      - reference/complexes.RankComplex.RankComplex.qmd
+      - reference/complexes.SimplexTree.SimplexTree.qmd
+      section: Complexes
+    - contents:
+      - reference/filtrations.SetFiltration.SetFiltration.qmd
+      section: Filtrations
+    - contents:
+      - reference/generics.qmd
+      section: Generics
+    - contents:
+      - reference/meta.qmd
+      section: Protocols
+    - contents:
+      - reference/meta.qmd
+      section: Protocols
+    - contents:
+      - reference/geometry.qmd
+      section: Geometry
+    - contents:
+      - reference/sparse.qmd
+      section: Linear algebra
+    - contents:
+      - reference/UnionFind.UnionFind.qmd
+      section: UnionFind
+    id: reference

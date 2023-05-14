@@ -1,0 +1,12 @@
+# generics.dim { #splex.generics.dim }
+
+`generics.dim(s, **kwargs)`
+
+Returns the dimension of a simplicial object.
+
+If _s_ has an existing method _s.dim(...)_, then that method is called with additional keyword arguments _kwargs_.
+
+Otherwise, the behavior of this function depends on the type-class of _s_. Namely, 
+- if _s_ is SimplexLike with dimension _p_, then _p_ is returned. 
+- if _s_ is ComplexLike, then the largest dimension _p_ of any face in _s_ is returned.
+- if _s_ is none of the above but is Sized, len(_s_) - 1 is returned.

@@ -1,17 +1,23 @@
 import numpy as np
 from ..meta import * 
+from ..generics import *
 from ..Simplex import *
-from sortedcontainers import SortedSet 
+from .Complex_ABCs import Complex 
+from sortedcontainers import SortedSet # SortedSet is a vaid Sequence! 
 
-## TODO: implement a simplex |-> attribute system like networkx graphs
-class SetComplex(ComplexLike):
+class SetComplex(Complex, ComplexLike):
   """ Abstract Simplicial Complex"""
 
   def __init__(self, simplices: Iterable[SimplexConvertible] = None):
-    """"""
+    """ Set Complex """
     self.data = SortedSet([], key=lambda s: (len(s), tuple(s), s)) # for now, just use the lex/dim/face order 
-    self.shape = tuple()
-    self.update(simplices)
+    self.n_simplices = tuple()
+    if simplices is not None: 
+      self.update(simplices)
+  
+  ## --- Collection requirements --- 
+  def __iter__(self) -> Iterator[Simplex]:
+    return iter(self.data)
   
   def __len__(self, p: Optional[int] = None) -> int:
     return len(self.data)
@@ -19,88 +25,68 @@ class SetComplex(ComplexLike):
   def __contains__(self, item: Collection[int]):
     return self.data.__contains__(Simplex(item))
 
-  def __iter__(self) -> Iterator:
-    return iter(self.data)
-  
-  def dim(self) -> int:
-    return len(self.shape) - 1
+  ## --- Sequence requirements --- 
+  def __getitem__(self, index: Union[int, slice]):
+    return self.data[index]
 
-  def faces(self, p: Optional[int] = None) -> Iterable['Simplex']:
+  # MutableSequence 
+  # __getitem__, __setitem__, __delitem__, __len__, insert, append, reverse, extend, pop, remove, and __iadd__
+
+  # MutableSet 
+  # __contains__, __iter__, __len__, add, discard, clear, pop, remove, __ior__, __iand__, __ixor__, and __isub__
+
+  ## --- Generics support --- 
+  def dim(self) -> int:
+    return len(self.n_simplices) - 1
+
+  def faces(self, p: Optional[int] = None, **kwargs) -> Iterator[Simplex]:
     if p is None:
       yield from iter(self)
     else: 
       assert isinstance(p, Number)
       yield from filter(lambda s: len(s) == p + 1, iter(self))
 
-  def card(self, p: int = None):
+  def card(self, p: int = None) -> tuple:
     if p is None: 
-      return self.shape
+      return self.n_simplices
     else: 
       assert isinstance(p, int), "Invalid p"
-      return 0 if p < 0 or p >= len(self.shape) else self.shape[p]
+      return 0 if p < 0 or p >= len(self.n_simplices) else self.n_simplices[p]
 
-  def update(self, simplices: Iterable[SimplexLike]):
-    for s in simplices:
-      self.add(s)
-
-  def add(self, item: Collection[int]):
-    # self_set = super(SimplicialComplex, self)
-    for face in Simplex(item).faces():
-      if not(face in self.data):
-        self.data.add(face)
-        if len(face) > len(self.shape):
-          self.shape = tuple(list(self.shape) + [1])
-        else:
-          t = self.shape
-          self.shape = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
-        
-  def remove(self, item: Collection[int]):
-    self.data.difference_update(set(self.cofaces(item)))
-    self._update_shape()
-
-  def discard(self, item: Collection[int]):
-    self.data.discard(Simplex(item))
-    self._update_shape()
-  
-  def _update_shape(self) -> None:
-    """ Bulk update to shape """
-    from collections import Counter
-    cc = Counter([len(s)-1 for s in self.data])
-    self.shape = tuple(dict(sorted(cc.items())).values())
-
-  def cofaces(self, item: Collection[int]):
+  # --- Additional support functions ---
+  def cofaces(self, item: Collection[int]) -> Iterator[Simplex]:
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))
 
-  def __repr__(self) -> str:
-    if self.data.__len__() <= 15:
-      return repr(self.data)
-    else:
-      from collections import Counter
-      cc = Counter([s.dim() for s in iter(self)])
-      cc = dict(sorted(cc.items()))
-      return f"{max(cc)}-d complex with {tuple(cc.values())}-simplices of dimension {tuple(cc.keys())}"
+  def update(self, simplices: Iterable[SimplexConvertible]):
+    for s in simplices:
+      self.add(s)
 
-  def __format__(self, format_spec = "default") -> str:
-    from io import StringIO
-    s = StringIO()
-    self.print(file=s)
-    res = s.getvalue()
-    s.close()
-    return res
+  def add(self, item: SimplexConvertible) -> None:
+    s = Simplex(item)         # cast to Simplex for comparability
+    ns = np.zeros(dim(s)+1)   # array to update num. simplices
+    ns[:len(self.n_simplices)] = self.n_simplices
+    for face in faces(s):
+      if not(face in self.data):
+        self.data.add(face)
+        ns[dim(face)] += 1
+    self.n_simplices = tuple(ns)
+        # if len(face) > len(self.n_simplices):
+        #   # self.n_simplices = tuple(list(self.n_simplices) + [1])
+        # else:
+        #   t = self.n_simplices
+          # self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
+        
+  def remove(self, item: SimplexConvertible):
+    self.data.difference_update(set(self.cofaces(item)))
+    self._update_n_simplices()
 
-  def print(self, **kwargs) -> None:
-    ST = np.zeros(shape=(self.__len__(), self.dim()+1), dtype='<U15')
-    ST.fill(' ')
-    for i,s in enumerate(self):
-      ST[i,:len(s)] = str(s)[1:-1].split(',')
-    SC = np.apply_along_axis(lambda x: ' '.join(x), axis=0, arr=ST)
-    for i, s in enumerate(SC): 
-      ending = '\n' if i != (len(SC)-1) else ''
-      print(s, sep='', end=ending, **kwargs)
-
-# Pythonic version: https://grantjenks.com/docs/sortedcontainers/#features
-
-# The OrderedDict was designed to be good at reordering operations. Space efficiency, iteration speed, and the performance of update operations were secondary.
-# A mapping object maps hashable values to arbitrary objects
-# https://stackoverflow.com/questions/798442/what-is-the-correct-or-best-way-to-subclass-the-python-set-class-adding-a-new
+  def discard(self, item: SimplexConvertible):
+    self.data.difference_update(set(self.cofaces(item)))
+    self._update_n_simplices()
+  
+  def _update_n_simplices(self) -> None:
+    """ Bulk update to shape """
+    from collections import Counter
+    cc = Counter([len(s)-1 for s in self.data])
+    self.n_simplices = tuple(dict(sorted(cc.items())).values())

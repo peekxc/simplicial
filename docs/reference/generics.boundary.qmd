@@ -1,6 +1,6 @@
-## boundary { #boundary }
+# generics.boundary { #splex.generics.boundary }
 
-`boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented: bool = False, kwargs)`
+`generics.boundary(s, p=None, oriented=False, **kwargs)`
 
 Returns the boundary of a simplicial object, optionally signed.
 
@@ -10,3 +10,6 @@ Otherwise, the behavior of this function depends on the type-class of _s_. Namel
 - if _s_ is SimplexLike with dimension _p_, then a generator enumerating _(p-1)_-faces of _s_ is created. 
 - if _s_ is ComplexLike, then a sparse boundary matrix whose columns represent boundary chains is returned. 
 - if _s_ is FiltrationLike, then a sparse boundary matrix whose columns represent boundary chains in filtration order is returned.
+- if _s_ is none of the above but is Sized and Iterable, all len(s)-1 combinations are returned of _s_ are returned. 
+
+TODO: finish this
