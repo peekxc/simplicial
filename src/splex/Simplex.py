@@ -1,15 +1,17 @@
 from __future__ import annotations # for mypy to recognize self return types
 from numbers import Number, Integral
-from dataclasses import dataclass
+# from dataclasses import dataclass
+from dataclassy import dataclass
 from more_itertools import collapse, unique_justseen
 from typing import *
-from .meta import *   
-from .generics import *
+from .meta import *  
+from .generics import * 
 from itertools import * 
 import numpy as np 
 from more_itertools import seekable, spy
 
-class SimplexBase(Hashable):
+@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+class SimplexBase: # forget about hashable to make compatible as a data class 
   """Base class for comparable simplex-like classes with integer vertex labels."""
   vertices: Union[tuple[int], Tuple[()]] = ()
 
@@ -104,9 +106,8 @@ class SimplexBase(Hashable):
     dtype = np.uint16 if dtype is None else dtype
     return np.asarray(self.vertices, dtype = dtype)
 
-  
-@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
-class Simplex(SimplexBase, Generic[IT]):
+@dataclass(slots=True, frozen=True, init=False, repr=False, eq=False)
+class Simplex(SimplexBase): # , Generic[IT]
   """Simplex dataclass.
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
@@ -115,7 +116,7 @@ class Simplex(SimplexBase, Generic[IT]):
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'vertices', t)
 
-@dataclass(frozen=False, slots=False, init=False, repr=False, eq=False)
+@dataclass(slots=False, frozen=False, init=False, repr=False, eq=False)
 class PropertySimplex(SimplexBase):
   """Dataclass for representing a simplex associated with arbitrary properties. 
 
@@ -129,6 +130,8 @@ class PropertySimplex(SimplexBase):
     object.__setattr__(self, 'vertices', t)
     self.__dict__.update(kwargs)
     # object.__setattr__(self, )
+  def __setattr__(self, key: str, value: Any) -> None:
+    self.__dict__[key] = value
 
 
 
@@ -144,9 +147,9 @@ class PropertySimplex(SimplexBase):
 ## Moreover, **two filtrations could have identical ValueSimplexes with different faces/boundaries**
 ## -----
 ## Suppose we just inherit all the struct-like behavior of a regular simplex. 
-## 1. Equality testing is still vertex-wise. Values are ignored.
+## 1. Equality testing is still vertex-wise. Non-vertex Values are ignored.
 ## 2. Inequality ordering is unchanged and valid. It is up to the class that uses Value Simplices to ensure they are ordered correctly. 
-## 3. boundary and face enumeration would just downcast / discard values. 
+## 3. boundary and face enumeration would just downcast to simplices / discard values. 
 ## 4. faces(S, p=1, data=True) would yield something like 
 ## (o) for s in faces(S, p=1, data=False) => default behavior
 ## (a) for s,d in faces(S, p=1, data=True) => d is empty dict view {} for Simplex 
@@ -164,7 +167,7 @@ class PropertySimplex(SimplexBase):
 ## - Supports __iter__ + __array__ + Sequence + SequenceView for SetComplex 
 ## - Supports __iter__ + __array__ for SimplexTree
 
-@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+@dataclass(slots=True, frozen=True, init=False, repr=False, eq=False)
 class ValueSimplex(SimplexBase, Generic[IT]):
   """Dataclass for representing a simplex associated with a single numerical value. 
 

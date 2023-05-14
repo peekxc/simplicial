@@ -164,7 +164,7 @@ class SetFiltration(Filtration, Sequence):
   def copy(self) -> 'SetFiltration':
     new = SetFiltration()
     from copy import deepcopy
-    new.data = deepcopy(self.data)
+    new.data = SetFiltration._sorted_set(self.data) #deepcopy(self.data)
     new.n_simplices = deepcopy(self.n_simplices)
     return new 
   

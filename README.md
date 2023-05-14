@@ -5,7 +5,18 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-`splex` is an experimental package for constructing, manipulating, and computing with simplicial complexes. 
+`splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to 
+
+```{note}
+`splex` is early stage software primarily used for research and playing around. 
+```
+
+## Installation 
+
+```
+python -m pip install -e git+https://github.com/peekxc/splex.git#egg=splex
+```
+
 
 ## Quickstart 
 
