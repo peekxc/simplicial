@@ -1,0 +1,10 @@
+# meta { #splex.meta }
+
+`meta`
+
+## Attributes
+
+| Name | Description |
+| --- | --- |
+| [IT](#splex.meta.IT) |  |
+| [PropertySimplexConvertible](#splex.meta.PropertySimplexConvertible) |  |

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – complexes.simplextree</title>
+<title>Splex – filtrations.setfiltration.setfiltration</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../reference/generics.card.html" rel="next">
+<link href="../reference/complexes.SimplexTree.SimplexTree.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -104,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/index.html">API Reference</a></li><li class="breadcrumb-item"><a href="../reference/filtrations.SetFiltration.SetFiltration.html">Filtrations</a></li><li class="breadcrumb-item"><a href="../reference/filtrations.SetFiltration.SetFiltration.html">Set Filtration</a></li></ol></nav>
       <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -129,17 +131,117 @@ ul.task-list li input[type="checkbox"] {
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/index.qmd" class="sidebar-item-text sidebar-link">API Reference</a>
+            <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Complexes</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/faces.qmd" class="sidebar-item-text sidebar-link">Faces</a>
+  <a href="../reference/complexes.SetComplex.SetComplex.html" class="sidebar-item-text sidebar-link">Set Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.RankComplex.RankComplex.html" class="sidebar-item-text sidebar-link">Rank Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Filtrations</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/filtrations.SetFiltration.SetFiltration.html" class="sidebar-item-text sidebar-link active">Set Filtration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Generics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.card.html" class="sidebar-item-text sidebar-link">Cardinality</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.dim.html" class="sidebar-item-text sidebar-link">Dimension</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.faces.html" class="sidebar-item-text sidebar-link">Faces</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Interface</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/meta.html" class="sidebar-item-text sidebar-link">Protocol Classes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Linear Algebra</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/sparse.html" class="sidebar-item-text sidebar-link">Sparse</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/UnionFind.UnionFind.html" class="sidebar-item-text sidebar-link">Union Find</a>
   </div>
 </li>
       </ul>
@@ -155,11 +257,99 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="splex.complexes.SimplexTree" class="level1">
-<h1>complexes.SimplexTree</h1>
-<p><code>complexes.SimplexTree</code></p>
+<section id="splex.filtrations.SetFiltration.SetFiltration" class="level1">
+<h1>filtrations.SetFiltration.SetFiltration</h1>
+<p><code>filtrations.SetFiltration.SetFiltration(self, simplices=None, f=None, order='lex')</code></p>
+<p>Filtered complex of simplices uses <em>SortedSet</em>.</p>
+<p>This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_s of <em>Simplex</em> instances. This class also implements the Mapping[Any, SimplexConvertible] Implements: <strong>getitem</strong>, <strong>iter</strong>, <strong>len</strong>, <strong>contains</strong>, keys, items, values, get, <strong>eq</strong>, and <strong>ne</strong></p>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.add">add</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.cofaces">cofaces</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.copy">copy</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.dim">dim</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.faces">faces</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.index">index</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.indices">indices</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.reindex">reindex</a></td>
+<td>Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration</td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.filtrations.SetFiltration.SetFiltration.update">update</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<section id="splex.filtrations.SetFiltration.SetFiltration.add" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.add">add</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.add(self, simplex)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.cofaces" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.cofaces">cofaces</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.cofaces(self, item)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.copy" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.copy">copy</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.copy(self)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.dim" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.dim">dim</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.dim(self)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.faces" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.faces">faces</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.faces(self, p=None, **kwargs)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.index" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.index">index</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.index(self, item)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.indices" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.indices">indices</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.indices(self)</code></p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.reindex" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.reindex">reindex</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.reindex(self, index_set)</code></p>
+<p>Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration</p>
+</section>
+<section id="splex.filtrations.SetFiltration.SetFiltration.update" class="level3">
+<h3 class="anchored" data-anchor-id="splex.filtrations.SetFiltration.SetFiltration.update">update</h3>
+<p><code>filtrations.SetFiltration.SetFiltration.update(self, simplices)</code></p>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -497,6 +687,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Simplex Tree</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../reference/generics.card.html" class="pagination-link">
+        <span class="nav-page-text">Cardinality</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

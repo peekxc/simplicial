@@ -1,0 +1,61 @@
+# filtrations.SetFiltration.SetFiltration { #splex.filtrations.SetFiltration.SetFiltration }
+
+`filtrations.SetFiltration.SetFiltration(self, simplices=None, f=None, order='lex')`
+
+Filtered complex of simplices uses _SortedSet_.
+
+This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_s 
+of _Simplex_ instances. This class also implements the Mapping[Any, SimplexConvertible] 
+Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [add](#splex.filtrations.SetFiltration.SetFiltration.add) |  |
+| [cofaces](#splex.filtrations.SetFiltration.SetFiltration.cofaces) |  |
+| [copy](#splex.filtrations.SetFiltration.SetFiltration.copy) |  |
+| [dim](#splex.filtrations.SetFiltration.SetFiltration.dim) |  |
+| [faces](#splex.filtrations.SetFiltration.SetFiltration.faces) |  |
+| [index](#splex.filtrations.SetFiltration.SetFiltration.index) |  |
+| [indices](#splex.filtrations.SetFiltration.SetFiltration.indices) |  |
+| [reindex](#splex.filtrations.SetFiltration.SetFiltration.reindex) | Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration |
+| [update](#splex.filtrations.SetFiltration.SetFiltration.update) |  |
+
+### add { #splex.filtrations.SetFiltration.SetFiltration.add }
+
+`filtrations.SetFiltration.SetFiltration.add(self, simplex)`
+
+### cofaces { #splex.filtrations.SetFiltration.SetFiltration.cofaces }
+
+`filtrations.SetFiltration.SetFiltration.cofaces(self, item)`
+
+### copy { #splex.filtrations.SetFiltration.SetFiltration.copy }
+
+`filtrations.SetFiltration.SetFiltration.copy(self)`
+
+### dim { #splex.filtrations.SetFiltration.SetFiltration.dim }
+
+`filtrations.SetFiltration.SetFiltration.dim(self)`
+
+### faces { #splex.filtrations.SetFiltration.SetFiltration.faces }
+
+`filtrations.SetFiltration.SetFiltration.faces(self, p=None, **kwargs)`
+
+### index { #splex.filtrations.SetFiltration.SetFiltration.index }
+
+`filtrations.SetFiltration.SetFiltration.index(self, item)`
+
+### indices { #splex.filtrations.SetFiltration.SetFiltration.indices }
+
+`filtrations.SetFiltration.SetFiltration.indices(self)`
+
+### reindex { #splex.filtrations.SetFiltration.SetFiltration.reindex }
+
+`filtrations.SetFiltration.SetFiltration.reindex(self, index_set)`
+
+Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration
+
+### update { #splex.filtrations.SetFiltration.SetFiltration.update }
+
+`filtrations.SetFiltration.SetFiltration.update(self, simplices)`

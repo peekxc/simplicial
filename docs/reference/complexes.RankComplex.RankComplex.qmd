@@ -1,0 +1,82 @@
+# complexes.RankComplex.RankComplex { #splex.complexes.RankComplex.RankComplex }
+
+`complexes.RankComplex.RankComplex(self, simplices=None)`
+
+Simplicial complex represented via the combinatorial number system.
+
+A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers 
+are computed by bijecting each p-dimensional simplex to an integer in the range [0, comb(n,p+1))---this process is called _ranking_
+a simplex, and the correspondence between natural numbers and simplices is called the _combinatorial numer system_. 
+
+Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations
+are computed on the fly by inverting the correspondence ('unranking') upon on access. 
+
+## Attributes
+
+| Name      | Type   | Description                                                                                                               |
+|-----------|--------|---------------------------------------------------------------------------------------------------------------------------|
+| simplices |        | structured ndarray of dtype [('rank', uint64), ('dim', uint8)] containing the simplex ranks and dimensions, respectively. |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [add](#splex.complexes.RankComplex.RankComplex.add) | Adds a simplex and its faces to the complex, if they do not already exist. |
+| [card](#splex.complexes.RankComplex.RankComplex.card) |  |
+| [cofaces](#splex.complexes.RankComplex.RankComplex.cofaces) |  |
+| [dim](#splex.complexes.RankComplex.RankComplex.dim) | The maximal dimension of any simplex in the complex. |
+| [discard](#splex.complexes.RankComplex.RankComplex.discard) | Removes simplices from the complex, if they exist. |
+| [faces](#splex.complexes.RankComplex.RankComplex.faces) | Enumerates the faces of the complex. |
+| [remove](#splex.complexes.RankComplex.RankComplex.remove) | Removes simplices from the complex. They must exist. |
+
+### add { #splex.complexes.RankComplex.RankComplex.add }
+
+`complexes.RankComplex.RankComplex.add(self, item)`
+
+Adds a simplex and its faces to the complex, if they do not already exist.
+
+If _item_ is already in the complex, the underlying complex is not modified.
+
+### card { #splex.complexes.RankComplex.RankComplex.card }
+
+`complexes.RankComplex.RankComplex.card(self, p=None)`
+
+### cofaces { #splex.complexes.RankComplex.RankComplex.cofaces }
+
+`complexes.RankComplex.RankComplex.cofaces(self, item)`
+
+### dim { #splex.complexes.RankComplex.RankComplex.dim }
+
+`complexes.RankComplex.RankComplex.dim(self)`
+
+The maximal dimension of any simplex in the complex.
+
+### discard { #splex.complexes.RankComplex.RankComplex.discard }
+
+`complexes.RankComplex.RankComplex.discard(self, item)`
+
+Removes simplices from the complex, if they exist.
+
+If none of the supplied _simplices_ are in the complex, the simplices are not modified.
+
+### faces { #splex.complexes.RankComplex.RankComplex.faces }
+
+`complexes.RankComplex.RankComplex.faces(self, p=None, **kwargs)`
+
+Enumerates the faces of the complex.
+
+#### Parameters
+
+**p** : <span class='type_annotation'> int, </span>optional (default=None)<p> optional integer indicating which dimension of faces to enumerate. Default to None (enumerates all faces). </p>
+
+#### Returns
+
+**** : <span class='type_annotation'> Iterable[SimplexLike], </span><p> generator which yields on evaluation yields the simplex </p>
+
+### remove { #splex.complexes.RankComplex.RankComplex.remove }
+
+`complexes.RankComplex.RankComplex.remove(self, item)`
+
+Removes simplices from the complex. They must exist.
+
+If any of the supplied _simplices_ are not in the complex, raise a KeyError.

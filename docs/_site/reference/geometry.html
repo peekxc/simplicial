@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – complexes.simplextree</title>
+<title>Splex – geometry</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -129,19 +129,101 @@ ul.task-list li input[type="checkbox"] {
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/index.qmd" class="sidebar-item-text sidebar-link">API Reference</a>
+            <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Complexes</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/faces.qmd" class="sidebar-item-text sidebar-link">Faces</a>
+  <a href="../reference/complexes.SetComplex.SetComplex.html" class="sidebar-item-text sidebar-link">Set Complex</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.RankComplex.RankComplex.html" class="sidebar-item-text sidebar-link">Rank Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Filtrations</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SetFiltration.SetFiltration.qmd" class="sidebar-item-text sidebar-link">Set Filtration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Generics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  Cardinality
+  </li>
+          <li class="sidebar-item">
+  Dimension
+  </li>
+          <li class="sidebar-item">
+  Faces
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Interface</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  Protocol Classes
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Linear Algebra</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -155,11 +237,85 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="splex.complexes.SimplexTree" class="level1">
-<h1>complexes.SimplexTree</h1>
-<p><code>complexes.SimplexTree</code></p>
+<section id="splex.geometry" class="level1">
+<h1>geometry</h1>
+<p><code>geometry</code></p>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#splex.geometry.as_pairwise_dist">as_pairwise_dist</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.geometry.delaunay_complex">delaunay_complex</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.geometry.enclosing_radius">enclosing_radius</a></td>
+<td>Returns the smallest ‘r’ such that the Rips complex on the union of balls of radius ‘r’ is contractible to a point.</td>
+</tr>
+<tr class="even">
+<td><a href="#splex.geometry.flag_weight">flag_weight</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.geometry.lower_star_weight">lower_star_weight</a></td>
+<td>Constructs a simplex-parameterized <em>Callable</em> that evaluates its lower star value based on <em>x</em>.</td>
+</tr>
+<tr class="even">
+<td><a href="#splex.geometry.rips_complex">rips_complex</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.geometry.rips_filtration">rips_filtration</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<section id="splex.geometry.as_pairwise_dist" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.as_pairwise_dist">as_pairwise_dist</h3>
+<p><code>geometry.as_pairwise_dist(x)</code></p>
+</section>
+<section id="splex.geometry.delaunay_complex" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.delaunay_complex">delaunay_complex</h3>
+<p><code>geometry.delaunay_complex(x)</code></p>
+</section>
+<section id="splex.geometry.enclosing_radius" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.enclosing_radius">enclosing_radius</h3>
+<p><code>geometry.enclosing_radius(x)</code></p>
+<p>Returns the smallest ‘r’ such that the Rips complex on the union of balls of radius ‘r’ is contractible to a point.</p>
+</section>
+<section id="splex.geometry.flag_weight" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.flag_weight">flag_weight</h3>
+<p><code>geometry.flag_weight(x, vertex_weights=None)</code></p>
+</section>
+<section id="splex.geometry.lower_star_weight" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.lower_star_weight">lower_star_weight</h3>
+<p><code>geometry.lower_star_weight(x)</code></p>
+<p>Constructs a simplex-parameterized <em>Callable</em> that evaluates its lower star value based on <em>x</em>.</p>
+<p>Vertex labels are assumed to be 0-indexed for now.</p>
+<p>If simplex-like, use 0-indexed vertex labels to index vertex values directly.</p>
+<p>Otherwise assumes a 2d array of simplex labels is given and vectorizes the computation.</p>
+</section>
+<section id="splex.geometry.rips_complex" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.rips_complex">rips_complex</h3>
+<p><code>geometry.rips_complex(x, radius=None, p=1)</code></p>
+</section>
+<section id="splex.geometry.rips_filtration" class="level3">
+<h3 class="anchored" data-anchor-id="splex.geometry.rips_filtration">rips_filtration</h3>
+<p><code>geometry.rips_filtration(x, radius=None, p=1, **kwargs)</code></p>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Splex – complexes.simplextree</title>
+<title>Splex – complexes.rankcomplex.rankcomplex</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../reference/complexes.SimplexTree.SimplexTree.html" rel="next">
+<link href="../reference/complexes.SetComplex.SetComplex.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -104,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/index.html">API Reference</a></li><li class="breadcrumb-item"><a href="../reference/complexes.SetComplex.SetComplex.html">Complexes</a></li><li class="breadcrumb-item"><a href="../reference/complexes.RankComplex.RankComplex.html">Rank Complex</a></li></ol></nav>
       <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -129,17 +131,117 @@ ul.task-list li input[type="checkbox"] {
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../reference/index.qmd" class="sidebar-item-text sidebar-link">API Reference</a>
+            <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Complexes</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/faces.qmd" class="sidebar-item-text sidebar-link">Faces</a>
+  <a href="../reference/complexes.SetComplex.SetComplex.html" class="sidebar-item-text sidebar-link">Set Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.RankComplex.RankComplex.html" class="sidebar-item-text sidebar-link active">Rank Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Filtrations</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/filtrations.SetFiltration.SetFiltration.html" class="sidebar-item-text sidebar-link">Set Filtration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Generics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.card.html" class="sidebar-item-text sidebar-link">Cardinality</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.dim.html" class="sidebar-item-text sidebar-link">Dimension</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/generics.faces.html" class="sidebar-item-text sidebar-link">Faces</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Interface</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/meta.html" class="sidebar-item-text sidebar-link">Protocol Classes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Linear Algebra</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/sparse.html" class="sidebar-item-text sidebar-link">Sparse</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/UnionFind.UnionFind.html" class="sidebar-item-text sidebar-link">Union Find</a>
   </div>
 </li>
       </ul>
@@ -155,11 +257,129 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="splex.complexes.SimplexTree" class="level1">
-<h1>complexes.SimplexTree</h1>
-<p><code>complexes.SimplexTree</code></p>
+<section id="splex.complexes.RankComplex.RankComplex" class="level1">
+<h1>complexes.RankComplex.RankComplex</h1>
+<p><code>complexes.RankComplex.RankComplex(self, simplices=None)</code></p>
+<p>Simplicial complex represented via the combinatorial number system.</p>
+<p>A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers are computed by bijecting each p-dimensional simplex to an integer in the range [0, comb(n,p+1))—this process is called <em>ranking</em> a simplex, and the correspondence between natural numbers and simplices is called the <em>combinatorial numer system</em>.</p>
+<p>Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations are computed on the fly by inverting the correspondence (‘unranking’) upon on access.</p>
+<section id="attributes" class="level2">
+<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
+<table class="table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>simplices</td>
+<td></td>
+<td>structured ndarray of dtype [(‘rank’, uint64), (‘dim’, uint8)] containing the simplex ranks and dimensions, respectively.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#splex.complexes.RankComplex.RankComplex.add">add</a></td>
+<td>Adds a simplex and its faces to the complex, if they do not already exist.</td>
+</tr>
+<tr class="even">
+<td><a href="#splex.complexes.RankComplex.RankComplex.card">card</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.complexes.RankComplex.RankComplex.cofaces">cofaces</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><a href="#splex.complexes.RankComplex.RankComplex.dim">dim</a></td>
+<td>The maximal dimension of any simplex in the complex.</td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.complexes.RankComplex.RankComplex.discard">discard</a></td>
+<td>Removes simplices from the complex, if they exist.</td>
+</tr>
+<tr class="even">
+<td><a href="#splex.complexes.RankComplex.RankComplex.faces">faces</a></td>
+<td>Enumerates the faces of the complex.</td>
+</tr>
+<tr class="odd">
+<td><a href="#splex.complexes.RankComplex.RankComplex.remove">remove</a></td>
+<td>Removes simplices from the complex. They must exist.</td>
+</tr>
+</tbody>
+</table>
+<section id="splex.complexes.RankComplex.RankComplex.add" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.add">add</h3>
+<p><code>complexes.RankComplex.RankComplex.add(self, item)</code></p>
+<p>Adds a simplex and its faces to the complex, if they do not already exist.</p>
+<p>If <em>item</em> is already in the complex, the underlying complex is not modified.</p>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.card" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.card">card</h3>
+<p><code>complexes.RankComplex.RankComplex.card(self, p=None)</code></p>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.cofaces" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.cofaces">cofaces</h3>
+<p><code>complexes.RankComplex.RankComplex.cofaces(self, item)</code></p>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.dim" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.dim">dim</h3>
+<p><code>complexes.RankComplex.RankComplex.dim(self)</code></p>
+<p>The maximal dimension of any simplex in the complex.</p>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.discard" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.discard">discard</h3>
+<p><code>complexes.RankComplex.RankComplex.discard(self, item)</code></p>
+<p>Removes simplices from the complex, if they exist.</p>
+<p>If none of the supplied <em>simplices</em> are in the complex, the simplices are not modified.</p>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.faces" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.faces">faces</h3>
+<p><code>complexes.RankComplex.RankComplex.faces(self, p=None, **kwargs)</code></p>
+<p>Enumerates the faces of the complex.</p>
+<section id="parameters" class="level4">
+<h4 class="anchored" data-anchor-id="parameters">Parameters</h4>
+<strong>p</strong> : <span class="type_annotation"> int, </span>optional (default=None)
+<p>
+optional integer indicating which dimension of faces to enumerate. Default to None (enumerates all faces).
+</p>
+</section>
+<section id="returns" class="level4">
+<h4 class="anchored" data-anchor-id="returns">Returns</h4>
+**** : <span class="type_annotation"> Iterable[SimplexLike], </span>
+<p>
+generator which yields on evaluation yields the simplex
+</p>
+</section>
+</section>
+<section id="splex.complexes.RankComplex.RankComplex.remove" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.RankComplex.RankComplex.remove">remove</h3>
+<p><code>complexes.RankComplex.RankComplex.remove(self, item)</code></p>
+<p>Removes simplices from the complex. They must exist.</p>
+<p>If any of the supplied <em>simplices</em> are not in the complex, raise a KeyError.</p>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -497,6 +717,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../reference/complexes.SetComplex.SetComplex.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Set Complex</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="pagination-link">
+        <span class="nav-page-text">Simplex Tree</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

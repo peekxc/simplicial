@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../reference/faces.html" rel="next">
-<link href="../pages/overview.html" rel="prev">
+<link href="../reference/complexes.SetComplex.SetComplex.html" rel="next">
+<link href="../pages/design.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -131,6 +131,11 @@ ul.task-list li input[type="checkbox"] {
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../reference/index.html" class="sidebar-item-text sidebar-link active">API Reference</a>
@@ -139,11 +144,88 @@ ul.task-list li input[type="checkbox"] {
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">Complexes</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../reference/faces.html" class="sidebar-item-text sidebar-link">Faces</a>
+  <a href="../reference/complexes.SetComplex.SetComplex.html" class="sidebar-item-text sidebar-link">Set Complex</a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.RankComplex.RankComplex.html" class="sidebar-item-text sidebar-link">Rank Complex</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SimplexTree.SimplexTree.html" class="sidebar-item-text sidebar-link">Simplex Tree</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">Filtrations</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../reference/complexes.SetFiltration.SetFiltration.qmd" class="sidebar-item-text sidebar-link">Set Filtration</a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">Generics</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  Cardinality
+  </li>
+          <li class="sidebar-item">
+  Dimension
+  </li>
+          <li class="sidebar-item">
+  Faces
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">Interface</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  Protocol Classes
+  </li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">Linear Algebra</a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+      </ul>
+  </li>
       </ul>
   </li>
     </ul>
@@ -159,38 +241,106 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="api-reference" class="level1">
 <h1>API Reference</h1>
-<section id="simplex-tree" class="level2">
-<h2 class="anchored" data-anchor-id="simplex-tree">Simplex Tree</h2>
-<p>Simplex Tree data structure</p>
+<section id="complexes" class="level2">
+<h2 class="anchored" data-anchor-id="complexes">Complexes</h2>
+<p>Data structures for constructing and modifying abstract simplicial complexes</p>
 <table class="table">
 <tbody>
 <tr class="odd">
-<td><a href="../reference/complexes.SimplexTree.html#splex.complexes.SimplexTree">complexes.SimplexTree</a></td>
-<td></td>
+<td><a href="../reference/complexes.SetComplex.SetComplex.html#splex.complexes.SetComplex.SetComplex">complexes.SetComplex.SetComplex</a></td>
+<td>Abstract Simplicial Complex</td>
+</tr>
+<tr class="even">
+<td><a href="../reference/complexes.RankComplex.RankComplex.html#splex.complexes.RankComplex.RankComplex">complexes.RankComplex.RankComplex</a></td>
+<td>Simplicial complex represented via the combinatorial number system.</td>
+</tr>
+<tr class="odd">
+<td><a href="../reference/complexes.SimplexTree.SimplexTree.html#splex.complexes.SimplexTree.SimplexTree">complexes.SimplexTree.SimplexTree</a></td>
+<td>SimplexTree provides lightweight wrapper around a Simplex Tree data structure: an ordered, trie-like structure whose nodes are in bijection with the faces of the complex.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="filtrations" class="level2">
+<h2 class="anchored" data-anchor-id="filtrations">Filtrations</h2>
+<p>Data structures for constructing and modifying filtered simplicial complexes</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/filtrations.SetFiltration.SetFiltration.html#splex.filtrations.SetFiltration.SetFiltration">filtrations.SetFiltration.SetFiltration</a></td>
+<td>Filtered complex of simplices uses <em>SortedSet</em>.</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="generics" class="level2">
 <h2 class="anchored" data-anchor-id="generics">Generics</h2>
-<p>Generic functions</p>
+<p>Generic functions that work with any simplicial representation that supports the Protocol interface.</p>
 <table class="table">
 <tbody>
 <tr class="odd">
-<td><a href="../reference/generics.faces.html#splex.generics.faces">generics.faces</a></td>
-<td>Returns the faces of a simplicial object, optionally restricted by dimension.</td>
+<td><a href="../reference/generics.html#splex.generics">generics</a></td>
+<td></td>
 </tr>
-<tr class="even">
-<td><a href="../reference/generics.dim.html#splex.generics.dim">generics.dim</a></td>
-<td>Returns the dimension of a simplicial object.</td>
-</tr>
+</tbody>
+</table>
+</section>
+<section id="protocols" class="level2">
+<h2 class="anchored" data-anchor-id="protocols">Protocols</h2>
+<p>Protocol classes that define loose interfaces for duck typing and structural subtyping support.</p>
+<table class="table">
+<tbody>
 <tr class="odd">
-<td><a href="../reference/generics.card.html#splex.generics.card">generics.card</a></td>
-<td>Counts the number of <em>p</em>-dimensional simplices of a simplicial object <em>s</em>.</td>
+<td><a href="../reference/meta.html#splex.meta">meta</a></td>
+<td></td>
 </tr>
-<tr class="even">
-<td><a href="../reference/generics.boundary.html#splex.generics.boundary">generics.boundary</a></td>
-<td>Returns the boundary of a simplicial object, optionally signed.</td>
+</tbody>
+</table>
+</section>
+<section id="protocols-1" class="level2">
+<h2 class="anchored" data-anchor-id="protocols-1">Protocols</h2>
+<p>Protocol classes that define loose interfaces for duck typing and structural subtyping support.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/meta.html#splex.meta">meta</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="geometry" class="level2">
+<h2 class="anchored" data-anchor-id="geometry">Geometry</h2>
+<p>Functions for constructing simplicial complexes and filtrations from geometric settings.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/geometry.html#splex.geometry">geometry</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linear-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="linear-algebra">Linear algebra</h2>
+<p>Functions useful for performing linear algebraic operations on simplicial complexes.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/sparse.html#splex.sparse">sparse</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="unionfind" class="level2">
+<h2 class="anchored" data-anchor-id="unionfind">UnionFind</h2>
+<p>UnionFind data structure</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td><a href="../reference/UnionFind.UnionFind.html#splex.UnionFind.UnionFind">UnionFind.UnionFind</a></td>
+<td>Union Find data structure</td>
 </tr>
 </tbody>
 </table>
@@ -536,13 +686,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/overview.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
+      <a href="../pages/design.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Package design</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../reference/faces.html" class="pagination-link">
-        <span class="nav-page-text">Faces</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../reference/complexes.SetComplex.SetComplex.html" class="pagination-link">
+        <span class="nav-page-text">Set Complex</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

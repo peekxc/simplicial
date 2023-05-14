@@ -1,0 +1,22 @@
+# sparse { #splex.sparse }
+
+`sparse`
+
+## Functions
+
+| Name | Description |
+| --- | --- |
+| [boundary_matrix](#splex.sparse.boundary_matrix) | Constructs a sparse boundary matrix of a given simplicial object _K_ |
+
+### boundary_matrix { #splex.sparse.boundary_matrix }
+
+`sparse.boundary_matrix(K, p=None)`
+
+Constructs a sparse boundary matrix of a given simplicial object _K_
+
+Parameters: 
+  K: simplicial complex (optionally filtered) or ComplexLike. 
+  p: dimension of the p-chains to form the columns. 
+
+Returns: 
+  D: sparse matrix representing either the full or p-th boundary matrix (as List-of-Lists format)

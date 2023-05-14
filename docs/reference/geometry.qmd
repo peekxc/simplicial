@@ -1,0 +1,53 @@
+# geometry { #splex.geometry }
+
+`geometry`
+
+## Functions
+
+| Name | Description |
+| --- | --- |
+| [as_pairwise_dist](#splex.geometry.as_pairwise_dist) |  |
+| [delaunay_complex](#splex.geometry.delaunay_complex) |  |
+| [enclosing_radius](#splex.geometry.enclosing_radius) | Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. |
+| [flag_weight](#splex.geometry.flag_weight) |  |
+| [lower_star_weight](#splex.geometry.lower_star_weight) | Constructs a simplex-parameterized _Callable_ that evaluates its lower star value based on _x_.  |
+| [rips_complex](#splex.geometry.rips_complex) |  |
+| [rips_filtration](#splex.geometry.rips_filtration) |  |
+
+### as_pairwise_dist { #splex.geometry.as_pairwise_dist }
+
+`geometry.as_pairwise_dist(x)`
+
+### delaunay_complex { #splex.geometry.delaunay_complex }
+
+`geometry.delaunay_complex(x)`
+
+### enclosing_radius { #splex.geometry.enclosing_radius }
+
+`geometry.enclosing_radius(x)`
+
+Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point.
+
+### flag_weight { #splex.geometry.flag_weight }
+
+`geometry.flag_weight(x, vertex_weights=None)`
+
+### lower_star_weight { #splex.geometry.lower_star_weight }
+
+`geometry.lower_star_weight(x)`
+
+Constructs a simplex-parameterized _Callable_ that evaluates its lower star value based on _x_. 
+
+Vertex labels are assumed to be 0-indexed for now. 
+
+If simplex-like, use 0-indexed vertex labels to index vertex values directly. 
+
+Otherwise assumes a 2d array of simplex labels is given and vectorizes the computation.
+
+### rips_complex { #splex.geometry.rips_complex }
+
+`geometry.rips_complex(x, radius=None, p=1)`
+
+### rips_filtration { #splex.geometry.rips_filtration }
+
+`geometry.rips_filtration(x, radius=None, p=1, **kwargs)`

@@ -9,7 +9,7 @@ class SetComplex(Complex, ComplexLike):
   """ Abstract Simplicial Complex"""
 
   def __init__(self, simplices: Iterable[SimplexConvertible] = None):
-    """"""
+    """ Set Complex """
     self.data = SortedSet([], key=lambda s: (len(s), tuple(s), s)) # for now, just use the lex/dim/face order 
     self.n_simplices = tuple()
     if simplices is not None: 

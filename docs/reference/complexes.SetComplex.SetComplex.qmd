@@ -1,0 +1,50 @@
+# complexes.SetComplex.SetComplex { #splex.complexes.SetComplex.SetComplex }
+
+`complexes.SetComplex.SetComplex(self, simplices=None)`
+
+Abstract Simplicial Complex
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [add](#splex.complexes.SetComplex.SetComplex.add) |  |
+| [card](#splex.complexes.SetComplex.SetComplex.card) |  |
+| [cofaces](#splex.complexes.SetComplex.SetComplex.cofaces) |  |
+| [dim](#splex.complexes.SetComplex.SetComplex.dim) |  |
+| [discard](#splex.complexes.SetComplex.SetComplex.discard) |  |
+| [faces](#splex.complexes.SetComplex.SetComplex.faces) |  |
+| [remove](#splex.complexes.SetComplex.SetComplex.remove) |  |
+| [update](#splex.complexes.SetComplex.SetComplex.update) |  |
+
+### add { #splex.complexes.SetComplex.SetComplex.add }
+
+`complexes.SetComplex.SetComplex.add(self, item)`
+
+### card { #splex.complexes.SetComplex.SetComplex.card }
+
+`complexes.SetComplex.SetComplex.card(self, p=None)`
+
+### cofaces { #splex.complexes.SetComplex.SetComplex.cofaces }
+
+`complexes.SetComplex.SetComplex.cofaces(self, item)`
+
+### dim { #splex.complexes.SetComplex.SetComplex.dim }
+
+`complexes.SetComplex.SetComplex.dim(self)`
+
+### discard { #splex.complexes.SetComplex.SetComplex.discard }
+
+`complexes.SetComplex.SetComplex.discard(self, item)`
+
+### faces { #splex.complexes.SetComplex.SetComplex.faces }
+
+`complexes.SetComplex.SetComplex.faces(self, p=None, **kwargs)`
+
+### remove { #splex.complexes.SetComplex.SetComplex.remove }
+
+`complexes.SetComplex.SetComplex.remove(self, item)`
+
+### update { #splex.complexes.SetComplex.SetComplex.update }
+
+`complexes.SetComplex.SetComplex.update(self, simplices)`
