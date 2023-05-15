@@ -7,7 +7,7 @@
 
 `splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to provide a common, _pythonic_ interface for manipulating simplicial complexes in ways that is efficient and independent of their internal representation. 
 
-The package provides a variety of data structures with interfaces partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  The longer term goal of `splex` longer-term is to provied simple and performant scientific calculations on simplicial complexes, like random-complex generation or complex-sparsification, in ways that is highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
+The package provides a variety of data structures with interfaces partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  The longer term goal of `splex` is to provide simple and performant scientific calculations on simplicial complexes, like random-complex generation or complex-sparsification, in ways that is highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
 
 ```{note}
 `splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
