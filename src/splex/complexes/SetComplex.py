@@ -63,11 +63,11 @@ class SetComplex(Complex, ComplexLike):
       self.add(s)
 
   def add(self, item: SimplexConvertible) -> None:
-    s = Simplex(item)         # cast to Simplex for comparability
-    ns = np.zeros(dim(s)+1)   # array to update num. simplices
+    s = Simplex(item)                                               # cast to Simplex for comparability
+    ns = np.zeros(max(dim(s)+1, dim(self)+1), dtype=np.uint64)      # array to update num. simplices
     ns[:len(self.n_simplices)] = self.n_simplices
     for face in faces(s):
-      if not(face in self.data):
+      if face not in self.data:
         self.data.add(face)
         ns[dim(face)] += 1
     self.n_simplices = tuple(ns)
@@ -90,3 +90,8 @@ class SetComplex(Complex, ComplexLike):
     from collections import Counter
     cc = Counter([len(s)-1 for s in self.data])
     self.n_simplices = tuple(dict(sorted(cc.items())).values())
+
+  def __repr__(self):
+    if len(self) == 0:
+      return "<  Empty set complex >"
+    return f"Set Complex with {card(self)} {tuple(range(0,dim(self)+1))}-simplices"

@@ -513,7 +513,7 @@ namespace st {
   		}
   		
   		// Finds the next coface of a given face starting at some offset + key, or nullptr if there is none
-  		std::pair< node_ptr, bool > next_coface(simplex_t face, size_t offset, idx_t depth){
+  		std::pair< node_ptr, bool > next_coface(simplex_t face, size_t& offset, idx_t depth){
   		  auto& st = trie();
   		  bool has_cousins = st.cousins_exist(base().init->label, depth);
   		  
@@ -524,13 +524,17 @@ namespace st {
   		  
   		  // Else the cousins exist; see if any of the are a coface
   		  const auto& c_cousins = st.cousins(base().init->label, depth); 
-  		  auto it = c_cousins.cbegin(); //+ offset
+  		  auto it = c_cousins.cbegin(); //+ offset, should be smaller than cousin size
+				// if (offset >= std::distance(c_cousins.begin(), c_cousins.end())){
+				// 	return std::make_pair(nullptr, false);
+				// }
   		  std::advance(it, offset);
   		  const auto coface_it = std::find_if(it, c_cousins.cend(), [&st, &face, depth](const node_ptr np){
   		    return st.is_face(face, st.full_simplex(np, depth));
   		  });
   		  
   		  // If it exists, return it, otherwise return sentinel
+				offset += (std::distance(it, coface_it)+1);
   		  return coface_it != c_cousins.end() ? std::make_pair(*coface_it, true) : std::make_pair(nullptr, false);
   		}
   		
@@ -555,7 +559,8 @@ namespace st {
 			    current = sentinel();
 			  } else {
 			    get< NP >(current) = coface.first;
-			    c_level_idx++;
+			    // c_level_idx++; // Shouldnt be +1, should be + whatever the distance in find_if is 
+					// std::cout << "c level ind: " << c_level_idx << std::endl;
 			  }
 			  update_simplex();
 			  return *this; 

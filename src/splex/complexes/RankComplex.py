@@ -15,12 +15,24 @@ from .Complex_ABCs import Complex
 class RankComplex(Complex, Sequence, ComplexLike):
   """Simplicial complex represented via the combinatorial number system.
   
-  A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers 
-  are computed by bijecting each p-dimensional simplex to an integer in the range [0, comb(n,p+1))---this process is called _ranking_
-  a simplex, and the correspondence between natural numbers and simplices is called the _combinatorial numer system_. 
+  A rank complex is a simplicial complex that uses a correspondence between the natural numbers and simplices, the _combinatorial number system_,
+  to store simplices as plain integers in contiguous memory. The integers are computed by _ranking_ each simplex, i.e. bijecting each p-simplex to an 
+  integer in the range [0, comb(n,p+1)).
 
-  Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations
-  are computed on the fly by inverting the correspondence ('unranking') upon on access. 
+  Computationally, the simplices and their dimensions are stored via ranks as 64-bit/8-bit unsigned integers, respectively, in a structured numpy array.
+  When needed, their vertex representations are computed on the fly by inverting the correspondence ('unranking'). This process can be prone to overflow due to the 
+  growth rate of the binomial coefficient---however, for low-dimensional complexes it is fairly safe. In particular, if the vertex labels 
+  always start from 0, then any _d_-dimensional complex of with _n_ unique vertex labels will be representable without overflow if: 
+
+  - _d_ <= 0 and _n_ <= 2**64 - 1
+  - _d_ <= 1 and _n_ <= ~ 6B 
+  - _d_ <= 2 and _n_ <= ~ 4.5M 
+  - _d_ <= 3 and _n_ <= ~ 125K
+  - _d_ <= 4 and _n_ <= ~ 15K
+  ...
+  
+  The smallest _n_ that causes overflow for complete complexes is 68, and thus this data structure should be avoided when very 
+  high-dimensional complexes are needed. 
 
   Attributes:
     simplices: structured ndarray of dtype [('rank', uint64), ('dim', uint8)] containing the simplex ranks and dimensions, respectively. 
@@ -28,16 +40,16 @@ class RankComplex(Complex, Sequence, ComplexLike):
   
   @staticmethod 
   def _str_rank(item: SimplexConvertible) -> tuple:
-    return rank_colex(item), dim(item)
+    s = Simplex(item)
+    return rank_colex(s), dim(s)
 
   def __init__(self, simplices: Iterable[SimplexConvertible] = None) -> None:
     """"""
+    # assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"
     # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
-    sset = unique_everseen(faces(simplices))
-    self.s_dtype = np.dtype([('rank', np.uint64), ('dim', np.uint16)])
+    self.s_dtype = np.dtype([('rank', np.uint64), ('dim', np.uint8)])
     if simplices is not None:
       sset = unique_everseen(faces(simplices))
-      assert isinstance(simplices, Iterable) and is_repeatable(simplices), "Iterable must be repeatable. A generator is not sufficient!"
       self.simplices = np.unique(np.array([RankComplex._str_rank(s) for s in sset], dtype=self.s_dtype))
     else:
       self.simplices = np.empty(dtype=self.s_dtype, shape=(0,0))
@@ -140,6 +152,8 @@ class RankComplex(Complex, Sequence, ComplexLike):
 
   def __contains__(self, item: SimplexConvertible) -> bool:
     # s = Simplex(item)
+    if len(item) == 0: 
+      return True # always contains the empty face
     s = np.array([RankComplex._str_rank(item)], self.s_dtype)
     return self.simplices.__contains__(s)
     # return self.data.__contains__()
@@ -149,7 +163,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
   
   def __repr__(self) -> str:
     if len(self) == 0:
-      return "< Empty simplicial complex >"
+      return "< Empty rank complex >"
     return f"{type(self).__name__} with {card(self)} {tuple(range(0,dim(self)+1))}-simplices"
 
   def __array__(self, dtype=None):

@@ -4,14 +4,14 @@ from .SimplexTree import SimplexTree
 from .SetComplex import SetComplex
 
 def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str = "default"):
-  """Wrapper for constructing an abstract simplicial complex.
+  """Abstract simplicial complex constructor.
   
   Parameters:
-    simplices = Iterable of SimplexConvertible objects. 
-    form = one of ['set', 'tree', 'rank']. Defaults to 'set'. 
+    simplices: Iterable of SimplexConvertible objects. 
+    form: one of ['set', 'tree', 'rank']. Defaults to 'set'. 
 
   Returns:
-    sc = a _ComplexLike_ structure whose structure depends on _form_.
+    sc: a _ComplexLike_ structure whose structure depends on _form_.
   """ 
   if form is None or isinstance(form, str) and form == "default":
     form = "set"

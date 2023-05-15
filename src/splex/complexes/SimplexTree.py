@@ -5,6 +5,7 @@ from numpy.typing import ArrayLike
 
 import numpy as np 
 from ..meta import * 
+from ..Simplex import *
 from . import _simplextree as st_mod
 
 class SimplexTree(st_mod.SimplexTree, Generic[IT]):
@@ -44,11 +45,11 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		:::
 		"""
 		if isinstance(simplices, np.ndarray):
-			simplices = np.array(simplices, dtype=np.int8)
+			simplices = np.sort(simplices, axis=1).astype(np.uint16)
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			self._insert(simplices)
 		elif isinstance(simplices, Iterable): 
-			self._insert_list([tuple(s) for s in simplices])
+			self._insert_list(list(map(Simplex, simplices)))
 		else: 
 			raise ValueError("Invalid type given")
 
@@ -74,11 +75,11 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			print(st)
 		"""
 		if isinstance(simplices, np.ndarray):
-			simplices = np.array(simplices, dtype=np.int8)
+			simplices = np.sort(simplices, axis=1).astype(np.uint16)
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			self._remove(simplices)
 		elif isinstance(simplices, Iterable): 
-			self._remove_list([tuple(s) for s in simplices])
+			self._remove_list(list(map(Simplex, simplices)))
 		else: 
 			raise ValueError("Invalid type given")
 
@@ -90,7 +91,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			simplices: Iterable of simplices to insert (each of which are SimplexLike)
 
 		Returns:
-			found (ndarray) : boolean array for each simplex indicating whether it was found in the complex
+			found (ndarray) : boolean array indicating whether each simplex was found in the complex
 
 		::: {.callout-note}
 		 	If the iterable is an 2-dim np.ndarray, then the p-simplex to find is given by each contiguous p+1 stride.
@@ -98,7 +99,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		:::
 		"""
 		if isinstance(simplices, np.ndarray):
-			simplices = np.array(simplices, dtype=np.int8)
+			simplices = np.array(simplices, dtype=np.int16)
 			assert simplices.ndim in [1,2], "dimensions should be 1 or 2"
 			return self._find(simplices)
 		elif isinstance(simplices, Iterable): 
@@ -107,13 +108,12 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			raise ValueError("Invalid type given")
 
 	def adjacent(self, simplices: Iterable):
-		"""
-		Checks for adjacencies between simplices 
-		"""
+		"""Checks for adjacencies between simplices."""
 		return self._adjacent(list(map(Simplex, simplices)))
 
 	def collapse(self, tau: SimplexConvertible, sigma: SimplexConvertible) -> None:
-		"""
+		"""Performs an elementary collapse on two given simplices. 
+
 		Checks whether its possible to collapse $\\sigma$ through $\\tau$, and if so, both simplices are removed. 
 		A simplex $\\sigma$ is said to be collapsible through one of its faces $\\tau$ if $\\sigma$ is the only coface of $\\tau$ (excluding $\\tau$ itself). 
 		
@@ -139,8 +139,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return success 
 
 	def vertex_collapse(self, u: int, v: int, w: int):
-		""" 
-		Maps a pair of vertices into a single vertex. 
+		"""Maps a pair of vertices into a single vertex. 
 		
 		Parameters:
 			u (int): the first vertex in the free pair.
@@ -152,8 +151,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		self._vertex_collapse(u,v,w)
 
 	def degree(self, vertices: Optional[ArrayLike] = None) -> Union[ArrayLike, int]:
-		"""
-		Computes the degree of select vertices in the trie.
+		"""Computes the degree of select vertices in the trie.
 
 		Parameters:
 			vertices (ArrayLike): Retrieves vertex degrees
@@ -165,7 +163,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		if vertices is None: 
 			return self._degree_default()
 		elif isinstance(vertices, Iterable): 
-			vertices = np.fromiter(iter(vertices), dtype=np.int8)
+			vertices = np.fromiter(iter(vertices), dtype=np.int16)
 			assert vertices.ndim == 1, "Invalid shape given; Must be flattened array of vertex ids"
 			return self._degree(vertices)
 		else: 
@@ -174,8 +172,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 	# PREORDER = 0, LEVEL_ORDER = 1, FACES = 2, COFACES = 3, COFACE_ROOTS = 4, 
 	# K_SKELETON = 5, K_SIMPLICES = 6, MAXIMAL = 7, LINK = 8
 	def traverse(self, order: str = "preorder", f: Callable = print, sigma: SimplexLike = [], p: int = 0) -> None:
-		"""
-		Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered
+		"""Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered.
 
 		Supported traversals: 
 			- breadth-first / level order ("bfs", "levelorder") 
@@ -221,8 +218,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		self._traverse(order, lambda s: f(s), sigma, p) # order, f, init, k
 
 	def cofaces(self, sigma: SimplexLike = []) -> list['SimplexLike']:
-		"""
-		Finds the p-dimensional cofaces of sigma.
+		"""Returns the p-cofaces of a given simplex.
 
 		Parameters:
 			p : coface dimension to restrict to 
@@ -238,16 +234,19 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return F
 	
 	def coface_roots(self, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+		"""Returns the simplex 'roots' of a given simplex whose subtrees generate its cofaces."""
 		F = []
 		self._traverse(4, lambda s: F.append(s), sigma, 0) # order, f, init, k
 		return F
 
 	def skeleton(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+		"""Returns the simplices in the p-skeleton of the complex."""
 		F = []
 		self._traverse(5, lambda s: F.append(s), sigma, p)
 		return F 
 
-	def simplices(self, p: int = None, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+	def simplices(self, p: int = None) -> Iterable['SimplexLike']:
+		"""Returns the p-simplices in the complex."""
 		F = []
 		if p is None: 
 			self._traverse(1, lambda s: F.append(s), [], 0) # order, f, init, k
@@ -257,12 +256,13 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return F
 	
 	def maximal(self) -> Iterable['SimplexLike']:
-		"""Maximal simplices."""
+		"""Returns the maximal simplices in the complex."""
 		F = []
 		self._traverse(7, lambda s: F.append(s), [], 0)
 		return F
 
 	def link(self, sigma: SimplexLike = []) -> Iterable['SimplexLike']:
+		"""Returns all simplices in the link of a given simplex."""
 		F = []
 		self._traverse(8, lambda s: F.append(s), sigma, 0)
 		return F
@@ -303,6 +303,7 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 		return int(sum(self.n_simplices))
 
 	def card(self, p: int = None):
+		"""Returns the cardinality of various skeleta of the complex."""
 		if p is None: 
 			return tuple(self.n_simplices)
 		else: 

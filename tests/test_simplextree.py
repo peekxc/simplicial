@@ -10,6 +10,10 @@ def test_construct():
   st = SimplexTree([[0,1,2,3,4]])
   assert all(st.n_simplices == np.array([5,10,10,5,1]))
 
+# def test_coface_roots():
+#   st = SimplexTree([[0,1,2,3,4,5]])
+#   st.coface_roots([1,2,3])
+
 ## Minimal API tests
 def test_SimplexTree():
   st = SimplexTree()

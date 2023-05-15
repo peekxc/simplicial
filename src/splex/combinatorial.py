@@ -130,7 +130,7 @@ def unrank_combs(R: Iterable, k: Union[int, Iterable], n: int = None, order: str
 def inverse_choose(x: int, k: int):
   """Inverse binomial coefficient (approximately). 
 
-  This function attempts to find the integer _n_ such that binom(n,k) = x, where _binom_ is the binomial coefficient: 
+  This function *attempts* to find the integer _n_ such that binom(n,k) = x, where _binom_ is the binomial coefficient: 
 
   binom(n,k) := n!/(k! * (n-k)!)
 
