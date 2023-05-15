@@ -5,11 +5,11 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-`splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to provide a common, _pythonic_ interface for manipulating simplicial complexes in ways that is efficient and independent of their internal representation. The package comes equipped with a variety of simplicial data structures whose interfaces themselves are partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  Moreover, like NetworkX, the goal is `splex` longer-term is to provide simple and performant implementations of operations on simplicial complexes common in scientific computing, like random-complex generation or sparsification, in ways that is highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
+`splex` is a Python package for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex). The general aim of `splex` is to provide a common, _pythonic_ interface for manipulating simplicial complexes in ways that is efficient and independent of their internal representation. 
 
-```{note}
-`splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
-```
+The package provides a variety of data structures with interfaces partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  Longer term, the  goal of `splex` is to provide simple and performant implementations of common scientific operations on complexes, like random generation and sparsification, in ways that are highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
+
+> __NOTE__: `splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
 
 ## Installation 
 

@@ -9,7 +9,11 @@ from math import comb, factorial
 ## See: https://stackoverflow.com/questions/48349929/numpy-convertible-class-that-correctly-converts-to-ndarray-from-inside-a-sequenc
 class SimplexWrapper:
   def __init__(self, g: Generator, d: int, dtype = None):
-    self.simplices = list(g)
+    ## Precondition: g is a generator of SimplexConvertibles all of the same length
+    # head, self.simplices = spy(g)
+    self.simplices = g 
+    # self.simplices = list(g)
+    # d = len(head[0])
     if d == 0:
       self.s_dtype = np.uint16 if dtype is None else dtype
     else:
@@ -153,6 +157,8 @@ def inverse_choose(x: int, k: int):
       while n**k < C: n = n*2
       m = (np.nonzero( np.array(list(range(1, n+1)))**k >= C )[0])[0].item()
       potential_n = np.array(list(range(int(np.max([m, 2*k])), int(m+k+1))))
+      if len(potential_n) == 0: 
+        raise ValueError(f"Failed to invert C(n,{k}) = {x}")
       ind = np.nonzero(np.array([comb(n, k) for n in potential_n]) == x)[0].item()
       final_n = potential_n[ind]
   return(final_n)

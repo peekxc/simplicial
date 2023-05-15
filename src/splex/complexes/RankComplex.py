@@ -81,13 +81,13 @@ class RankComplex(Complex, Sequence, ComplexLike):
   def __getitem__(self, index: Union[int, slice]) -> Union[SimplexConvertible, Iterable]:
     """Retrieves a simplex at some index position. 
     
-    Note this constructs the simplex on demand. 
+    Note this constructs the simplex on demand from its rank information. 
     """
     if isinstance(index, Integral):
       s = unrank_colex(self.simplices['rank'][index], self.simplices['dim'][index]+1)
-      return s
+      return Simplex(s)
     elif isinstance(index, slice):
-      return unrank_combs(self.simplices['rank'][index], self.simplices['dim'][index]+1, order='colex')
+      return map(Simplex, unrank_combs(self.simplices['rank'][index], self.simplices['dim'][index]+1, order='colex'))
     else:
       raise ValueError(f"Invalid index type '{type(index)}' given.")
 

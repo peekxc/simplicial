@@ -34,6 +34,12 @@ def test_set_complex():
   assert len(list(S.cofaces([0,1]))) == 0
   assert card(S) == (4,5,2)
 
+# def test_abc_complex():
+#   from splex.complexes.Complex_ABCs import Complex
+  # class MyComplex(Complex): pass 
+  # K = MyComplex()
+  # K.__format__()
+
 def test_rank_complex():
   S = RankComplex([[0,1,2]])
   S.add([0,1,2,3])
@@ -50,3 +56,5 @@ def test_rank_complex():
   assert len(list(S.cofaces([0,1]))) == 0
   assert np.all(np.array(S) == S.simplices), "Array conversion doesn't work"
   assert card(S) == (4,5,2)
+  assert format(S) == '0 1 0 2 1 0 3 0 1 1 2\n    2   2 2   3 2 3 3\n          3     3    '
+  

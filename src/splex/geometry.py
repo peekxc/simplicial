@@ -6,7 +6,7 @@ from .complexes import *
 from .filtrations import *
 from .combinatorial import rank_combs, unrank_combs
 from .predicates import *
-from dataclasses import dataclass
+from dataclassy import dataclass
 
 def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
   if is_point_cloud(x):

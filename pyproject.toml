@@ -19,7 +19,6 @@ dependencies = [
 	"numpy",
 	"scipy", 
 	"hirola", 
-	"sortedcontainers",
 	"more_itertools", 
 	"dataclassy"
 ]
