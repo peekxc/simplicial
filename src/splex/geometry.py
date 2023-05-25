@@ -48,14 +48,22 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
   n = inverse_choose(len(pd), 2)
   vertex_weights = np.zeros(n) if vertex_weights is None else vertex_weights
   assert len(vertex_weights) == n, "Invalid vertex weights"
-  def _clique_weight(s: SimplexLike) -> float:
-    if len(s) == 1:
-      return float(vertex_weights[s])
-    elif len(s) == 2:
-      return float(pd[int(rank_combs([s], n=n, order='lex')[0])])
-    else: 
-      return float(max(pd[np.array(rank_combs(faces(s,1), n=n, order='lex'), dtype=int)]))
-  return _clique_weight
+  @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+  class _clique_weight:
+    n: int = 0
+    vertex_weights: np.ndarray = np.empty(0, dtype=np.float32)
+    edge_weights: np.ndarray = np.empty(0, dtype=np.float32)
+    def __init__(self, v: np.ndarray, pd: np.ndarray, n: int) -> None:
+      object.__setattr__(self, 'n', n)
+      object.__setattr__(self, 'vertex_weights', v)
+      object.__setattr__(self, 'edge_weights', pd)
+    def __call__(self, s: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+      # assert hasattr(faces(S, 1), "__array__"
+      s = np.asarray(s)
+      if s.ndim == 1 or (1 in s.shape):
+        return np.ravel(self.vertex_weights[s])
+      return self.edge_weights[rank_combs(s, n=n, order='lex')]
+  return _clique_weight(vertex_weights, x, n)
 
 ## TODO: revamp to include support for arbitrary simplicial complexes via index tracking with hirola 
 def lower_star_weight(x: ArrayLike) -> Callable:
