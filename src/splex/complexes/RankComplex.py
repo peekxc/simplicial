@@ -76,9 +76,9 @@ class RankComplex(Complex, Sequence, ComplexLike):
     if p is not None: 
       assert isinstance(p, numbers.Integral)
       p_ranks = self.simplices['rank'][self.simplices['dim'] == p]
-      return unrank_combs(p_ranks, k=p+1, order='colex')
+      return map(Simplex, unrank_combs(p_ranks, k=p+1, order='colex'))
     else:
-      return unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex')
+      return map(Simplex, unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex'))
 
   def card(self, p: int = None) -> Union[tuple, int]:
     if p is None: 

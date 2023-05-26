@@ -106,6 +106,10 @@ class SimplexBase: # forget about hashable to make compatible as a data class
     dtype = np.uint16 if dtype is None else dtype
     return np.asarray(self.vertices, dtype = dtype)
 
+  def __int__(self) -> int:
+    if len(self.vertices) != 1: raise ValueError(f"Invalid conversion of simplex {str(self)} to integer")
+    return self.vertices[0]
+
 @dataclass(slots=True, frozen=True, init=False, repr=False, eq=False)
 class Simplex(SimplexBase): # , Generic[IT]
   """Simplex dataclass.

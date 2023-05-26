@@ -15,9 +15,20 @@ def test_lower_star_array():
   f2 = f(faces(S, 1))
   assert all(f1 == f2)
 
+def test_flag_weight():
+  from scipy.spatial.distance import pdist
+  S = simplicial_complex([[0,1,2,3,4,5]], form="rank")
+  X = np.random.uniform(size=(card(S,0),2))
+  f = flag_weight(pdist(X))
+  assert all([f([(i,j)]) == np.linalg.norm(X[i] - X[j]) for i,j in faces(S,1)])
+  assert len(f(faces(S))) == len(S)
+  assert isinstance(f(faces(S,1)), np.ndarray)
+  assert isinstance(f(faces(S,2)), np.ndarray)
+## TODO: to pass the tests, bring rmap / itertools back into splex
+
 ## TODO: improve this massively
 def test_rips():
-  X = np.random.uniform(size=(15,2))
+  X = np.random.uniform(size=(25,2))
   assert is_complex_like(rips_complex(X))
   assert is_filtration_like(rips_filtration(X))
   from scipy.spatial.distance import pdist, squareform

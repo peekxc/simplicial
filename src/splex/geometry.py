@@ -58,12 +58,24 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
       object.__setattr__(self, 'vertex_weights', v)
       object.__setattr__(self, 'edge_weights', pd)
     def __call__(self, s: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
-      # assert hasattr(faces(S, 1), "__array__"
-      s = np.asarray(s)
-      if s.ndim == 1 or (1 in s.shape):
-        return np.ravel(self.vertex_weights[s])
-      return self.edge_weights[rank_combs(s, n=n, order='lex')]
-  return _clique_weight(vertex_weights, x, n)
+      if hasattr(s, "__array__"):
+        s = np.asarray(s)
+        if s.ndim == 1:
+          return np.ravel(self.vertex_weights[s])
+        else: 
+          if s.shape[1] == 2: 
+            return self.edge_weights[rank_combs(s, n=n, order='lex')]
+          elif s.shape[1] == 3:
+            fw = np.zeros(s.shape[0])
+            for i,j in combinations(range(s.shape[1]), 2):
+              np.maximum(fw, self.edge_weights[rank_combs(s[:,[i,j]], n=self.n, order='lex')], out=fw)
+            return fw
+      else:
+        assert is_complex_like(s), "Input simplices must be complex like"
+        rank_boundary = lambda f: np.array([rank_lex(sf, n=self.n) for sf in combinations(f, 2)], dtype=np.uint32)
+        return [np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else float(self.vertex_weights[f]) for f in s]
+  C = _clique_weight(vertex_weights, pd, n)
+  return C
 
 ## TODO: revamp to include support for arbitrary simplicial complexes via index tracking with hirola 
 def lower_star_weight(x: ArrayLike) -> Callable:
@@ -101,7 +113,7 @@ def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) ->
   st.insert(unrank_combs(ind, n=n, k=2, order="lex"))
   st.expand(p)
   f = flag_weight(pd)
-  G = ((f(s), s) for s in st)
+  G = ((f([s]), s) for s in st)
   K = filtration(G, **kwargs)
   return K
 
