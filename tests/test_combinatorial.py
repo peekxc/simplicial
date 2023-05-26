@@ -1,5 +1,6 @@
 import numpy as np
 from splex.combinatorial import *
+from splex.predicates import inverse_choose 
 from itertools import combinations
 from functools import partial
 

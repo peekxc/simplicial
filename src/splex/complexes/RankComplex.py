@@ -73,10 +73,10 @@ class RankComplex(Complex, Sequence, ComplexLike):
     Returns:
       generator which yields on evaluation yields the simplex
     """
-    if p is not None: 
+    if p is not None: ## Returns a simplexWrapper
       assert isinstance(p, numbers.Integral)
       p_ranks = self.simplices['rank'][self.simplices['dim'] == p]
-      return map(Simplex, unrank_combs(p_ranks, k=p+1, order='colex'))
+      return unrank_combs(p_ranks, k=p+1, order='colex')
     else:
       return map(Simplex, unrank_combs(self.simplices['rank'], self.simplices['dim']+1, order='colex'))
 

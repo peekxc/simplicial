@@ -2,10 +2,11 @@
 import numpy as np 
 from numbers import Integral
 from more_itertools import unique_everseen
-from .meta import *
+# from .meta import *
+
 # from .complexes import * 
 # from .filtrations import * 
-from .predicates import *
+from .predicates import * # impots meta
 from .meta import _data_attributes
 
 def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:

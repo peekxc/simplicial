@@ -11,7 +11,7 @@
     "href": "pages/simplextree_ds.html",
     "title": "Simplex Tree",
     "section": "",
-    "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree"
+    "text": "Simplex Tree\nThe simplex tree is…\n\n\n\nsimplextree\n\n\n\n\nCode\nimport numpy as np \nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()"
   },
   {
     "objectID": "reference/generics.boundary.html",

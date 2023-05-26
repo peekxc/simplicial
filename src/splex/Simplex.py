@@ -1,14 +1,13 @@
 from __future__ import annotations # for mypy to recognize self return types
 from numbers import Number, Integral
-# from dataclasses import dataclass
-from dataclassy import dataclass
-from more_itertools import collapse, unique_justseen
 from typing import *
-from .meta import *  
 from .generics import * 
+from .generics import handle_data
+
 from itertools import * 
+from more_itertools import collapse, unique_justseen, seekable, spy
+from dataclassy import dataclass
 import numpy as np 
-from more_itertools import seekable, spy
 
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class SimplexBase: # forget about hashable to make compatible as a data class 
