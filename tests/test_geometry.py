@@ -20,7 +20,7 @@ def test_flag_weight():
   S = simplicial_complex([[0,1,2,3,4,5]], form="rank")
   X = np.random.uniform(size=(card(S,0),2))
   f = flag_weight(pdist(X))
-  assert all([f([(i,j)]) == np.linalg.norm(X[i] - X[j]) for i,j in faces(S,1)])
+  assert all([np.isclose(f([(i,j)]), np.linalg.norm(X[i] - X[j])) for i,j in faces(S,1)])
   assert len(f(faces(S))) == len(S)
   assert len(f(S)) == len(S)
   assert isinstance(f(faces(S,1)), np.ndarray) and len(f(faces(S,1))) == card(S,1)
