@@ -1,6 +1,6 @@
 import numpy as np 
-from splex import * 
-from splex.geometry import * 
+from splex import *
+from splex.geometry import lower_star_weight, flag_weight, rips_complex
 
 def test_delaunay():
   X = np.random.uniform(size=(15,2))
@@ -21,9 +21,10 @@ def test_flag_weight():
   X = np.random.uniform(size=(card(S,0),2))
   f = flag_weight(pdist(X))
   assert all([f([(i,j)]) == np.linalg.norm(X[i] - X[j]) for i,j in faces(S,1)])
-  # assert len(f(faces(S))) == len(S)
-  assert isinstance(f(faces(S,1)), np.ndarray)
-  assert isinstance(f(faces(S,2)), np.ndarray)
+  assert len(f(faces(S))) == len(S)
+  assert len(f(S)) == len(S)
+  assert isinstance(f(faces(S,1)), np.ndarray) and len(f(faces(S,1))) == card(S,1)
+  assert isinstance(f(faces(S,2)), np.ndarray) and len(f(faces(S,2))) == card(S,2)
   ## TODO: to pass the tests, bring rmap / itertools back into splex
 
 ## TODO: improve this massively

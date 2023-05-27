@@ -58,9 +58,11 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
       object.__setattr__(self, 'vertex_weights', v)
       object.__setattr__(self, 'edge_weights', pd)
     def __call__(self, s: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
-      if hasattr(s, "__array__"):
+      if hasattr(s, "__array__") and is_complex_like(s):
+        ## Handles numpy matrices of simplices OR array_convertible containers, so long as they are complex-like
         s = np.asarray(s)
         if s.ndim == 1:
+          # print("hello")
           return np.ravel(self.vertex_weights[s])
         else: 
           if s.shape[1] == 2: 
@@ -70,10 +72,16 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
             for i,j in combinations(range(s.shape[1]), 2):
               np.maximum(fw, self.edge_weights[rank_combs(s[:,[i,j]], n=self.n, order='lex')], out=fw)
             return fw
+      elif is_simplex_like(s):
+        if len(s) == 1: 
+          return self.vertex_weights[int(s)] 
+        else: 
+          ind = np.fromiter((rank_lex(e, n=self.n) for e in combinations(s, 2)), dtype=np.uint32)
+          return np.max(self.edge_weights[ind])
       else:
-        assert is_complex_like(s), "Input simplices must be complex like"
+        # assert is_complex_like(s), "Input simplices must be complex like" # this is unneeded since not not be sized or repeatable
         rank_boundary = lambda f: np.array([rank_lex(sf, n=self.n) for sf in combinations(f, 2)], dtype=np.uint32)
-        return [np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else float(self.vertex_weights[f]) for f in s]
+        return np.array([np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else float(self.vertex_weights[f]) for f in s], dtype=float)
   C = _clique_weight(vertex_weights, pd, n)
   return C
 

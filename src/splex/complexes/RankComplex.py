@@ -166,6 +166,6 @@ class RankComplex(Complex, Sequence, ComplexLike):
       return "< Empty rank complex >"
     return f"{type(self).__name__} with {card(self)} {tuple(range(0,dim(self)+1))}-simplices"
 
-  def __array__(self, dtype=None):
-    return self.simplices
+  # def __array__(self, dtype=None):
+  #   return self.simplices
   
