@@ -61,20 +61,20 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
       if hasattr(s, "__array__") and is_complex_like(s):
         ## Handles numpy matrices of simplices OR array_convertible containers, so long as they are complex-like
         s = np.asarray(s)
-        if s.ndim == 1:
+        if s.ndim == 1 or (1 in s.shape):
           # print("hello")
           return np.ravel(self.vertex_weights[s])
         else: 
           if s.shape[1] == 2: 
             return self.edge_weights[rank_combs(s, n=n, order='lex')]
-          elif s.shape[1] == 3:
+          else:
             fw = np.zeros(s.shape[0])
             for i,j in combinations(range(s.shape[1]), 2):
               np.maximum(fw, self.edge_weights[rank_combs(s[:,[i,j]], n=self.n, order='lex')], out=fw)
             return fw
       elif is_simplex_like(s):
         if len(s) == 1: 
-          return self.vertex_weights[int(s)] 
+          return self.vertex_weights[s] 
         else: 
           ind = np.fromiter((rank_lex(e, n=self.n) for e in combinations(s, 2)), dtype=np.uint32)
           return np.max(self.edge_weights[ind])
