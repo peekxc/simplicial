@@ -5,9 +5,9 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-`splex` is a Python package aimed at providing common, _pythonic_ interfaces for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex) that are efficient and representation independent. 
+`splex` is a Python package aimed at providing common, _pythonic_ interface for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex) that is efficient and representation independent. 
 
-The package provides a variety of data structures with interfaces partially inspired by [NetworkX](https://networkx.org/documentation/stable/index.html)'s design.  Longer term, the  goal of `splex` is to provide simple and performant implementations of common scientific operations on complexes, like random generation and sparsification, in ways that are highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
+Longer term, the  goal of `splex` is to provide simple and performant implementations of common scientific operations on complexes---such as random complex generation, geometric realizations, sparsification algorithms, etc.---in ways that are highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). For example, one objective to provide efficient was to construct combinatorial boundary and laplacian [sparse matrices](https://docs.scipy.org/doc/scipy/reference/sparse.html) and [operators](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) Part of the package API was inspired by how [NetworkX](https://networkx.org/documentation/stable/index.html) handles graph data. 
 
 > __NOTE__: `splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
 
@@ -40,9 +40,9 @@ K.reindex(...)
 
 ## Complexes are representation-independent..
 S = simplicial_complex(S, form='tree') # convert to tree-based
-S = simplicial_complex(S, form='tree') # convert to array-based
+S = simplicial_complex(S, form='rank') # convert to array-based
 
-## as are generic 
+## as are generic functions
 from splex.generics import faces, card, dim
 for s in faces(S):
   ...

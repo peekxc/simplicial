@@ -255,6 +255,10 @@ class SimplexTree(st_mod.SimplexTree, Generic[IT]):
 			self._traverse(6, lambda s: F.append(s), [], p) # order, f, init, k
 		return F
 	
+	def faces(self, p: int = None, **kwargs) -> Iterable['SimplexLike']:
+		"""Wrapper for simplices function."""
+		return self.simplices(p)
+	
 	def maximal(self) -> Iterable['SimplexLike']:
 		"""Returns the maximal simplices in the complex."""
 		F = []
