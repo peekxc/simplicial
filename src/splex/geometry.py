@@ -37,12 +37,6 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   st.expand(p)
   return st
 
-## TODO: revamp to include index tracking with hirola 
-def lower_star_weight(x: ArrayLike) -> Callable[SimplexConvertible, float]:
-  def _weight(s: SimplexConvertible) -> float:
-    return max(x[np.asarray(s)])
-  return _weight
-
 def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Callable:
   pd = as_pairwise_dist(x)
   n = inverse_choose(len(pd), 2)
@@ -102,14 +96,15 @@ def lower_star_weight(x: ArrayLike) -> Callable:
     def __init__(self, v: np.ndarray) -> None:
       object.__setattr__(self, 'vertex_weights', v)
     
-    def __call__(self, s: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
-      # assert hasattr(faces(S, 1), "__array__")
-      s = np.asarray(s)
-      return np.max(self.vertex_weights[s], axis=-1) ## vectorized form
-      # if s.ndim == 2:
-      #   return self.vertex_weights[s].max(axis=1) 
-      # return np.max(self.vertex_weights[s])
-    # def __array_function__(self, func, types, args, kwargs):
+    def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+      if is_simplex_like(S):
+        return np.max(self.vertex_weights[S])
+      elif hasattr(S, "__array__") and is_complex_like(S):
+        S = np.asarray(S)
+        return np.max(self.vertex_weights[S], axis=-1) ## vectorized form
+      else:
+        assert isinstance(S, Iterable), "simplex iterable must be supplied"
+        return np.array([np.max(self.vertex_weights[s]) for s in map(Simplex, S)])
   return LS(x)
 
 def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
