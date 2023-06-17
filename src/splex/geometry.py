@@ -30,6 +30,16 @@ def enclosing_radius(x: ArrayLike) -> float:
     raise ValueError("Unknown input type")
 
 def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLike:
+  """Constructs the Vietoris-Rips complex from _x_ by unioning balls of diameter at most 2 * _radius_ 
+  
+  Parameters: 
+    x: point cloud, pairwise distance vector, or distance matrix
+    radius: scale parameter for the Rips complex. 
+    p: highest dimension of simplices to consider in the expansion. 
+  
+  Returns: 
+    rips complex, returned as a simplex tree
+  """ 
   pd = as_pairwise_dist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
@@ -38,6 +48,15 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   return st
 
 def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Callable:
+  """Filter function factory method for constructing flag/clique filter functions. 
+
+  Parameters: 
+    x: point cloud, vector of pairwise weights, or square matrix. 
+    vertex_weights: optional weights to use for vertices. Defaults to None, which sets vertex weights to 0.
+
+  Returns: 
+    callable which takes as input a simplex or set of simplices and returns their clique weights. 
+  """
   pd = as_pairwise_dist(x)
   n = inverse_choose(len(pd), 2)
   vertex_weights = np.zeros(n) if vertex_weights is None else vertex_weights
@@ -108,6 +127,8 @@ def lower_star_weight(x: ArrayLike) -> Callable:
   return LS(x)
 
 def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
+  """Constructs a _p_-dimensional rips filtration from _x_ by unioning balls of diameter at most 2 * _radius_
+  """
   pd = as_pairwise_dist(x)
   radius = enclosing_radius(pd) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
