@@ -63,7 +63,7 @@ ul.task-list li input[type="checkbox"] {
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<link rel="stylesheet" href="static/styles.css">
+<link rel="stylesheet" href="../static/styles.css">
 </head>
 
 <body class="nav-sidebar docked nav-fixed fullcontent">
@@ -127,11 +127,6 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -282,7 +277,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><a href="#splex.geometry.flag_weight">flag_weight</a></td>
-<td></td>
+<td>Filter function factory method for constructing flag/clique filter functions.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.geometry.lower_star_weight">lower_star_weight</a></td>
@@ -290,11 +285,11 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td><a href="#splex.geometry.rips_complex">rips_complex</a></td>
-<td></td>
+<td>Constructs the Vietoris-Rips complex from <em>x</em> by unioning balls of diameter at most 2 * <em>radius</em></td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.geometry.rips_filtration">rips_filtration</a></td>
-<td></td>
+<td>Constructs a <em>p</em>-dimensional rips filtration from <em>x</em> by unioning balls of diameter at most 2 * <em>radius</em></td>
 </tr>
 </tbody>
 </table>
@@ -314,6 +309,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="splex.geometry.flag_weight" class="level3">
 <h3 class="anchored" data-anchor-id="splex.geometry.flag_weight">flag_weight</h3>
 <p><code>geometry.flag_weight(x, vertex_weights=None)</code></p>
+<p>Filter function factory method for constructing flag/clique filter functions.</p>
+<p>Parameters: x: point cloud, vector of pairwise weights, or square matrix. vertex_weights: optional weights to use for vertices. Defaults to None, which sets vertex weights to 0.</p>
+<p>Returns: callable which takes as input a simplex or set of simplices and returns their clique weights.</p>
 </section>
 <section id="splex.geometry.lower_star_weight" class="level3">
 <h3 class="anchored" data-anchor-id="splex.geometry.lower_star_weight">lower_star_weight</h3>
@@ -326,10 +324,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="splex.geometry.rips_complex" class="level3">
 <h3 class="anchored" data-anchor-id="splex.geometry.rips_complex">rips_complex</h3>
 <p><code>geometry.rips_complex(x, radius=None, p=1)</code></p>
+<p>Constructs the Vietoris-Rips complex from <em>x</em> by unioning balls of diameter at most 2 * <em>radius</em></p>
+<p>Parameters: x: point cloud, pairwise distance vector, or distance matrix radius: scale parameter for the Rips complex. p: highest dimension of simplices to consider in the expansion.</p>
+<p>Returns: rips complex, returned as a simplex tree</p>
 </section>
 <section id="splex.geometry.rips_filtration" class="level3">
 <h3 class="anchored" data-anchor-id="splex.geometry.rips_filtration">rips_filtration</h3>
 <p><code>geometry.rips_filtration(x, radius=None, p=1, **kwargs)</code></p>
+<p>Constructs a <em>p</em>-dimensional rips filtration from <em>x</em> by unioning balls of diameter at most 2 * <em>radius</em></p>
 
 
 </section>

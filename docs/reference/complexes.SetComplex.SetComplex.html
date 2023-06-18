@@ -131,11 +131,6 @@ ul.task-list li input[type="checkbox"] {
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
-  </div>
-</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="../reference/index.html" class="sidebar-item-text sidebar-link">API Reference</a>
@@ -273,69 +268,82 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><a href="#splex.complexes.SetComplex.SetComplex.add">add</a></td>
-<td></td>
+<td>Adds a simplex to the complex.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SetComplex.SetComplex.card">card</a></td>
-<td></td>
+<td>Cardinality of the complex.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.complexes.SetComplex.SetComplex.cofaces">cofaces</a></td>
-<td></td>
+<td>Enumerates the cofaces of a give simplex.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SetComplex.SetComplex.dim">dim</a></td>
-<td></td>
+<td>Returns the maximal dimension of any simplex in the complex.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.complexes.SetComplex.SetComplex.discard">discard</a></td>
-<td></td>
+<td>Removes a simplex from the complex.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SetComplex.SetComplex.faces">faces</a></td>
-<td></td>
+<td>Enumerates the (p)-faces of the complex.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.complexes.SetComplex.SetComplex.remove">remove</a></td>
-<td></td>
+<td>Removes a simplex from the complex.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SetComplex.SetComplex.update">update</a></td>
-<td></td>
+<td>Updates the complex by unioning with the given iterable of simplices.</td>
 </tr>
 </tbody>
 </table>
 <section id="splex.complexes.SetComplex.SetComplex.add" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.add">add</h3>
 <p><code>complexes.SetComplex.SetComplex.add(self, item)</code></p>
+<p>Adds a simplex to the complex.</p>
+<p>Note that adding a simplex by definition with add all of its faces to the complex as well.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.card" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.card">card</h3>
 <p><code>complexes.SetComplex.SetComplex.card(self, p=None)</code></p>
+<p>Cardinality of the complex.</p>
+<p>If p is supplied, returns the number of p-simplices in the complex. Otherwise, a tuple whose index p represents the number of p-simplices in the complex.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.cofaces" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.cofaces">cofaces</h3>
 <p><code>complexes.SetComplex.SetComplex.cofaces(self, item)</code></p>
+<p>Enumerates the cofaces of a give simplex.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.dim" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.dim">dim</h3>
 <p><code>complexes.SetComplex.SetComplex.dim(self)</code></p>
+<p>Returns the maximal dimension of any simplex in the complex.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.discard" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.discard">discard</h3>
 <p><code>complexes.SetComplex.SetComplex.discard(self, item)</code></p>
+<p>Removes a simplex from the complex.</p>
+<p>Note that removing a simplex by definition with remove all of its cofaces from the complex as well.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.faces" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.faces">faces</h3>
 <p><code>complexes.SetComplex.SetComplex.faces(self, p=None, **kwargs)</code></p>
+<p>Enumerates the (p)-faces of the complex.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.remove" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.remove">remove</h3>
 <p><code>complexes.SetComplex.SetComplex.remove(self, item)</code></p>
+<p>Removes a simplex from the complex.</p>
+<p>Note that removing a simplex by definition with remove all of its cofaces from the complex as well.</p>
+<p>This function raises an exception if the supplied simplex is not found. For non-throwing version, see discard.</p>
 </section>
 <section id="splex.complexes.SetComplex.SetComplex.update" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SetComplex.SetComplex.update">update</h3>
 <p><code>complexes.SetComplex.SetComplex.update(self, simplices)</code></p>
+<p>Updates the complex by unioning with the given iterable of simplices.</p>
 
 
 </section>

@@ -256,8 +256,16 @@ ul.task-list li input[type="checkbox"] {
 <h1>complexes.RankComplex.RankComplex</h1>
 <p><code>complexes.RankComplex.RankComplex(self, simplices=None)</code></p>
 <p>Simplicial complex represented via the combinatorial number system.</p>
-<p>A rank complex is a simplicial complex that stores simplices as integers (via their ranks) in contiguous memory. The integers are computed by bijecting each p-dimensional simplex to an integer in the range [0, comb(n,p+1))—this process is called <em>ranking</em> a simplex, and the correspondence between natural numbers and simplices is called the <em>combinatorial numer system</em>.</p>
-<p>Computationally, simplices are stored via ranks as 64-bit unsigned integers in an numpy array, and their vertex representations are computed on the fly by inverting the correspondence (‘unranking’) upon on access.</p>
+<p>A rank complex is a simplicial complex that uses a correspondence between the natural numbers and simplices, the <em>combinatorial number system</em>, to store simplices as plain integers in contiguous memory. The integers are computed by <em>ranking</em> each simplex, i.e.&nbsp;bijecting each p-simplex to an integer in the range [0, comb(n,p+1)).</p>
+<p>Computationally, the simplices and their dimensions are stored via ranks as 64-bit/8-bit unsigned integers, respectively, in a structured numpy array. When needed, their vertex representations are computed on the fly by inverting the correspondence (‘unranking’). This process can be prone to overflow due to the growth rate of the binomial coefficient—however, for low-dimensional complexes it is fairly safe. In particular, if the vertex labels always start from 0, then any <em>d</em>-dimensional complex of with <em>n</em> unique vertex labels will be representable without overflow if:</p>
+<ul>
+<li><em>d</em> &lt;= 0 and <em>n</em> &lt;= 2**64 - 1</li>
+<li><em>d</em> &lt;= 1 and <em>n</em> &lt;= ~ 6B</li>
+<li><em>d</em> &lt;= 2 and <em>n</em> &lt;= ~ 4.5M</li>
+<li><em>d</em> &lt;= 3 and <em>n</em> &lt;= ~ 125K</li>
+<li><em>d</em> &lt;= 4 and <em>n</em> &lt;= ~ 15K …</li>
+</ul>
+<p>The smallest <em>n</em> that causes overflow for complete complexes is 68, and thus this data structure should be avoided when very high-dimensional complexes are needed.</p>
 <section id="attributes" class="level2">
 <h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">

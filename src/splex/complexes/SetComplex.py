@@ -17,16 +17,27 @@ class SetComplex(Complex, ComplexLike):
   
   ## --- Collection requirements --- 
   def __iter__(self) -> Iterator[Simplex]:
+    """Constructs an iterator of _Simplex_ objects."""
     return iter(self.data)
   
   def __len__(self, p: Optional[int] = None) -> int:
+    """Returns the number of (p)-simplices in the complex.
+    
+    Parameters: 
+      p: optional dimension to restrict too. By default, all simplices are counted. 
+
+    Returns: 
+      the number of (p)-simplices in the simplex. 
+    """
     return len(self.data)
 
   def __contains__(self, item: Collection[int]):
+    """Simplex membership check."""
     return self.data.__contains__(Simplex(item))
 
-  ## --- Sequence requirements --- 
+  ## --- Sequence requirements ---
   def __getitem__(self, index: Union[int, slice]):
+    """Simplex accessor function."""
     return self.data[index]
 
   # MutableSequence 
@@ -37,9 +48,11 @@ class SetComplex(Complex, ComplexLike):
 
   ## --- Generics support --- 
   def dim(self) -> int:
+    """Returns the maximal dimension of any simplex in the complex."""
     return len(self.n_simplices) - 1
 
   def faces(self, p: Optional[int] = None, **kwargs) -> Iterator[Simplex]:
+    """Enumerates the (p)-faces of the complex."""
     if p is None:
       yield from iter(self)
     else: 
@@ -47,6 +60,11 @@ class SetComplex(Complex, ComplexLike):
       yield from filter(lambda s: len(s) == p + 1, iter(self))
 
   def card(self, p: int = None) -> tuple:
+    """Cardinality of the complex.
+    
+    If p is supplied, returns the number of p-simplices in the complex. Otherwise, a tuple 
+    whose index p represents the number of p-simplices in the complex. 
+    """
     if p is None: 
       return self.n_simplices
     else: 
@@ -55,14 +73,20 @@ class SetComplex(Complex, ComplexLike):
 
   # --- Additional support functions ---
   def cofaces(self, item: Collection[int]) -> Iterator[Simplex]:
+    """Enumerates the cofaces of a give simplex."""
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))
 
   def update(self, simplices: Iterable[SimplexConvertible]):
+    """Updates the complex by unioning with the given iterable of simplices."""
     for s in simplices:
       self.add(s)
 
   def add(self, item: SimplexConvertible) -> None:
+    """Adds a simplex to the complex.
+    
+    Note that adding a simplex by definition with add all of its faces to the complex as well.
+    """
     s = Simplex(item)                                               # cast to Simplex for comparability
     ns = np.zeros(max(dim(s)+1, dim(self)+1), dtype=np.uint64)      # array to update num. simplices
     ns[:len(self.n_simplices)] = self.n_simplices
@@ -78,10 +102,22 @@ class SetComplex(Complex, ComplexLike):
           # self.n_simplices = tuple(t[i]+1 if i == (len(face)-1) else t[i] for i in range(len(t)))
         
   def remove(self, item: SimplexConvertible):
+    """Removes a simplex from the complex.
+    
+    Note that removing a simplex by definition with remove all of its cofaces from the complex as well.
+
+    This function raises an exception if the supplied simplex is not found. For non-throwing version, see discard.
+    """
+    if not self.__contains__(item):
+      raise ValueError(f"Simplex {str(Simplex(item))} does not exist in the complex.")
     self.data.difference_update(set(self.cofaces(item)))
     self._update_n_simplices()
 
   def discard(self, item: SimplexConvertible):
+    """Removes a simplex from the complex.
+    
+    Note that removing a simplex by definition with remove all of its cofaces from the complex as well.
+    """
     self.data.difference_update(set(self.cofaces(item)))
     self._update_n_simplices()
   

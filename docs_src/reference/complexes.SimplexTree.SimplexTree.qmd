@@ -26,42 +26,47 @@ The Simplex Tree was originally introduced in the paper
 
 | Name | Description |
 | --- | --- |
-| [adjacent](#splex.complexes.SimplexTree.SimplexTree.adjacent) | Checks for adjacencies between simplices |
-| [card](#splex.complexes.SimplexTree.SimplexTree.card) |  |
-| [coface_roots](#splex.complexes.SimplexTree.SimplexTree.coface_roots) |  |
-| [cofaces](#splex.complexes.SimplexTree.SimplexTree.cofaces) | Finds the p-dimensional cofaces of sigma. |
-| [collapse](#splex.complexes.SimplexTree.SimplexTree.collapse) | Checks whether its possible to collapse $\sigma$ through $\tau$, and if so, both simplices are removed.  |
+| [adjacent](#splex.complexes.SimplexTree.SimplexTree.adjacent) | Checks for adjacencies between simplices. |
+| [card](#splex.complexes.SimplexTree.SimplexTree.card) | Returns the cardinality of various skeleta of the complex. |
+| [coface_roots](#splex.complexes.SimplexTree.SimplexTree.coface_roots) | Returns the simplex 'roots' of a given simplex whose subtrees generate its cofaces. |
+| [cofaces](#splex.complexes.SimplexTree.SimplexTree.cofaces) | Returns the p-cofaces of a given simplex. |
+| [collapse](#splex.complexes.SimplexTree.SimplexTree.collapse) | Performs an elementary collapse on two given simplices.  |
 | [degree](#splex.complexes.SimplexTree.SimplexTree.degree) | Computes the degree of select vertices in the trie. |
 | [expand](#splex.complexes.SimplexTree.SimplexTree.expand) | Performs a k-expansion of the complex. |
+| [faces](#splex.complexes.SimplexTree.SimplexTree.faces) | Wrapper for simplices function. |
 | [find](#splex.complexes.SimplexTree.SimplexTree.find) | Finds whether simplices exist in Simplex Tree.  |
 | [insert](#splex.complexes.SimplexTree.SimplexTree.insert) | Inserts simplices into the Simplex Tree.  |
-| [link](#splex.complexes.SimplexTree.SimplexTree.link) |  |
-| [maximal](#splex.complexes.SimplexTree.SimplexTree.maximal) | Maximal simplices. |
+| [link](#splex.complexes.SimplexTree.SimplexTree.link) | Returns all simplices in the link of a given simplex. |
+| [maximal](#splex.complexes.SimplexTree.SimplexTree.maximal) | Returns the maximal simplices in the complex. |
 | [remove](#splex.complexes.SimplexTree.SimplexTree.remove) | Removes simplices into the Simplex Tree.  |
-| [simplices](#splex.complexes.SimplexTree.SimplexTree.simplices) |  |
-| [skeleton](#splex.complexes.SimplexTree.SimplexTree.skeleton) |  |
-| [traverse](#splex.complexes.SimplexTree.SimplexTree.traverse) | Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered |
+| [simplices](#splex.complexes.SimplexTree.SimplexTree.simplices) | Returns the p-simplices in the complex. |
+| [skeleton](#splex.complexes.SimplexTree.SimplexTree.skeleton) | Returns the simplices in the p-skeleton of the complex. |
+| [traverse](#splex.complexes.SimplexTree.SimplexTree.traverse) | Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered. |
 | [vertex_collapse](#splex.complexes.SimplexTree.SimplexTree.vertex_collapse) | Maps a pair of vertices into a single vertex.  |
 
 ### adjacent { #splex.complexes.SimplexTree.SimplexTree.adjacent }
 
 `complexes.SimplexTree.SimplexTree.adjacent(self, simplices)`
 
-Checks for adjacencies between simplices
+Checks for adjacencies between simplices.
 
 ### card { #splex.complexes.SimplexTree.SimplexTree.card }
 
 `complexes.SimplexTree.SimplexTree.card(self, p=None)`
 
+Returns the cardinality of various skeleta of the complex.
+
 ### coface_roots { #splex.complexes.SimplexTree.SimplexTree.coface_roots }
 
 `complexes.SimplexTree.SimplexTree.coface_roots(self, sigma=\[\])`
+
+Returns the simplex 'roots' of a given simplex whose subtrees generate its cofaces.
 
 ### cofaces { #splex.complexes.SimplexTree.SimplexTree.cofaces }
 
 `complexes.SimplexTree.SimplexTree.cofaces(self, sigma=\[\])`
 
-Finds the p-dimensional cofaces of sigma.
+Returns the p-cofaces of a given simplex.
 
 #### Parameters
 
@@ -76,6 +81,8 @@ Finds the p-dimensional cofaces of sigma.
 ### collapse { #splex.complexes.SimplexTree.SimplexTree.collapse }
 
 `complexes.SimplexTree.SimplexTree.collapse(self, tau, sigma)`
+
+Performs an elementary collapse on two given simplices. 
 
 Checks whether its possible to collapse $\sigma$ through $\tau$, and if so, both simplices are removed. 
 A simplex $\sigma$ is said to be collapsible through one of its faces $\tau$ if $\sigma$ is the only coface of $\tau$ (excluding $\tau$ itself). 
@@ -137,6 +144,12 @@ print(st)
 st.expand(k=2)
 print(st)
 
+### faces { #splex.complexes.SimplexTree.SimplexTree.faces }
+
+`complexes.SimplexTree.SimplexTree.faces(self, p=None, **kwargs)`
+
+Wrapper for simplices function.
+
 ### find { #splex.complexes.SimplexTree.SimplexTree.find }
 
 `complexes.SimplexTree.SimplexTree.find(self, simplices)`
@@ -149,7 +162,7 @@ Finds whether simplices exist in Simplex Tree.
 
 #### Returns
 
-**** : <p> found (ndarray) : boolean array for each simplex indicating whether it was found in the complex </p>
+**** : <p> found (ndarray) : boolean array indicating whether each simplex was found in the complex </p>
 
 ::: {.callout-note}
         If the iterable is an 2-dim np.ndarray, then the p-simplex to find is given by each contiguous p+1 stride.
@@ -177,11 +190,13 @@ By definition, inserting a simplex also inserts all of its faces. If the simplex
 
 `complexes.SimplexTree.SimplexTree.link(self, sigma=\[\])`
 
+Returns all simplices in the link of a given simplex.
+
 ### maximal { #splex.complexes.SimplexTree.SimplexTree.maximal }
 
 `complexes.SimplexTree.SimplexTree.maximal(self)`
 
-Maximal simplices.
+Returns the maximal simplices in the complex.
 
 ### remove { #splex.complexes.SimplexTree.SimplexTree.remove }
 
@@ -210,17 +225,21 @@ print(st)
 
 ### simplices { #splex.complexes.SimplexTree.SimplexTree.simplices }
 
-`complexes.SimplexTree.SimplexTree.simplices(self, p=None, sigma=\[\])`
+`complexes.SimplexTree.SimplexTree.simplices(self, p=None)`
+
+Returns the p-simplices in the complex.
 
 ### skeleton { #splex.complexes.SimplexTree.SimplexTree.skeleton }
 
 `complexes.SimplexTree.SimplexTree.skeleton(self, p=None, sigma=\[\])`
 
+Returns the simplices in the p-skeleton of the complex.
+
 ### traverse { #splex.complexes.SimplexTree.SimplexTree.traverse }
 
 `complexes.SimplexTree.SimplexTree.traverse(self, order='preorder', f=print, sigma=\[\], p=0)`
 
-Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered
+Traverses the simplex tree in the specified order, calling 'f' on each simplex encountered.
 
 Supported traversals: 
         - breadth-first / level order ("bfs", "levelorder") 

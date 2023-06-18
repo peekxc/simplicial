@@ -8,43 +8,70 @@ Abstract Simplicial Complex
 
 | Name | Description |
 | --- | --- |
-| [add](#splex.complexes.SetComplex.SetComplex.add) |  |
-| [card](#splex.complexes.SetComplex.SetComplex.card) |  |
-| [cofaces](#splex.complexes.SetComplex.SetComplex.cofaces) |  |
-| [dim](#splex.complexes.SetComplex.SetComplex.dim) |  |
-| [discard](#splex.complexes.SetComplex.SetComplex.discard) |  |
-| [faces](#splex.complexes.SetComplex.SetComplex.faces) |  |
-| [remove](#splex.complexes.SetComplex.SetComplex.remove) |  |
-| [update](#splex.complexes.SetComplex.SetComplex.update) |  |
+| [add](#splex.complexes.SetComplex.SetComplex.add) | Adds a simplex to the complex. |
+| [card](#splex.complexes.SetComplex.SetComplex.card) | Cardinality of the complex. |
+| [cofaces](#splex.complexes.SetComplex.SetComplex.cofaces) | Enumerates the cofaces of a give simplex. |
+| [dim](#splex.complexes.SetComplex.SetComplex.dim) | Returns the maximal dimension of any simplex in the complex. |
+| [discard](#splex.complexes.SetComplex.SetComplex.discard) | Removes a simplex from the complex. |
+| [faces](#splex.complexes.SetComplex.SetComplex.faces) | Enumerates the (p)-faces of the complex. |
+| [remove](#splex.complexes.SetComplex.SetComplex.remove) | Removes a simplex from the complex. |
+| [update](#splex.complexes.SetComplex.SetComplex.update) | Updates the complex by unioning with the given iterable of simplices. |
 
 ### add { #splex.complexes.SetComplex.SetComplex.add }
 
 `complexes.SetComplex.SetComplex.add(self, item)`
 
+Adds a simplex to the complex.
+
+Note that adding a simplex by definition with add all of its faces to the complex as well.
+
 ### card { #splex.complexes.SetComplex.SetComplex.card }
 
 `complexes.SetComplex.SetComplex.card(self, p=None)`
+
+Cardinality of the complex.
+
+If p is supplied, returns the number of p-simplices in the complex. Otherwise, a tuple 
+whose index p represents the number of p-simplices in the complex.
 
 ### cofaces { #splex.complexes.SetComplex.SetComplex.cofaces }
 
 `complexes.SetComplex.SetComplex.cofaces(self, item)`
 
+Enumerates the cofaces of a give simplex.
+
 ### dim { #splex.complexes.SetComplex.SetComplex.dim }
 
 `complexes.SetComplex.SetComplex.dim(self)`
+
+Returns the maximal dimension of any simplex in the complex.
 
 ### discard { #splex.complexes.SetComplex.SetComplex.discard }
 
 `complexes.SetComplex.SetComplex.discard(self, item)`
 
+Removes a simplex from the complex.
+
+Note that removing a simplex by definition with remove all of its cofaces from the complex as well.
+
 ### faces { #splex.complexes.SetComplex.SetComplex.faces }
 
 `complexes.SetComplex.SetComplex.faces(self, p=None, **kwargs)`
+
+Enumerates the (p)-faces of the complex.
 
 ### remove { #splex.complexes.SetComplex.SetComplex.remove }
 
 `complexes.SetComplex.SetComplex.remove(self, item)`
 
+Removes a simplex from the complex.
+
+Note that removing a simplex by definition with remove all of its cofaces from the complex as well.
+
+This function raises an exception if the supplied simplex is not found. For non-throwing version, see discard.
+
 ### update { #splex.complexes.SetComplex.SetComplex.update }
 
 `complexes.SetComplex.SetComplex.update(self, simplices)`
+
+Updates the complex by unioning with the given iterable of simplices.

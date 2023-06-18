@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
-<link rel="stylesheet" href="static/styles.css">
+<link rel="stylesheet" href="../static/styles.css">
 </head>
 
 <body class="nav-sidebar docked nav-fixed fullcontent">
@@ -145,11 +145,6 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/overview.html" class="sidebar-item-text sidebar-link">Overview</a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../pages/design.html" class="sidebar-item-text sidebar-link">Package design</a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -338,23 +333,23 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.adjacent">adjacent</a></td>
-<td>Checks for adjacencies between simplices</td>
+<td>Checks for adjacencies between simplices.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.card">card</a></td>
-<td></td>
+<td>Returns the cardinality of various skeleta of the complex.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.coface_roots">coface_roots</a></td>
-<td></td>
+<td>Returns the simplex ‘roots’ of a given simplex whose subtrees generate its cofaces.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.cofaces">cofaces</a></td>
-<td>Finds the p-dimensional cofaces of sigma.</td>
+<td>Returns the p-cofaces of a given simplex.</td>
 </tr>
 <tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.collapse">collapse</a></td>
-<td>Checks whether its possible to collapse <span class="math inline">\sigma</span> through <span class="math inline">\tau</span>, and if so, both simplices are removed.</td>
+<td>Performs an elementary collapse on two given simplices.</td>
 </tr>
 <tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.degree">degree</a></td>
@@ -365,38 +360,42 @@ ul.task-list li input[type="checkbox"] {
 <td>Performs a k-expansion of the complex.</td>
 </tr>
 <tr class="even">
+<td><a href="#splex.complexes.SimplexTree.SimplexTree.faces">faces</a></td>
+<td>Wrapper for simplices function.</td>
+</tr>
+<tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.find">find</a></td>
 <td>Finds whether simplices exist in Simplex Tree.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.insert">insert</a></td>
 <td>Inserts simplices into the Simplex Tree.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.link">link</a></td>
-<td></td>
+<td>Returns all simplices in the link of a given simplex.</td>
+</tr>
+<tr class="even">
+<td><a href="#splex.complexes.SimplexTree.SimplexTree.maximal">maximal</a></td>
+<td>Returns the maximal simplices in the complex.</td>
 </tr>
 <tr class="odd">
-<td><a href="#splex.complexes.SimplexTree.SimplexTree.maximal">maximal</a></td>
-<td>Maximal simplices.</td>
-</tr>
-<tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.remove">remove</a></td>
 <td>Removes simplices into the Simplex Tree.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.simplices">simplices</a></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><a href="#splex.complexes.SimplexTree.SimplexTree.skeleton">skeleton</a></td>
-<td></td>
+<td>Returns the p-simplices in the complex.</td>
 </tr>
 <tr class="odd">
-<td><a href="#splex.complexes.SimplexTree.SimplexTree.traverse">traverse</a></td>
-<td>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered</td>
+<td><a href="#splex.complexes.SimplexTree.SimplexTree.skeleton">skeleton</a></td>
+<td>Returns the simplices in the p-skeleton of the complex.</td>
 </tr>
 <tr class="even">
+<td><a href="#splex.complexes.SimplexTree.SimplexTree.traverse">traverse</a></td>
+<td>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered.</td>
+</tr>
+<tr class="odd">
 <td><a href="#splex.complexes.SimplexTree.SimplexTree.vertex_collapse">vertex_collapse</a></td>
 <td>Maps a pair of vertices into a single vertex.</td>
 </tr>
@@ -405,20 +404,22 @@ ul.task-list li input[type="checkbox"] {
 <section id="splex.complexes.SimplexTree.SimplexTree.adjacent" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.adjacent">adjacent</h3>
 <p><code>complexes.SimplexTree.SimplexTree.adjacent(self, simplices)</code></p>
-<p>Checks for adjacencies between simplices</p>
+<p>Checks for adjacencies between simplices.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.card" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.card">card</h3>
 <p><code>complexes.SimplexTree.SimplexTree.card(self, p=None)</code></p>
+<p>Returns the cardinality of various skeleta of the complex.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.coface_roots" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.coface_roots">coface_roots</h3>
 <p><code>complexes.SimplexTree.SimplexTree.coface_roots(self, sigma=\[\])</code></p>
+<p>Returns the simplex ‘roots’ of a given simplex whose subtrees generate its cofaces.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.cofaces" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.cofaces">cofaces</h3>
 <p><code>complexes.SimplexTree.SimplexTree.cofaces(self, sigma=\[\])</code></p>
-<p>Finds the p-dimensional cofaces of sigma.</p>
+<p>Returns the p-cofaces of a given simplex.</p>
 <section id="parameters" class="level4">
 <h4 class="anchored" data-anchor-id="parameters">Parameters</h4>
 <strong>p</strong> : required
@@ -441,6 +442,7 @@ the p-cofaces of sigma
 <section id="splex.complexes.SimplexTree.SimplexTree.collapse" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.collapse">collapse</h3>
 <p><code>complexes.SimplexTree.SimplexTree.collapse(self, tau, sigma)</code></p>
+<p>Performs an elementary collapse on two given simplices.</p>
 <p>Checks whether its possible to collapse <span class="math inline">\sigma</span> through <span class="math inline">\tau</span>, and if so, both simplices are removed. A simplex <span class="math inline">\sigma</span> is said to be collapsible through one of its faces <span class="math inline">\tau</span> if <span class="math inline">\sigma</span> is the only coface of <span class="math inline">\tau</span> (excluding <span class="math inline">\tau</span> itself).</p>
 <section id="parameters-1" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-1">Parameters</h4>
@@ -504,6 +506,11 @@ maximum dimension to expand to.
 <p>st.expand(k=2) print(st)</p>
 </section>
 </section>
+<section id="splex.complexes.SimplexTree.SimplexTree.faces" class="level3">
+<h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.faces">faces</h3>
+<p><code>complexes.SimplexTree.SimplexTree.faces(self, p=None, **kwargs)</code></p>
+<p>Wrapper for simplices function.</p>
+</section>
 <section id="splex.complexes.SimplexTree.SimplexTree.find" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.find">find</h3>
 <p><code>complexes.SimplexTree.SimplexTree.find(self, simplices)</code></p>
@@ -519,7 +526,7 @@ Iterable of simplices to insert (each of which are SimplexLike)
 <h4 class="anchored" data-anchor-id="returns-3">Returns</h4>
 **** :
 <p>
-found (ndarray) : boolean array for each simplex indicating whether it was found in the complex
+found (ndarray) : boolean array indicating whether each simplex was found in the complex
 </p>
 <div class="callout callout-style-default callout-note callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -567,11 +574,12 @@ Note
 <section id="splex.complexes.SimplexTree.SimplexTree.link" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.link">link</h3>
 <p><code>complexes.SimplexTree.SimplexTree.link(self, sigma=\[\])</code></p>
+<p>Returns all simplices in the link of a given simplex.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.maximal" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.maximal">maximal</h3>
 <p><code>complexes.SimplexTree.SimplexTree.maximal(self)</code></p>
-<p>Maximal simplices.</p>
+<p>Returns the maximal simplices in the complex.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.remove" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.remove">remove</h3>
@@ -606,16 +614,18 @@ Note
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.simplices" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.simplices">simplices</h3>
-<p><code>complexes.SimplexTree.SimplexTree.simplices(self, p=None, sigma=\[\])</code></p>
+<p><code>complexes.SimplexTree.SimplexTree.simplices(self, p=None)</code></p>
+<p>Returns the p-simplices in the complex.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.skeleton" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.skeleton">skeleton</h3>
 <p><code>complexes.SimplexTree.SimplexTree.skeleton(self, p=None, sigma=\[\])</code></p>
+<p>Returns the simplices in the p-skeleton of the complex.</p>
 </section>
 <section id="splex.complexes.SimplexTree.SimplexTree.traverse" class="level3">
 <h3 class="anchored" data-anchor-id="splex.complexes.SimplexTree.SimplexTree.traverse">traverse</h3>
 <p><code>complexes.SimplexTree.SimplexTree.traverse(self, order='preorder', f=print, sigma=\[\], p=0)</code></p>
-<p>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered</p>
+<p>Traverses the simplex tree in the specified order, calling ‘f’ on each simplex encountered.</p>
 <p>Supported traversals: - breadth-first / level order (“bfs”, “levelorder”) - depth-first / prefix (“dfs”, “preorder”) - faces (“faces”) - cofaces (“cofaces”) - coface roots - p-skeleton - p-simplices - maximal simplices - link To select one of these options, set order to one of [“bfs”, “levelorder”, “dfs”, “preorder”]</p>
 <section id="parameters-7" class="level4">
 <h4 class="anchored" data-anchor-id="parameters-7">Parameters</h4>
