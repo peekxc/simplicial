@@ -12,6 +12,7 @@ from more_itertools import unique_everseen
 from collections import Counter
 from .Complex_ABCs import Complex
 
+
 class RankComplex(Complex, Sequence, ComplexLike):
   """Simplicial complex represented via the combinatorial number system.
   

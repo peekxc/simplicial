@@ -4,7 +4,8 @@ from itertools import *
 from numbers import Integral
 from math import comb, factorial
 from .Simplex import Simplex
-# import _combinatorial as comb_mod
+import _combinatorial as comb_mod
+
 
 ## Also: https://stackoverflow.com/questions/1942328/add-a-member-variable-method-to-a-python-generator
 ## See: https://stackoverflow.com/questions/48349929/numpy-convertible-class-that-correctly-converts-to-ndarray-from-inside-a-sequenc
