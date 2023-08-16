@@ -27,7 +27,17 @@ ext_modules = [
     extra_compile_args=compile_flags,
     language=cpp_version
   ), 
-   Pybind11Extension(
+  Pybind11Extension(
+    'splex._combinatorial', 
+    sources = ['src/splex/combinatorial.cpp'], 
+    include_dirs=[
+      'extern/pybind11/include',
+      'include'
+    ], 
+    extra_compile_args=compile_flags,
+    language=cpp_version
+  ),
+  Pybind11Extension(
     '_union_find', 
     sources = ['src/splex/UnionFind.cpp'], 
     include_dirs=[
