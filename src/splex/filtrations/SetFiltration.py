@@ -60,9 +60,9 @@ class SetFiltration(Filtration, Sequence):
         raise ValueError("Must supply filter function 'f' for ComplexLike inputs.")
     elif isinstance(simplices, Iterable):
       if isinstance(f, Callable):
-        self.update((ValueSimplex(s, f(s)) for s in simplices))
+        self.update((ValueSimplex(s,value=f(s)) for s in simplices))
       else:
-        self.update((ValueSimplex(s,k) for k,s in simplices)) ## accept pairs, like a normal dict
+        self.update((ValueSimplex(s,value=k) for k,s in simplices)) ## accept pairs, like a normal dict
     elif simplices is None:
       pass
     else: 

@@ -94,6 +94,18 @@ Of course, with the numpy solution, it seems we lose all the structure we built 
 
 An entirely different structure, such as a numpy array, may be more performant in some settings... but in others, perhaps a memory efficient solution using the combinatorial number system makes sense. 
 
+## Idempotency 
+
+Another reason tuples are good drop-in replacements for simplices are that they are treated as idempotent. Have you ever noticed: 
+
+list(list(list(0))) == [0]
+tuple(tuple(tuple(0))) == (0)
+
+(((0,))) == (0)
+
+[[[0]]] != [0]
+
+
 ## Structural Subtyping & Generics
 
 Convertibles 
