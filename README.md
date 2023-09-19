@@ -5,9 +5,11 @@
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-windows.yml?logo=windows&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-windows.yml)
 [![coverage_badge](https://img.shields.io/github/actions/workflow/status/peekxc/splex/build-linux.yml?logo=linux&logoColor=white)](https://github.com/peekxc/splex/actions/workflows/build-linux.yml)
 
-`splex` is a Python package aimed at providing common, _pythonic_ interface for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex) that is efficient and representation independent. Part of the package API was inspired by how [NetworkX](https://networkx.org/documentation/stable/index.html) handles graph data. 
+`splex` is a Python package aimed at providing common, _pythonic_ interface for constructing and manipulating [abstract simplicial complexes](https://en.wikipedia.org/wiki/Abstract_simplicial_complex) that is both efficient and representation independent, similar to how [NetworkX](https://networkx.org/documentation/stable/index.html) handles graph data. 
 
-Longer term, the goal of `splex` is to provide simple and performant implementations of common scientific operations on complexes in ways that are highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). For example, one objective to provide efficient ways to construct boundary (+Laplacian) [sparse matrices](https://docs.scipy.org/doc/scipy/reference/sparse.html) and [operators](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) from _any_ simplicial complex. Other operations, such as e.g. random complex generation, geometric realizations, and sparsification algorithms are also planned. 
+Longer term, the goal of `splex` is to provide simple and performant implementations of common operations on complexes in ways that are highly interoperable with the rest of the scientific Python ecosystem (e.g. SciPy, NumPy). 
+
+For example, one objective to provide efficient ways to construct boundary (+Laplacian) [sparse matrices](https://docs.scipy.org/doc/scipy/reference/sparse.html) and [operators](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) from _any_ simplicial complex. Other operations, such as e.g. random complex generation, geometric realizations, and sparsification algorithms are also planned. 
 
 > __NOTE__: `splex` is early-stage software primarily used for research currently, and many common simplicial operations are not yet provided (e.g. simplicial maps, sparsification)---if you’re interested in using `splex` but need some specific functionality, please open an issue.
 
@@ -27,7 +29,6 @@ Documentation available [here](https://peekxc.github.io/splex/)
 s = Simplex([0,1,2])                       # Explicit simplex class for value and set-like semantics
 S = simplicial_complex([[0,1,2], [4,5]])   # Complexes are constructible from myriad of types
 K = filtration(S, weight=lambda s: max(s)) # Filtrations are easy to specify via functions 
-
 
 ## All the types are pythonic and easy to use  
 K.print()

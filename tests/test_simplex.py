@@ -41,3 +41,18 @@ def test_value_simplex():
   assert isinstance(f.value, Number), "Value simplex not assign numbers" 
   f = ValueSimplex([0,1,2], np.array([1], dtype=np.uint16))
   assert type(f.value) == np.uint16, "Value simplex constructor doesn't respect numpy types"
+
+def test_filter_weight():
+  import numpy as np
+  from splex.generics import faces
+  from splex.complexes import simplicial_complex
+  from splex.Simplex import filter_weight
+  f = filter_weight(lambda s: 1)
+  assert f([0,1,2]) == 1
+  assert np.all(f([[0], [1], [0,1]]) == np.array([1,1,1]))
+  S = simplicial_complex([[0], [1], [0,2]])
+  assert np.all(f(S) == np.array([1,1,1,1]))
+  assert np.all(f(faces(S)) == np.array([1,1,1,1]))
+
+
+  
