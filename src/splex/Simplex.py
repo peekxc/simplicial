@@ -181,9 +181,9 @@ class ValueSimplex(SimplexBase, Generic[IT]):
   value: Number
   def __init__(self, v: SimplexConvertible, value: Number) -> None:
     if not isinstance(value, Number): # todo re-work the order or just consider dtype
-      value = value.dtype.type(value) if hasattr(value, 'dtype') else value
-      value = float(value) if hasattr(value, '__float__') and not isinstance(value, Number) else value
-      value = int(value) if hasattr(value, '__int__') and not isinstance(value, Number) else value
+      value = np.take(np.squeeze(value),0) if hasattr(value, 'dtype') else value
+      value = float(value) if (hasattr(value, '__float__') and not isinstance(value, Number)) else value
+      value = int(value) if (hasattr(value, '__int__') and not isinstance(value, Number)) else value
     assert isinstance(value, Number), "Value must be a number"
     t = tuple(unique_justseen(sorted(collapse(v))))
     object.__setattr__(self, 'value', value)

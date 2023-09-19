@@ -14,8 +14,8 @@ import bisect
 class SetFiltration(Filtration, Sequence):
   """Filtered complex of simplices uses _SortedSet_.
 
-  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_s 
-  of _Simplex_ instances. This class also implements the Mapping[Any, SimplexConvertible] 
+  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s of _Simplex_ instances.
+
   Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
   """
 
@@ -64,14 +64,13 @@ class SetFiltration(Filtration, Sequence):
       else:
         self.update((ValueSimplex(s,value=k) for k,s in simplices)) ## accept pairs, like a normal dict
     elif simplices is None:
-      pass
+      pass # Allow default constructible for empty filtrations
     else: 
       raise ValueError("Invalid input")
 
   ## --- Collection/Set requirements --- 
   def __iter__(self) -> Iterator[ValueSimplex]:
     yield from ((s.value, Simplex(s)) for s in self.data)
-    # return iter(self.data)
 
   def __len__(self) -> int:
     return len(self.data)
