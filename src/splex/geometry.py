@@ -94,7 +94,7 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
       else:
         # assert is_complex_like(s), "Input simplices must be complex like" # this is unneeded since not not be sized or repeatable
         rank_boundary = lambda f: np.array([rank_lex(sf, n=self.n) for sf in combinations(f, 2)], dtype=np.uint32)
-        return np.array([np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else float(self.vertex_weights[f]) for f in s], dtype=float)
+        return np.array([np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else np.take(self.vertex_weights[f],0) for f in s], dtype=float)
   C = _clique_weight(vertex_weights, pd, n)
   return C
 

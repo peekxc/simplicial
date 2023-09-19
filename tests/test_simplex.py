@@ -36,3 +36,8 @@ def test_simplex_varieties():
   assert s == p and f == s
   
   
+def test_value_simplex():
+  f = ValueSimplex([0,1,2], 1)
+  assert isinstance(f.value, Number), "Value simplex not assign numbers" 
+  f = ValueSimplex([0,1,2], np.array([1], dtype=np.uint16))
+  assert type(f.value) == np.uint16, "Value simplex constructor doesn't respect numpy types"

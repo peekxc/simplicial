@@ -118,3 +118,24 @@ def card(s: Union[SimplexConvertible, ComplexLike, FiltrationLike], p: int = Non
     else: 
       assert isinstance(p, int)
       return int(sum([1 for s in faces(s, p, **kwargs) if dim(s, **kwargs) == p]))
+    
+
+def filter_weight(f: Callable) -> Callable:
+  """Constructs a complex-parameterized callable that vectorizes a simplex-parameterized callable. 
+  """
+  @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+  class LS:
+    def __init__(self, f: Callable) -> None:
+      object.__setattr__(self, 'filter_f', f)
+    
+    def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+      if is_simplex_like(S):
+        return self.filter_f(S)
+      elif hasattr(S, "__array__") and is_complex_like(S):
+        S = np.asarray(S)
+        return np.array([self.filter_f(s) for s in S])
+      else:
+        assert isinstance(S, Iterable), "simplex iterable must be supplied"
+        return np.array([self.filter_f(s) for s in map(Simplex, S)])
+  filter_callable = LS(f)
+  return filter_callable
