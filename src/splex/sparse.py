@@ -61,9 +61,11 @@ def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConve
   ## Build the boundary matrix from the sequence
   m = 0
   I,J,X = [],[],[] # row, col, data 
+  face_dict = { s : i for i,s in enumerate(F) }
   for (j,s) in enumerate(S):
     if dim(s) > 0:
-      I.extend([F.index(f) for f in faces(s, dim(s)-1)])
+      # I.extend([F.index(f) for f in faces(s, dim(s)-1)]) ## TODO: this is painfully slow
+      I.extend([face_dict[f] for f in faces(s, dim(s)-1)])
       J.extend(repeat(j, dim(s)+1))
       X.extend(islice(cycle([1,-1]), dim(s)+1))
     m += 1
