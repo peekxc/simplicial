@@ -1,7 +1,7 @@
 import numpy as np 
 from splex import *
 
-
+## Benchmark inserting 500 triangles, not necessarily unique
 def test_st_construct_bench(benchmark):
   F = np.random.choice(range(150), size=(500, 3), replace=True)
   S = simplicial_complex(F, form="tree")
@@ -21,8 +21,8 @@ def test_sc_construct_bench(benchmark):
   benchmark(lambda: simplicial_complex(F, form="set"))
 
 def test_simplex_bench(benchmark):
-  benchmark(lambda: [Simplex(np.random.choice(range(10), size=8)) for i in range(1000)])
-  assert True
+  simplices = benchmark(lambda: [Simplex(np.random.choice(range(10), size=8)) for i in range(1000)])
+  assert all([isinstance(s, Simplex) for s in simplices])
     
 def test_boundary1_bench(benchmark):
   from scipy.sparse import sparray
