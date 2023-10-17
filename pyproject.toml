@@ -30,4 +30,6 @@ version_variable = "pyproject.toml:version"
 patch_without_tag = true
 
 [tool.pytest.ini_options]
-addopts = "--benchmark-autosave"
+# addopts = "--benchmark-autosave"
+addopts = "--benchmark-skip --benchmark-warmup='off' --benchmark-warmup-iterations=0 --benchmark-min-rounds=1 --benchmark-autosave"
+testpaths = ["tests"]

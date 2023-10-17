@@ -45,11 +45,11 @@ def test_boundary2_bench(benchmark):
 
 def test_boundary_full_bench(benchmark):
   from scipy.sparse import sparray
-  from itertools import combinations, chain
+  from itertools import combinations
   triangles = list(combinations(range(20),2))
   S = simplicial_complex(triangles)
   D = benchmark(boundary_matrix, S)
-  assert isinstance(D, sparray),  "Is not sparse matrix"
+  assert isinstance(D, sparray), "Is not sparse matrix"
 
 
 #   def test_incr_modify():
