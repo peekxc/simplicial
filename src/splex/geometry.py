@@ -4,7 +4,7 @@ from scipy.spatial.distance import pdist, squareform
 from .generics import *
 from .complexes import * 
 from .filtrations import *
-from .combinatorial import rank_combs, unrank_combs
+from combin import rank_to_comb, comb_to_rank
 from .predicates import *
 from dataclassy import dataclass
 
@@ -40,10 +40,11 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   Returns: 
     rips complex, returned as a simplex tree
   """ 
+  from simplextree import SimplexTree
   pd = as_pairwise_dist(x)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  st = SimplexTree(unrank_combs(ind, n=x.shape[0], k=2, order="lex"))
+  st = SimplexTree(rank_to_comb(ind, n=x.shape[0], k=2, order="lex"))
   st.expand(p)
   return st
 
@@ -79,21 +80,23 @@ def flag_weight(x: ArrayLike, vertex_weights: Optional[ArrayLike] = None) -> Cal
           return np.ravel(self.vertex_weights[s])
         else: 
           if s.shape[1] == 2: 
-            return self.edge_weights[rank_combs(s, n=n, order='lex')]
+            ind = comb_to_rank(s, n=self.n, order='lex')
+            return self.edge_weights[ind]
           else:
             fw = np.zeros(s.shape[0])
             for i,j in combinations(range(s.shape[1]), 2):
-              np.maximum(fw, self.edge_weights[rank_combs(s[:,[i,j]], n=self.n, order='lex')], out=fw)
+              np.maximum(fw, self.edge_weights[comb_to_rank(s[:,[i,j]], n=self.n, order='lex')], out=fw)
             return fw
       elif is_simplex_like(s):
         if len(s) == 1: 
           return self.vertex_weights[s] 
         else: 
-          ind = np.fromiter((rank_lex(e, n=self.n) for e in combinations(s, 2)), dtype=np.uint32)
+          ind = np.array(comb_to_rank(combinations(s, 2), n=self.n, order='lex'), dtype=np.uint64)
+          # ind = np.fromiter((rank_lex(e, n=self.n) for e in combinations(s, 2)), dtype=np.uint32)
           return np.max(self.edge_weights[ind])
       else:
         # assert is_complex_like(s), "Input simplices must be complex like" # this is unneeded since not not be sized or repeatable
-        rank_boundary = lambda f: np.array([rank_lex(sf, n=self.n) for sf in combinations(f, 2)], dtype=np.uint32)
+        rank_boundary = lambda f: np.array(comb_to_rank(combinations(f, 2), n=self.n, order='lex'), dtype=np.uint64)
         return np.array([np.max(self.edge_weights[rank_boundary(f)]) if dim(f) >= 1 else np.take(self.vertex_weights[f],0) for f in s], dtype=float)
   C = _clique_weight(vertex_weights, pd, n)
   return C
@@ -129,12 +132,13 @@ def lower_star_weight(x: ArrayLike) -> Callable:
 def rips_filtration(x: ArrayLike, radius: float = None, p: int = 1, **kwargs) -> FiltrationLike:
   """Constructs a _p_-dimensional rips filtration from _x_ by unioning balls of diameter at most 2 * _radius_
   """
+  from simplextree import SimplexTree
   pd = as_pairwise_dist(x)
   radius = enclosing_radius(pd) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
   n = inverse_choose(len(pd), 2)
   st = SimplexTree([[i] for i in range(n)])
-  st.insert(unrank_combs(ind, n=n, k=2, order="lex"))
+  st.insert(rank_to_comb(ind, n=n, k=2, order="lex"))
   st.expand(p)
   f = flag_weight(pd)
   G = ((f([s]), s) for s in st)

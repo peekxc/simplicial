@@ -17,26 +17,16 @@ else:
 print(f"COMPILER FLAGS: { str(compile_flags) }")
 
 ext_modules = [
-  Pybind11Extension(
-    'splex.complexes._simplextree', 
-    sources = ['src/splex/complexes/simplextree_module.cpp'], 
-    include_dirs=[
-      'extern/pybind11/include',
-      'include'
-    ], 
-    extra_compile_args=compile_flags,
-    language=cpp_version
-  ), 
-   Pybind11Extension(
-    '_union_find', 
-    sources = ['src/splex/UnionFind.cpp'], 
-    include_dirs=[
-      'extern/pybind11/include', 
-      'include'
-    ], 
-    extra_compile_args=compile_flags,
-    language=cpp_version
-  )
+  #  Pybind11Extension(
+  #   '_union_find', 
+  #   sources = ['src/splex/UnionFind.cpp'], 
+  #   include_dirs=[
+  #     'extern/pybind11/include', 
+  #     'include'
+  #   ], 
+  #   extra_compile_args=compile_flags,
+  #   language=cpp_version
+  # )
 ]
 
 from setuptools.command.build_ext import build_ext

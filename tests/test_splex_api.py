@@ -49,7 +49,6 @@ def test_set_complex():
   assert S.discard([0,1]) is None 
   assert [0,1] not in S
 
-
 ## Testing reindexing capability 
 def test_filtration():
   S = simplicial_complex([[0,1,2,3,4]], "set")
@@ -64,15 +63,15 @@ def test_filtration():
   # assert L_simplices != K_simplices
   # assert list(sorted(K_simplices)) == list(sorted(L_simplices))
   
-def test_rips():
-  from splex.geometry import flag_weight, delaunay_complex, rips_filtration
+def test_rips_complex():
+  from splex.geometry import flag_weight, delaunay_complex
   X = np.random.uniform(size=(10,2))
   f = flag_weight(X)
   S = delaunay_complex(X)
   assert isinstance([f(s) for s in S], list)
   assert isinstance(filtration(S, f=f), FiltrationLike)
 
-def test_rips():
+def test_rips_filtration():
   radius = 0.35
   X = np.random.uniform(size=(15,2))
   K = rips_filtration(X, radius)

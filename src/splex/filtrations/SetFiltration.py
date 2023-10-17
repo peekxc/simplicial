@@ -15,8 +15,6 @@ class SetFiltration(Filtration, Sequence):
   """Filtered complex of simplices uses _SortedSet_.
 
   This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s of _Simplex_ instances.
-
-  Implements: __getitem__, __iter__, __len__, __contains__, keys, items, values, get, __eq__, and __ne__
   """
 
   @classmethod
@@ -70,6 +68,7 @@ class SetFiltration(Filtration, Sequence):
 
   ## --- Collection/Set requirements --- 
   def __iter__(self) -> Iterator[ValueSimplex]:
+    """ Yields pairs (index, simplex) from the filtration. """
     yield from ((s.value, Simplex(s)) for s in self.data)
 
   def __len__(self) -> int:
@@ -154,7 +153,7 @@ class SetFiltration(Filtration, Sequence):
     else:
       raise ValueError("invalid index set supplied")
 
-  ## Additional 
+  ## Additional functions
   def cofaces(self, item: Collection[int]) -> Iterable:
     s = Simplex(item)
     yield from filter(lambda t: t >= s, iter(self))

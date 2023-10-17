@@ -1,6 +1,5 @@
 from ..meta import * 
 from .RankComplex import RankComplex
-from .SimplexTree import SimplexTree
 from .SetComplex import SetComplex
 
 def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str = "default"):
@@ -18,6 +17,7 @@ def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str
   assert isinstance(form, str), f"Invalid form argument of type '{type(form)}'; must be string."
   form = form.strip().lower()
   if form == "tree":
+    from simplextree import SimplexTree
     sc = SimplexTree(simplices)
   elif form == "rank":
     sc = RankComplex(simplices)

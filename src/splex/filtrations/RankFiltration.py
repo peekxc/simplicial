@@ -3,23 +3,23 @@ import numbers
 import numpy as np 
 
 from ..meta import *
-from ..combinatorial import * 
+from combin import *
 
-# class RankFiltration(FiltrationLike):
-#   def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None):
-#     # simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
-#     # assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
-#     if f is not None:
-#       s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.float64)])
-#       self.simplices = np.array([(rank_colex(s), len(s), f(s)) for s in simplices], dtype=s_dtype)
-#     else: 
-#       s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.uint32)])
-#       self.simplices = np.array([(rank_colex(s), len(s), i) for i, s in enumerate(simplices)], dtype=s_dtype)
+class RankFiltration(FiltrationLike):
+  def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None):
+    # simplices = list(simplices.faces()) if isinstance(simplices, ComplexLike) else simplices 
+    # assert isinstance(simplices, Iterable) and not(iter(simplices) is simplices), "Iterable must be repeatable. A generator is not sufficient!"
+    if f is not None:
+      s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.float64)])
+      self.simplices = np.array([(rank_colex(s), len(s), f(s)) for s in simplices], dtype=s_dtype)
+    else: 
+      s_dtype= np.dtype([('rank', np.uint64), ('d', np.uint16), ('f', np.uint32)])
+      self.simplices = np.array([(rank_colex(s), len(s), i) for i, s in enumerate(simplices)], dtype=s_dtype)
   
-#   def reindex(self, f: Callable['SimplexLike', Any]) -> None:
-#     # self.w = np.array([f(s) for s in iter(self)])
-#     ind = np.argsort(self.w, order=('f', 'd', 'r'))
-#     self.simplices = self.simplices[ind]
+  def reindex(self, f: Callable['SimplexLike', Any]) -> None:
+    # self.w = np.array([f(s) for s in iter(self)])
+    ind = np.argsort(self.w, order=('f', 'd', 'r'))
+    self.simplices = self.simplices[ind]
 
 #   ## Mapping interface
 #   __iter__ = lambda self: iter(self.simplices['f'])
