@@ -37,4 +37,5 @@ def test_rips():
   assert is_complex_like(rips_complex(squareform(pdist(X))))  
   assert is_filtration_like(rips_filtration(pdist(X)))
   assert is_filtration_like(rips_filtration(squareform(pdist(X))))
+  assert card(rips_complex(pdist(X), radius = 0.0), 0) == len(X)
 

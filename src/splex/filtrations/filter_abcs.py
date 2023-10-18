@@ -1,11 +1,53 @@
 # from abc import ABC
+import abc
 from collections.abc import Set
+from typing import *
 import sys
+from more_itertools import nth
 from ..meta import * 
 from ..generics import * 
+from ..Simplex import Simplex
 
+class Filtration(ComplexLike):
 
-class Filtration(Set, ComplexLike):
+  ## ---- Collection requirements -----
+  @abstractmethod
+  def __iter__(self) -> tuple[Any, SimplexConvertible]: 
+    pass 
+
+  @abstractmethod
+  def __len__(self) -> int:
+    pass 
+
+  @abstractmethod
+  def __contains__(self, k: SimplexConvertible) -> bool:
+    pass 
+
+  ## --- Sequence requirements ---
+  def __getitem__(self, key: int) -> SimplexConvertible: 
+    if len(self) <= key: 
+      raise IndexError("index out of range")
+    return nth(iter(self), key, None)
+
+  def index(self, item: SimplexConvertible) -> int:  
+    s = Simplex(item)
+    for i,x in iter(self):
+      if x == s:
+        return i
+    return -1  
+
+  def count(self, item: SimplexConvertible) -> int: 
+    s = Simplex(item)
+    s_count = 0
+    for i,x in iter(s):
+      s_count += (x == s)
+    return s_count
+  
+  ## --- Disable Mutable Sequence ---- 
+  def __setitem__(self, key: Any, value: Any):
+    raise TypeError("Object does not support item assignment")
+
+  ## --- Misc utilities ---
   def __format__(self, format_spec = "default") -> str:
     from io import StringIO
     s = StringIO()

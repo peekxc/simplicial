@@ -18,6 +18,12 @@ def test_set_filtration_simple():
   assert [0,1,2,3] in K, "contains not working properly"
   # K.discard([0,1,2,3])
 
+def test_rank_filtration_simple():
+  S = RankComplex([[0,1,2,3]])
+  K = RankFiltration(enumerate(S))
+  assert K.n_simplices == (4,6,4,1), "simplex cardinality tracking not working properly"
+  assert [0,1,2,3] in K, "contains not working properly"
+
 def test_filtration_api():
   S = simplicial_complex([[0,1,2,3]])
   assert isinstance(filtration(S, form="set"), SetFiltration)

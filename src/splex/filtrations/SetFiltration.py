@@ -90,6 +90,13 @@ class SetFiltration(Filtration, Sequence):
     # return True # self.data.
     # bisect.bisect_left(self.data, Simplex(item), key=lambda vs: Simplex(vs))
 
+  def count(self, item: SimplexConvertible) -> int: 
+    s = Simplex(item)
+    s_count = 0
+    for i,x in iter(s):
+      s_count += (x == s)
+    return s_count
+
   ## --- MutableSequence requirements --- 
   # def __setitem__(self, key: Any, value: Union[Collection[Integral], SortedSet]):
   #   self.data.__setitem__(key, self._sorted_set(v))

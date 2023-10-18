@@ -4,8 +4,8 @@ from scipy.spatial.distance import pdist, squareform
 from .generics import *
 from .complexes import * 
 from .filtrations import *
-from combin import rank_to_comb, comb_to_rank
 from .predicates import *
+from combin import rank_to_comb, comb_to_rank, inverse_choose
 from dataclassy import dataclass
 
 def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
@@ -42,9 +42,12 @@ def rips_complex(x: ArrayLike, radius: float = None, p: int = 1) -> FiltrationLi
   """ 
   from simplextree import SimplexTree
   pd = as_pairwise_dist(x)
+  n = inverse_choose(len(pd), 2)
   radius = enclosing_radius(squareform(pd)) if radius is None else float(radius)
   ind = np.flatnonzero(pd <= 2*radius)
-  st = SimplexTree(rank_to_comb(ind, n=x.shape[0], k=2, order="lex"))
+  edges = rank_to_comb(ind, n=n, k=2, order="lex")
+  st = SimplexTree([[i] for i in range(n)])
+  st.insert(edges)
   st.expand(p)
   return st
 
@@ -120,7 +123,7 @@ def lower_star_weight(x: ArrayLike) -> Callable:
     
     def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
       if is_simplex_like(S):
-        return np.max(self.vertex_weights[S])
+        return np.max(self.vertex_weights[Simplex(S)]) # Simplices can be used for indexing!
       elif hasattr(S, "__array__") and is_complex_like(S):
         S = np.asarray(S)
         return np.max(self.vertex_weights[S], axis=-1) ## vectorized form
