@@ -1,28 +1,57 @@
 
 import numbers
-import numpy as np 
+import numpy as np
+
+from splex.generics import SimplexConvertible
+from splex.meta import SimplexConvertible 
 
 from ..meta import *
 from ..complexes import RankComplex
-from combin import *
+from ..filtrations import Filtration
+from ..predicates import is_complex_like
+from ..generics import faces
+from ..Simplex import Simplex
+from combin import comb_to_rank, rank_to_comb
 
-
-class RankFiltration(FiltrationLike):
-  def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None):
-    if f is not None:
-      s_dtype= np.dtype([('rank', np.uint64), ('dim', np.uint16), ('value', np.float64)])
-      self.simplices = np.array([(comb_to_rank(s), len(s)-1, f(s)) for s in simplices], dtype=s_dtype)
+class RankFiltration(Filtration):
+  def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None, value_dtype = np.float64):
+    s_dtype= np.dtype([('rank', np.uint64), ('dim', np.uint16), ('value', value_dtype)])
+    if is_complex_like(simplices):
+      if isinstance(f, Callable):
+        self.simplices = np.array([(comb_to_rank(s), len(s)-1, f(s)) for s in simplices], dtype=s_dtype)
+      else:
+        raise ValueError("Must supply filter function 'f' for ComplexLike inputs.")
+    elif isinstance(simplices, Iterable):
+      if isinstance(f, Callable):
+        self.simplices = np.array([(comb_to_rank(s), len(s)-1, f(s)) for s in simplices], dtype=s_dtype)
+      else:
+        self.simplices = np.array([(comb_to_rank(s), len(s)-1, k) for k, s in simplices], dtype=s_dtype)
+    elif simplices is None:
+      pass # Allow default constructible for empty filtrations
     else: 
-      s_dtype= np.dtype([('rank', np.uint64), ('dim', np.uint16), ('value', np.uint32)])
-      self.simplices = np.array([(comb_to_rank(s), len(s)-1, i) for i, s in enumerate(simplices)], dtype=s_dtype)
-  
+      error_msg = "Invalid input; if filter 'f' is supplied, 'simplices' must be an iterable of simplex-like objects\n" 
+      error_msg += "Otherwise, 'simplices' should be an iterable of pairs"
+      raise ValueError(error_msg)
+    self.reindex()
+    
   def __iter__(self) -> Iterable:
     """Enumerates the faces of the complex."""
     simplices = rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, order='colex')
     yield from zip(self.simplices['value'], simplices)
 
-  def reindex(self, f: Callable['SimplexLike', Any]) -> None:
-    self.simplices['value'] = f()
+  def __len__(self) -> int:
+    return len(self.simplices)
+
+  def __contains__(self, k: SimplexConvertible) -> bool:
+    s = np.array(Simplex(k))
+    r = comb_to_rank(s)
+    ind = np.flatnonzero(self.simplices['rank'] == r)
+    return (len(k)-1) in self.simplices['dim'][ind]
+
+  def reindex(self, f: Callable['SimplexLike', Any] = None) -> None:
+    if f is not None:
+      assert isinstance(f, Callable), "f must be a callable filter function"
+      self.simplices['value'] = f(faces(self))
     ind = np.argsort(self.simplices, order=('value', 'dim', 'rank'))
     self.simplices = self.simplices[ind]
 

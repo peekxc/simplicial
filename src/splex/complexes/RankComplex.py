@@ -10,7 +10,7 @@ from ..Simplex import *
 # from ..Complex import *
 from more_itertools import unique_everseen
 from collections import Counter
-from .Complex_ABCs import Complex
+from .complex_abcs import Complex
 
 class RankComplex(Complex, Sequence, ComplexLike):
   """Simplicial complex represented via the combinatorial number system.

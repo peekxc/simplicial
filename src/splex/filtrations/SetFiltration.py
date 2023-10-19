@@ -3,18 +3,18 @@ from ..meta import *
 from ..generics import *
 from ..Simplex import *
 from ..complexes import * 
-from .filter_abcs import Filtration
+from .filter_abcs import Filtration, MutableFiltration
+from itertools import pairwise
 from sortedcontainers import SortedSet
 from more_itertools import spy
-import bisect
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault
 # https://treyhunner.com/2019/04/why-you-shouldnt-inherit-from-list-and-dict-in-python/
-class SetFiltration(Filtration, Sequence):
-  """Filtered complex of simplices uses _SortedSet_.
+class SetFiltration(MutableFiltration):
+  """Filtered complex of simplices using a _SortedSet_ of _ValueSimplex_'s.
 
-  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s of _Simplex_ instances.
+  This class represents a filtration of simplices by associating keys of a given index set with _SortedSet_'s of _ValueSimplex_ instances.
   """
 
   @classmethod
@@ -53,21 +53,24 @@ class SetFiltration(Filtration, Sequence):
     self.n_simplices = tuple()
     if is_complex_like(simplices):
       if isinstance(f, Callable):
-        self.update((ValueSimplex(s, f(s)) for s in simplices))
+        for s in simplices:
+          self.add(ValueSimplex(s, f(s)))
       else:
         raise ValueError("Must supply filter function 'f' for ComplexLike inputs.")
     elif isinstance(simplices, Iterable):
       if isinstance(f, Callable):
-        self.update((ValueSimplex(s,value=f(s)) for s in simplices))
+        for s in simplices:
+          self.add(ValueSimplex(s,value=f(s)))
       else:
-        self.update((ValueSimplex(s,value=k) for k,s in simplices)) ## accept pairs, like a normal dict
+        for k,s in simplices: 
+          self.add(ValueSimplex(s,value=k)) ## accept pairs, like a normal dict
     elif simplices is None:
       pass # Allow default constructible for empty filtrations
     else: 
       raise ValueError("Invalid input")
 
   ## --- Collection/Set requirements --- 
-  def __iter__(self) -> Iterator[ValueSimplex]:
+  def __iter__(self) -> Iterator[tuple]:
     """ Yields pairs (index, simplex) from the filtration. """
     yield from ((s.value, Simplex(s)) for s in self.data)
 
@@ -81,32 +84,6 @@ class SetFiltration(Filtration, Sequence):
   def __getitem__(self, key: Any) -> Simplex: 
     return self.data.__getitem__(key)
 
-  def index(self, item: SimplexConvertible) -> int:  
-    s = Simplex(item)
-    for i,x in iter(s):
-      if x == s:
-        return i
-    return -1
-    # return True # self.data.
-    # bisect.bisect_left(self.data, Simplex(item), key=lambda vs: Simplex(vs))
-
-  def count(self, item: SimplexConvertible) -> int: 
-    s = Simplex(item)
-    s_count = 0
-    for i,x in iter(s):
-      s_count += (x == s)
-    return s_count
-
-  ## --- MutableSequence requirements --- 
-  # def __setitem__(self, key: Any, value: Union[Collection[Integral], SortedSet]):
-  #   self.data.__setitem__(key, self._sorted_set(v))
-
-  # def __delitem__(self, key: Any):
-  #   self.data.pop(key)
-
-  # def insert(self, index: Any, simplex: SimplexConvertible):
-  #   self.data.add(ValueSimplex(simplex, index))
-
   ## --- MutableSet requirements ---
   def add(self, simplex: SimplexConvertible) -> None:
     assert isinstance(simplex, SimplexConvertible) # or isinstance(simplex, tuple)
@@ -118,19 +95,18 @@ class SetFiltration(Filtration, Sequence):
         ns[dim(f)] += 1
     self.n_simplices = tuple(ns)
 
-  def update(self, simplices: Iterable[ValueSimplex]) -> None: 
-    for s in simplices: 
-      self.add(s)
+  def discard(self, simplex: SimplexConvertible):
+    assert isinstance(simplex, SimplexConvertible) # or isinstance(simplex, tuple)
+    s_cofaces = list(self.cofaces(simplex))
+    ns = list(self.n_simplices) 
+    for c in s_cofaces:
+      self.data.discard(c)
+      ns[dim(c)] -= 1
+    self.n_simplices = tuple([i for i in ns if i > 0])
 
-  # def discard(self, simplex: ValueSimplex):
-  #   assert isinstance(simplex, ValueSimplex) or isinstance(simplex, tuple)
-  #   simplex = ValueSimplex(simplex[1], simplex[0]) if isinstance(simplex, tuple) else simplex
-  #   s_cofaces = list(self.cofaces(simplex))
-  #   ns = list(self.n_simplices) 
-  #   for c in s_cofaces:
-  #     self.data.discard(c)
-  #     ns[dim(c)] -= 1
-  #   self.n_simplices = tuple(rstrip(ns, lambda x: x <= 0))
+  # def update(self, simplices: Iterable[ValueSimplex]) -> None: 
+  #   for s in simplices: 
+  #     self.add(s)
 
   ## --- splex generics support --- 
   def dim(self) -> int:
@@ -163,7 +139,7 @@ class SetFiltration(Filtration, Sequence):
   ## Additional functions
   def cofaces(self, item: Collection[int]) -> Iterable:
     s = Simplex(item)
-    yield from filter(lambda t: t >= s, iter(self))
+    yield from filter(lambda t: t[1] >= s, iter(self))
 
   ## --- Miscelleneous --- 
   def copy(self) -> 'SetFiltration':
