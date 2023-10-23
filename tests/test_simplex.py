@@ -46,8 +46,8 @@ def test_filter_weight():
   import numpy as np
   from splex.generics import faces
   from splex.complexes import simplicial_complex
-  from splex.Simplex import filter_weight
-  f = filter_weight(lambda s: 1)
+  from splex.filters import generic_filter
+  f = generic_filter(lambda s: 1)
   assert f([0,1,2]) == 1
   assert np.all(f([[0], [1], [0,1]]) == np.array([1,1,1]))
   S = simplicial_complex([[0], [1], [0,2]])

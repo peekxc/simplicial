@@ -58,3 +58,13 @@ def is_point_cloud(x: ArrayLike) -> bool:
 def is_dist_like(x: ArrayLike):
 	"""Checks whether _x_ is any recognizable distance object."""
 	return(is_distance_matrix(x) or is_pairwise_distances(x))
+
+def as_pairwise_dist(x: ArrayLike) -> ArrayLike:
+	from scipy.spatial.distance import pdist 
+	if is_point_cloud(x):
+		pd = pdist(x)
+	elif is_dist_like(x):
+		pd = np.tril(x) if is_distance_matrix(x) else x
+	else: 
+		raise ValueError("Unknown input shape 'x' ")
+	return pd

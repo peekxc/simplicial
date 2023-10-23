@@ -64,9 +64,10 @@ def test_filtration():
   # assert list(sorted(K_simplices)) == list(sorted(L_simplices))
   
 def test_rips_complex():
-  from splex.geometry import flag_weight, delaunay_complex
+  from splex.filters import flag_filter
+  from splex.geometry import delaunay_complex
   X = np.random.uniform(size=(10,2))
-  f = flag_weight(X)
+  f = flag_filter(X)
   S = delaunay_complex(X)
   assert isinstance([f(s) for s in S], list)
   assert isinstance(filtration(S, f=f), FiltrationLike)
