@@ -10,5 +10,6 @@ from .meta import *
 from .generics import *
 from .complexes import *
 from .filtrations import *
+from .filters import *
 from .sparse import *
 from .geometry import *

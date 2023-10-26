@@ -15,10 +15,10 @@ class GenericFilter:
   
   def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
     if is_simplex_like(S):
-      return self.filter_f(S)
+      return self.filter_f(Simplex(S))
     elif hasattr(S, "__array__") and is_complex_like(S):
       S = np.asarray(S)
-      return np.array([self.filter_f(s) for s in S])
+      return np.array([self.filter_f(s) for s in map(Simplex, S)])
     else:
       assert isinstance(S, Iterable), "simplex iterable must be supplied"
       return np.array([self.filter_f(s) for s in map(Simplex, S)])
