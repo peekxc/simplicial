@@ -67,7 +67,7 @@ class CliqueFilter:
           return fw
     elif is_simplex_like(s):
       if len(s) == 1: 
-        return self.vertex_weights[s] 
+        return np.take(self.vertex_weights[s], 0) # always return simple value tyep for single simplex
       else: 
         ind = np.array(comb_to_rank(combinations(s, 2), n=self.n, order='lex'), dtype=np.uint64)
         # ind = np.fromiter((rank_lex(e, n=self.n) for e in combinations(s, 2)), dtype=np.uint32)
