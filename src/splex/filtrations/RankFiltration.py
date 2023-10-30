@@ -4,6 +4,7 @@ import numpy as np
 
 from splex.generics import SimplexConvertible
 from splex.meta import SimplexConvertible 
+from operator import itemgetter
 
 from ..meta import *
 from ..complexes import RankComplex
@@ -54,6 +55,28 @@ class RankFiltration(Filtration):
       self.simplices['value'] = f(faces(self))
     ind = np.argsort(self.simplices, order=('value', 'dim', 'rank'))
     self.simplices = self.simplices[ind]
+
+  ## --- splex generics support --- 
+  def dim(self) -> int:
+    return np.max(self.simplices['dim'])
+
+  def faces(self, p: int = None, **kwargs) -> Iterable:
+    assert isinstance(p, Integral) or p is None, f"Invalid p:{p} given"
+    simplices_map = map(itemgetter(1), iter(self))
+    if p is None:
+      return iter(simplices_map)
+    else:
+      p_ind = self.simplices['dim'] == p
+      return rank_to_comb(self.simplices['rank'][p_ind], k=p+1, order='colex')
+    
+  def indices(self) -> Iterator[Any]:
+    return self.simplices['value']
+  
+  def card(self, p: int = None) -> Union[tuple, int]:
+    if p is None: 
+      return tuple(np.bincount(self.simplices['dim']))
+    else: 
+      return np.sum(self.simplices['dim'] == int(p))
 
 #   ## Mapping interface
 #   __iter__ = lambda self: iter(self.simplices['f'])

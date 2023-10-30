@@ -52,8 +52,6 @@ class Filtration(ComplexLike):
       s_count += (x == s)
     return s_count
   
-
-
   ## --- Disable Mutable Sequence ---- 
   def __setitem__(self, key: Any, value: Any):
     raise TypeError("Object does not support item assignment")

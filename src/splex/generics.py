@@ -59,7 +59,9 @@ def boundary(s: Union[SimplexConvertible, ComplexLike], p: int = None, oriented:
     return s.boundary(**kwargs)
   return combinations(s, len(s)-1)
 
-def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool = False, **kwargs) -> Iterator[Union[SimplexConvertible, PropertySimplexConvertible]]:
+## NOTE: Returning an *Iterable* instead of an *Iterator* is preferred, as it allows containers to 
+## return lazy- or eager-proxy objects, e.g. tree iterators or entire numpy arrays 
+def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool = False, **kwargs) -> Iterable[Union[SimplexConvertible, PropertySimplexConvertible]]:
   """
   Returns the faces of a simplicial object, optionally restricted by dimension.
 
