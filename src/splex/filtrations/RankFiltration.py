@@ -38,7 +38,8 @@ class RankFiltration(Filtration):
   def __iter__(self) -> Iterable:
     """Enumerates the faces of the complex."""
     simplices = rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, order='colex')
-    yield from zip(self.simplices['value'], simplices)
+    # yield from zip(self.simplices['value'], simplices)
+    return np.c_[self.simplices['value'], simplices]
 
   def __len__(self) -> int:
     return len(self.simplices)
@@ -69,7 +70,7 @@ class RankFiltration(Filtration):
       p_ind = self.simplices['dim'] == p
       return rank_to_comb(self.simplices['rank'][p_ind], k=p+1, order='colex')
     
-  def indices(self) -> Iterator[Any]:
+  def indices(self) -> Iterable[Any]:
     return self.simplices['value']
   
   def card(self, p: int = None) -> Union[tuple, int]:
