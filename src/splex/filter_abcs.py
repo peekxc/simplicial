@@ -5,9 +5,9 @@ from typing import *
 import sys
 import operator
 from more_itertools import nth
-from ..meta import * 
-from ..generics import * 
-from ..Simplex import Simplex, ValueSimplex
+from .meta import * 
+from .generics import * 
+from .Simplex import Simplex, ValueSimplex
 
 class Filtration(ComplexLike):
   """Simplex-wise filtration ABC."""

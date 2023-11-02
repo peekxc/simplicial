@@ -2,10 +2,10 @@ import numpy as np
 from scipy.spatial.distance import pdist, squareform
 
 from .generics import *
-from .complexes import * 
 from .filters import *
-from .filtrations import *
 from .predicates import *
+from .complexes import * 
+from .filtrations import *
 from combin import rank_to_comb, comb_to_rank, inverse_choose
 
 def enclosing_radius(x: ArrayLike) -> float:

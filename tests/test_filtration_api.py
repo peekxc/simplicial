@@ -1,7 +1,6 @@
 import numpy as np 
 from typing import *
 from splex import * 
-from splex.filtrations import * 
 
 def validate_filtration(index_values: Iterable, simplices: Iterable, light: bool = True) -> bool:
   index_values = list(index_values)

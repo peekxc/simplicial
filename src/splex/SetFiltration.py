@@ -1,8 +1,8 @@
 import numpy as np  
-from ..meta import *
-from ..generics import *
-from ..Simplex import *
-from ..complexes import * 
+from .meta import *
+from .generics import *
+from .Simplex import *
+from .complex_abcs import * 
 from .filter_abcs import Filtration, MutableFiltration
 from itertools import pairwise
 from sortedcontainers import SortedSet

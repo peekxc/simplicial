@@ -1,8 +1,8 @@
 from collections.abc import Set
 import sys
-from ..meta import * 
-from ..generics import * 
-from ..Simplex import * 
+from .meta import * 
+from .generics import * 
+from .Simplex import * 
 
 class Complex(Set, ComplexLike):
   def __format__(self, format_spec = "default") -> str:

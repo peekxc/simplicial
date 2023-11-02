@@ -2,11 +2,11 @@
 import numbers
 import numpy as np 
 
-from ..meta import *
+from .meta import *
 from combin import comb_to_rank, rank_to_comb
-from ..generics import *
-from ..predicates import *
-from ..Simplex import *
+from .generics import *
+from .predicates import *
+from .Simplex import *
 # from ..Complex import *
 from more_itertools import unique_everseen
 from collections import Counter

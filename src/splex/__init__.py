@@ -10,15 +10,16 @@ from .meta import SimplexConvertible, SimplexLike, ComplexLike, FiltrationLike, 
 from .generics import card, dim, faces, boundary
 from .Simplex import Simplex, ValueSimplex, PropertySimplex
 from .predicates import *
-from .complexes import simplicial_complex, SetComplex, RankComplex
-from .filtrations import filtration, SetFiltration, RankFiltration
 from .filters import fixed_filter, generic_filter, lower_star_filter, flag_filter
 from .sparse import boundary_matrix
 from .geometry import enclosing_radius, rips_complex, rips_filtration, delaunay_complex
+from .complexes import SetComplex, RankComplex, simplicial_complex
+from .filtrations import SetFiltration, RankFiltration, filtration
 
 ## Modules to expose
-from . import complexes
-from . import filtrations
+## Since Python has such terrible support for simple relative imports, we put everything in one directory
+# from . import complexes
+# from . import filtrations
 
 # __all__ = [ComplexLike, ]
 

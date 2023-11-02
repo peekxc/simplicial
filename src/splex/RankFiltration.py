@@ -2,16 +2,16 @@
 import numbers
 import numpy as np
 
-from splex.generics import SimplexConvertible
-from splex.meta import SimplexConvertible 
 from operator import itemgetter
+from combin import comb_to_rank, rank_to_comb
 
-from ..meta import *
-from ..complexes import RankComplex
-from ..filtrations import Filtration
-from ..predicates import is_complex_like
-from ..generics import faces
-from ..Simplex import Simplex
+from .meta import *
+from .generics import SimplexConvertible
+from .RankComplex import RankComplex
+from .predicates import is_complex_like
+from .generics import faces
+from .Simplex import Simplex
+from .filter_abcs import Filtration
 from combin import comb_to_rank, rank_to_comb
 
 class RankFiltration(Filtration):

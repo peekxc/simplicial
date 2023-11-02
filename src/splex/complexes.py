@@ -1,6 +1,9 @@
-from ..meta import * 
+from typing import * 
+from .meta import SimplexConvertible, SimplexLike
+from .complex_abcs import * 
 from .RankComplex import RankComplex
 from .SetComplex import SetComplex
+
 
 def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str = "default"):
   """Abstract simplicial complex constructor.
@@ -26,4 +29,3 @@ def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str
   else: 
     raise ValueError(f"Invalid form '{form}'.")
   return sc 
-

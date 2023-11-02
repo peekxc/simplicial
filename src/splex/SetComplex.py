@@ -1,7 +1,7 @@
 import numpy as np
-from ..meta import * 
-from ..generics import *
-from ..Simplex import *
+from .meta import * 
+from .generics import *
+from .Simplex import *
 from .complex_abcs import Complex
 from sortedcontainers import SortedSet # SortedSet is a vaid Sequence! 
 
