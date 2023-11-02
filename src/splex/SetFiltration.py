@@ -4,9 +4,8 @@ from .generics import *
 from .Simplex import *
 from .complex_abcs import * 
 from .filter_abcs import Filtration, MutableFiltration
-from itertools import pairwise
 from sortedcontainers import SortedSet
-from more_itertools import spy
+from more_itertools import spy, pairwise
 
 # Requires: __getitem__, __delitem__, __setitem__ , __iter__, and __len__ a
 # Inferred: pop, clear, update, and setdefault
