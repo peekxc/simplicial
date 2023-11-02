@@ -39,7 +39,7 @@ class RankFiltration(Filtration):
     """Enumerates the faces of the complex."""
     simplices = rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, order='colex')
     # yield from zip(self.simplices['value'], simplices)
-    return np.c_[self.simplices['value'], simplices]
+    return zip(self.simplices['value'], simplices)
 
   def __len__(self) -> int:
     return len(self.simplices)
