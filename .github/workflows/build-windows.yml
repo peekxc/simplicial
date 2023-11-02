@@ -31,29 +31,13 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pytest pytest-cov coverage-badge coveralls pytest-benchmark
         pip install --verbose --editable .
-
-    - name: pytester-cov
-      id: pytester-cov
-      uses: programmingwithalex/pytester-cov@main
-      with:
-        pytest-root-dir: '.'
-        cov-omit-list: 'test/*, temp/main3.py, temp/main4.py'
-        cov-threshold-single: ${{ env.COVERAGE_SINGLE }}
-        cov-threshold-total: ${{ env.COVERAGE_TOTAL }}
-
-    - name: Coverage total fail - exit
-      if: ${{ steps.pytester-cov.outputs.cov-threshold-total-fail == 'true' }}
-      run: |
-        echo "cov single fail ${{ steps.pytester-cov.outputs.cov-threshold-total-fail }}"
-        exit 1
-
   
-    # - name: Test with pytest
-    #   run: |
-    #     python -m pytest tests/ --cov=splex --benchmark-skip
-    #     coverage run --source=./src -m pytest tests/ --benchmark-skip
-    #     coverage json -o tests/test_results.json
-    #     coverage report -m
+    - name: Test with pytest
+      run: |
+        python -m pytest tests/ --cov=splex --benchmark-skip
+        coverage run --source=. -m pytest tests/ --benchmark-skip
+        coverage json -o tests/test_results.json
+        coverage report --fail-under=90
 
   # update_coverage:
   #   - if: matrix.os == 'windows-latest'  
