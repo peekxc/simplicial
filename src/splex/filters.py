@@ -3,9 +3,14 @@ from typing import *
 from numpy.typing import * 
 from dataclassy import dataclass
 from combin import inverse_choose, comb_to_rank, rank_to_comb
+from more_itertools import spy 
+from numbers import Number
+from hirola import HashTable
+from .meta import *
 from .predicates import *
 from .generics import *
 from .Simplex import Simplex
+
 
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class GenericFilter:
@@ -22,7 +27,62 @@ class GenericFilter:
     else:
       assert isinstance(S, Iterable), "simplex iterable must be supplied"
       return np.array([self.filter_f(s) for s in map(Simplex, S)])
-      
+
+@dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
+class HirolaFilter:
+  table: dict = {}
+  dtype: np.dtype = np.uint16
+  def __init__(self, S: ComplexLike, values: Sequence[Any]) -> None:
+    
+    ## Extract the values
+    values = np.asarray(values)
+    head, iterable = spy(values)
+    el = np.take(head, 0)
+    assert isinstance(el, Number), "Value types must be numbers"
+    el_dtype = np.dtype(el)
+    values = np.fromiter(iterable, dtype=el_dtype)
+    assert len(values) == len(S), "Number of values given must match number of simplices"
+
+    ## Initialize the lookup tables
+    lookup_table = {}
+    for d in range(dim(S)+1):
+      d_dtype = (np.uint16, d+1) if d > 0 else np.uint16
+      T = HashTable(max(card(S,d) * 1.25, 2), d_dtype)
+      lookup_table[d] = { 'table': T, 'values' : np.empty(card(S,d), dtype=el_dtype) } 
+
+    ## Get the dimensions of each simplex 
+    dims = np.array([dim(s) for s in S], dtype=np.uint8)
+    for d in range(dim(S)+1):
+      # d_dtype = (np.uint16, d+1) if d > 0 else np.uint16
+      d_dtype = np.uint16
+      d_simplices = np.array(list(map(Simplex, faces(S,d)))).astype(d_dtype)
+      d_ids = np.ravel(lookup_table[d]['table'].add(d_simplices))
+      lookup_table[d]['values'][d_ids] = values[dims == d]
+
+    ## Finally, assign the table and value dtype
+    object.__setattr__(self, 'table', lookup_table)
+    object.__setattr__(self, 'dtype', el_dtype)
+
+  def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+    if is_simplex_like(S):
+      T = self.table[dim(S)]
+      result = T['values'][T['table'][Simplex(S)]]
+      return np.take(result, 0) if dim(S) == 0 else result
+    elif hasattr(S, "__array__") and is_complex_like(S):
+      S = np.array(S, dtype=np.uint16)
+      T = self.table[S.shape[1]-1]
+      return T['values'][T['table'][S]]
+    # elif isinstance(S, Iterable) and is_repeatable(S):
+    # 	dims = np.array([dim(s) for s in S], dtype=np.uint8)
+    # 	return_values = np.empty(len(S), dtype=self.dtype)
+    # 	for d in range(dim(S)):
+    # 		d_dtype = (np.uint16, d+1) if d > 0 else np.uint16
+    # 		d_simplices = np.fromiter(faces(S,d), dtype=d_dtype)
+    # 	return 
+    else: 
+      assert isinstance(S, Iterable), "simplex iterable must be supplied"
+      return np.array([self(s) for s in S])
+
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class VertexFilter:
   vertex_weights: np.ndarray = np.empty(0, dtype=np.float32)
@@ -81,9 +141,10 @@ class CliqueFilter:
 def fixed_filter(S: ComplexLike, values: np.ndarray):
   """Constructs a complex-parameterized callable that vectorizes a simplex-parameterized callable."""
   assert len(S) == len(values), "Number of filtration values must match size of complex."
-  _simplex_weight = { Simplex(s) : fv for s, fv in zip(S, values) }
-  filter_callable = GenericFilter(_simplex_weight.__getitem__)
-  return filter_callable
+  # _simplex_weight = { Simplex(s) : fv for s, fv in zip(S, values) }
+  # filter_callable = GenericFilter(_simplex_weight.__getitem__)
+  # return filter_callable
+  return HirolaFilter(S, values)
 
 def generic_filter(f: Callable) -> Callable:
   """Constructs a complex-parameterized callable that vectorizes a simplex-parameterized callable."""
