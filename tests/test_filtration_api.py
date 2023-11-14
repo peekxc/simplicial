@@ -4,7 +4,7 @@ from splex import *
 
 def validate_filtration(index_values: Iterable, simplices: Iterable, light: bool = True) -> bool:
   index_values = list(index_values)
-  simplices = list(simplices)
+  simplices = [Simplex(s) for s in simplices]
   for i, s in enumerate(simplices): 
     p = dim(s) - 1 if light and len(s) >= 2 else None
     assert all([simplices.index(face) <= i for face in faces(s, p)])
