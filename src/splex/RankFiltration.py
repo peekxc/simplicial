@@ -49,6 +49,11 @@ class RankFiltration(Filtration):
     r = comb_to_rank(s)
     ind = np.flatnonzero(self.simplices['rank'] == r)
     return (len(k)-1) in self.simplices['dim'][ind]
+  
+  ## --- Sequence requirements ---
+  def __getitem__(self, key: Any) -> Simplex: 
+    s = rank_to_comb(self.simplices['rank'][key], k=self.simplices['dim'][key]+1, order='colex')
+    return self.simplices['value'][key], s
 
   def reindex(self, f: Callable['SimplexLike', Any] = None) -> None:
     if f is not None:
@@ -70,8 +75,11 @@ class RankFiltration(Filtration):
       p_ind = self.simplices['dim'] == p
       return rank_to_comb(self.simplices['rank'][p_ind], k=p+1, order='colex')
     
-  def indices(self) -> Iterable[Any]:
-    return self.simplices['value']
+  def indices(self, p: int = None) -> Iterable[Any]:
+    if p is None:
+      return self.simplices['value']
+    else: 
+      return self.simplices['value'][self.simplices['dim'] == int(p)]
   
   def card(self, p: int = None) -> Union[tuple, int]:
     if p is None: 
