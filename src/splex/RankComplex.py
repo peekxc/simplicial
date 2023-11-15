@@ -82,7 +82,8 @@ class RankComplex(Complex, Sequence, ComplexLike):
 
   def card(self, p: int = None) -> Union[tuple, int]:
     if p is None: 
-      return tuple(Counter(self.simplices['dim']).values())
+      # return tuple(Counter(self.simplices['dim']).values())
+      return tuple(np.bincount(self.simplices['dim']))
     else: 
       return np.sum(self.simplices['dim'] == p)
 

@@ -117,8 +117,11 @@ class SetFiltration(MutableFiltration):
     return iter(self.data) if p is None else filter(lambda s: len(s) == p+1, iter(self.data))
 
   ## --- Filtration specific enhancements --- 
-  def indices(self) -> Iterator[Any]:
-    return (i for i,s in iter(self))
+  def indices(self, p: int = None) -> Iterator[Any]:
+    if p is None: 
+      return (i for i,s in iter(self))
+    else: 
+      return (i for i,s in iter(self) if len(s) == p+1)
 
   def reindex(self, index_set: Union[Iterable, Callable]) -> None:
     """Given a totally ordered key set of the same length of the filtation, or a callable, reindexes the simplices in the filtration"""

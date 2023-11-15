@@ -25,6 +25,8 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
   assert len(dtype) == 2
   from hirola import HashTable
   S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(collapse(S), dtype=dtype[0])
+  if S_arr.ndim > 1:
+    S_arr.sort(axis=1) ## Ensure lexicographical order
   if dtype[1] == 1:
     return coo_array((0, len(S_arr)), dtype=dtype[0])
   else:
@@ -33,19 +35,23 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
     if m == 0:
       return coo_array((F_arr.shape[0], 0), dtype=dtype[0])
     ## Use euler characteristic bound
-    h = HashTable((3*m)*1.25, dtype=(S_arr.dtype, d-1)) if d > 2 else HashTable((3*m)*1.25, dtype=S_arr.dtype)
+    tbl_sz = max(max((3*m)*1.25, 3), F_arr.shape[0]*1.25)
+    h = HashTable(tbl_sz, dtype=(S_arr.dtype, d-1)) if d > 2 else HashTable(tbl_sz, dtype=S_arr.dtype)
     h.add(F_arr)
     ind = np.arange(d).astype(int)
     I = np.empty(m*d, dtype=S_arr.dtype)
     J = np.empty(m*d, dtype=S_arr.dtype)
-    for i, idx in enumerate(combinations(ind, len(ind)-1)):
-      f_ind = h[S_arr[:,idx]] if d > 2 else np.ravel(h[S_arr[:,idx]])
-      I[i*m:(i+1)*m] = f_ind
-      J[i*m:(i+1)*m] = np.fromiter(range(m), dtype=S_arr.dtype)
-    #X = np.fromiter(flatten([(-1)**np.argsort(I[J == j]) for j in range(m)]), dtype=int)
     X = np.empty(m*d, dtype=int)
-    for j in range(m):
-      X[J==j] = (-1)**np.argsort(I[J == j])
+    ## Column-wise assignnment
+    for i, idx in enumerate(combinations(ind, len(ind)-1)):
+      f_ind = h[S_arr[:,idx]] if d > 2 else np.ravel(h[S_arr[:,idx]]) ## get rows in (0,1)
+      I[i*m:(i+1)*m] = f_ind                                          ## row indices
+      J[i*m:(i+1)*m] = np.fromiter(range(m), dtype=S_arr.dtype)       ## col indices
+      X[i*m:(i+1)*m] = np.repeat((-1)**i, m)                          ## always choose lex order (?)
+    # X = np.fromiter(flatten([(-1)**np.argsort(I[J == j]) for j in range(m)]), dtype=int)
+    # X = np.empty(m*d, dtype=int)
+    # for j in range(m):
+    #   X[J==j] = (-1)**np.argsort(I[J == j]) ## this is wrong 
     return coo_array((X, (I,J)), shape=(len(h.keys), m))
 
 

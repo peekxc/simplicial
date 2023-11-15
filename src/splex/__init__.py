@@ -13,7 +13,7 @@ from .predicates import *
 from .filters import fixed_filter, generic_filter, lower_star_filter, flag_filter
 from .sparse import boundary_matrix
 from .geometry import enclosing_radius, rips_complex, rips_filtration, delaunay_complex
-from .complexes import SetComplex, RankComplex, simplicial_complex
+from .complexes import SetComplex, RankComplex, simplicial_complex, print_complex
 from .filtrations import SetFiltration, RankFiltration, filtration
 
 ## Modules to expose

@@ -1,6 +1,6 @@
 import numpy as np 
 from splex import *
-from splex.geometry import lower_star_filter, rips_complex
+from splex.geometry import lower_star_filter, rips_complex, enclosing_radius
 from splex.filters import flag_filter
 
 def test_delaunay():
@@ -40,3 +40,10 @@ def test_rips():
   assert is_filtration_like(rips_filtration(squareform(pdist(X))))
   assert card(rips_complex(pdist(X), radius = 0.0), 0) == len(X)
 
+def test_enclosing_api():
+  from scipy.spatial.distance import pdist, squareform
+  X = np.random.uniform(size=(10,2))
+  er1 = enclosing_radius(X)
+  er2 = enclosing_radius(pdist(X))
+  er3 = enclosing_radius(squareform(pdist(X)))
+  assert np.isclose(er1, er2) and np.isclose(er1, er3)

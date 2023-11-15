@@ -10,13 +10,13 @@ from combin import rank_to_comb, comb_to_rank, inverse_choose
 
 def enclosing_radius(x: ArrayLike) -> float:
   """Returns the smallest 'r' such that the Rips complex on the union of balls of radius 'r' is contractible to a point. """
-  if is_point_cloud(x):
-    d = squareform(pdist(x))
-    return 0.5*np.min(np.amax(d, axis = 0))
-  elif is_dist_like(x):
+  if is_dist_like(x):
     assert is_distance_matrix(x) or is_pairwise_distances(x), "Must be valid distances"
     d = x if is_distance_matrix(x) else squareform(x)
-    return 0.5*np.min(np.amax(d, axis = 0))
+    return 0.5*np.min(np.max(d, axis = 0))
+  elif is_point_cloud(x):
+    d = squareform(pdist(x))
+    return 0.5*np.min(np.max(d, axis = 0))
   else:
     raise ValueError("Unknown input type")
 
