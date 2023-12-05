@@ -91,6 +91,8 @@ class VertexFilter:
     object.__setattr__(self, 'vertex_weights', v)
   
   def __call__(self, S: Union[SimplexConvertible, ArrayLike]) -> Union[float, np.ndarray]:
+    if (isinstance(S, Sized) and len(S) == 0) or (hasattr(S, 'shape') and 0 in list(S.shape)):
+      return np.array([])
     if is_simplex_like(S):
       return np.max(self.vertex_weights[Simplex(S)]) # Simplices can be used for indexing!
     elif hasattr(S, "__array__") and is_complex_like(S):

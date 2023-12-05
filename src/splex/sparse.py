@@ -52,7 +52,8 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
     # X = np.empty(m*d, dtype=int)
     # for j in range(m):
     #   X[J==j] = (-1)**np.argsort(I[J == j]) ## this is wrong 
-    return coo_array((X, (I,J)), shape=(len(h.keys), m))
+    D = coo_array((X, (I,J)), shape=(len(h.keys), m))
+    return D
 
 
 def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConvertible]] = None):

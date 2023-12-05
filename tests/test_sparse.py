@@ -46,3 +46,14 @@ def test_boundary_large():
   for p in range(0, 5):
     D = boundary_matrix(K, p=p)
     assert D.shape[0] == card(K,p-1) and D.shape[1] == card(K,p)
+
+def test_boundary2_large():
+  X = np.random.uniform(size=(150,2))
+  K = rips_complex(X, radius=0.25, p=2)
+  X = np.random.uniform(size=(150,2))
+  K = rips_complex(X, radius=0.25, p=2)
+  D = boundary_matrix(K, p=2)
+  assert D.nnz == int(sx.card(K, 2) * 3)
+  from collections import Counter
+  col_counts = np.fromiter(Counter(D.col).values(), dtype=int)
+  assert np.all(col_counts == 3)
