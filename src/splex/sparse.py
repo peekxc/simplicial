@@ -130,3 +130,7 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       #   D = D.reshape(K_shape) # handles degenerate cases, otherwise should error
     return D
 
+## It's enough to 
+def coboundary_matrix():
+  pass 
+  # D1.shape[1]-np.flip(D1.col)-1, D1.shape[0]-np.flip(D1.row)-1
