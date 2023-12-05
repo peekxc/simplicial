@@ -50,8 +50,6 @@ def test_boundary_large():
 def test_boundary2_large():
   X = np.random.uniform(size=(150,2))
   K = rips_complex(X, radius=0.25, p=2)
-  X = np.random.uniform(size=(150,2))
-  K = rips_complex(X, radius=0.25, p=2)
   D = boundary_matrix(K, p=2)
   assert D.nnz == int(sx.card(K, 2) * 3)
   from collections import Counter

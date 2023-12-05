@@ -31,7 +31,7 @@ class GenericFilter:
 @dataclass(frozen=True, slots=True, init=False, repr=False, eq=False)
 class HirolaFilter:
   table: dict = {}
-  dtype: np.dtype = np.uint16
+  dtype: np.dtype = np.uint32
   def __init__(self, S: ComplexLike, values: Sequence[Any]) -> None:
     
     ## Extract the values
@@ -46,15 +46,14 @@ class HirolaFilter:
     ## Initialize the lookup tables
     lookup_table = {}
     for d in range(dim(S)+1):
-      d_dtype = (np.uint16, d+1) if d > 0 else np.uint16
+      d_dtype = (np.uint32, d+1) if d > 0 else np.uint32
       T = HashTable(max(card(S,d) * 1.25, 2), d_dtype)
       lookup_table[d] = { 'table': T, 'values' : np.empty(card(S,d), dtype=el_dtype) } 
 
     ## Get the dimensions of each simplex 
     dims = np.array([dim(s) for s in S], dtype=np.uint8)
     for d in range(dim(S)+1):
-      # d_dtype = (np.uint16, d+1) if d > 0 else np.uint16
-      d_dtype = np.uint16
+      d_dtype = np.uint32
       d_simplices = np.array(list(map(Simplex, faces(S,d)))).astype(d_dtype)
       d_ids = np.ravel(lookup_table[d]['table'].add(d_simplices))
       lookup_table[d]['values'][d_ids] = values[dims == d]
@@ -69,7 +68,7 @@ class HirolaFilter:
       result = T['values'][T['table'][Simplex(S)]]
       return np.take(result, 0) if dim(S) == 0 else result
     elif hasattr(S, "__array__") and is_complex_like(S):
-      S = np.array(S, dtype=np.uint16)
+      S = np.array(S, dtype=np.uint32)
       T = self.table[S.shape[1]-1]
       return T['values'][T['table'][S]]
     # elif isinstance(S, Iterable) and is_repeatable(S):

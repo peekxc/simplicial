@@ -101,7 +101,7 @@ class SimplexBase: # forget about hashable to make compatible as a data class
 
   def __array__(self, dtype = None) -> np.ndarray: 
     """Support native array conversion."""
-    dtype = np.uint16 if dtype is None else dtype
+    dtype = np.uint32 if dtype is None else dtype
     return np.asarray(self.vertices, dtype = dtype)
 
   def __int__(self) -> int:

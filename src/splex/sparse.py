@@ -42,11 +42,15 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
     I = np.empty(m*d, dtype=S_arr.dtype)
     J = np.empty(m*d, dtype=S_arr.dtype)
     X = np.empty(m*d, dtype=int)
+    CI = np.fromiter(range(m), dtype=int).astype(S_arr.dtype)
+    
+    # from collections import Counter
+
     ## Column-wise assignnment
     for i, idx in enumerate(combinations(ind, len(ind)-1)):
       f_ind = h[S_arr[:,idx]] if d > 2 else np.ravel(h[S_arr[:,idx]]) ## get rows in (0,1)
       I[i*m:(i+1)*m] = f_ind                                          ## row indices
-      J[i*m:(i+1)*m] = np.fromiter(range(m), dtype=S_arr.dtype)       ## col indices
+      J[i*m:(i+1)*m] = CI                                             ## col indices
       X[i*m:(i+1)*m] = np.repeat((-1)**i, m)                          ## always choose lex order (?)
     # X = np.fromiter(flatten([(-1)**np.argsort(I[J == j]) for j in range(m)]), dtype=int)
     # X = np.empty(m*d, dtype=int)
@@ -110,10 +114,10 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
       simplices = list(faces(K)) # to ensure repeatable
       D = _boundary(simplices)
     else:
-      p_simplices = map(Simplex, faces(K, p=p))
+      p_simplices = list(map(Simplex, faces(K, p=p)))
       p_faces = list(map(Simplex, faces(K, p=p-1)))
       # D = _boundary(p_simplices, p_faces)
-      D = _fast_boundary(p_simplices, p_faces, dtype=(np.uint16, p+1))
+      D = _fast_boundary(p_simplices, p_faces, dtype=(np.uint32, p+1))
       # face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
       # face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
       # if p == 1:
