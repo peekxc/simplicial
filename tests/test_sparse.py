@@ -39,7 +39,6 @@ def test_boundary():
     [ 0,  0,  1]
   ])))
   
-
 def test_boundary_large():
   X = np.random.uniform(size=(30,2))
   K = rips_filtration(X, p=2)
