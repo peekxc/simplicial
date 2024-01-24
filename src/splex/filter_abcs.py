@@ -40,8 +40,9 @@ class Filtration(ComplexLike):
 
   def index(self, item: SimplexConvertible) -> int:  
     s = Simplex(item)
-    for i,ss in enumerate(self):
-      if Simplex(ss) == s:
+    for i, ss in enumerate(self):
+      v, ss_simplex = ss
+      if Simplex(ss_simplex) == s:
         return i
     return -1  
 
