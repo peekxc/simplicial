@@ -15,6 +15,7 @@ def test_set_filtration_simple():
   K = SetFiltration(enumerate(S))
   assert K.n_simplices == (4,6,4,1), "simplex cardinality tracking not working properly"
   assert [0,1,2,3] in K, "contains not working properly"
+  assert np.all([K.index(s) == i for i,s in enumerate(K)]), "indexing working properly"
   # K.discard([0,1,2,3])
 
 def test_rank_filtration_simple():
@@ -22,6 +23,7 @@ def test_rank_filtration_simple():
   K = RankFiltration(enumerate(S))
   assert card(K) == (4,6,4,1), "simplex cardinality tracking not working properly"
   assert [0,1,2,3] in K, "contains not working properly"
+  assert np.all([K.index(s) == i for i,s in enumerate(K)]), "indexing working properly"
 
 def test_filtration_api():
   S = simplicial_complex([[0,1,2,3]])

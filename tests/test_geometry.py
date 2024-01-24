@@ -30,15 +30,16 @@ def test_flag_weight():
 
 ## TODO: improve this massively
 def test_rips():
+  from scipy.spatial.distance import pdist, squareform
   X = np.random.uniform(size=(25,2))
   assert is_complex_like(rips_complex(X))
   assert is_filtration_like(rips_filtration(X))
-  from scipy.spatial.distance import pdist, squareform
   assert is_complex_like(rips_complex(pdist(X)))
   assert is_complex_like(rips_complex(squareform(pdist(X))))  
   assert is_filtration_like(rips_filtration(pdist(X)))
   assert is_filtration_like(rips_filtration(squareform(pdist(X))))
   assert card(rips_complex(pdist(X), radius = 0.0), 0) == len(X)
+  assert card(rips_complex(pdist(X), radius = 0.50), 1) == np.sum((pdist(X) / 2) <= 0.50)
 
 def test_enclosing_api():
   from scipy.spatial.distance import pdist, squareform
