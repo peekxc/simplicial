@@ -40,7 +40,7 @@ class HirolaFilter:
     el = np.take(head, 0)
     assert isinstance(el, Number), "Value types must be numbers"
     el_dtype = np.dtype(el)
-    values = np.fromiter(iterable, dtype=el_dtype)
+    values = np.ravel(np.fromiter(iterable, dtype=el_dtype))
     assert len(values) == len(S), "Number of values given must match number of simplices"
 
     ## Initialize the lookup tables
@@ -54,7 +54,7 @@ class HirolaFilter:
     dims = np.array([dim(s) for s in S], dtype=np.uint8)
     for d in range(dim(S)+1):
       d_dtype = np.uint32
-      d_simplices = np.array(list(map(Simplex, faces(S,d)))).astype(d_dtype)
+      d_simplices = np.atleast_2d(list(map(Simplex, faces(S,d)))).astype(d_dtype)
       d_ids = np.ravel(lookup_table[d]['table'].add(d_simplices))
       lookup_table[d]['values'][d_ids] = values[dims == d]
 
@@ -70,7 +70,7 @@ class HirolaFilter:
     elif hasattr(S, "__array__") and is_complex_like(S):
       S = np.array(S, dtype=np.uint32)
       T = self.table[S.shape[1]-1]
-      return T['values'][T['table'][S]]
+      return np.ravel(T['values'][T['table'][S]])
     # elif isinstance(S, Iterable) and is_repeatable(S):
     # 	dims = np.array([dim(s) for s in S], dtype=np.uint8)
     # 	return_values = np.empty(len(S), dtype=self.dtype)

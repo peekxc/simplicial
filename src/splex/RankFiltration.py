@@ -12,11 +12,10 @@ from .predicates import is_complex_like
 from .generics import faces
 from .Simplex import Simplex
 from .filter_abcs import Filtration
-from combin import comb_to_rank, rank_to_comb
 
 class RankFiltration(Filtration):
   def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None, value_dtype = np.float64):
-    s_dtype= np.dtype([('rank', np.uint64), ('dim', np.uint16), ('value', value_dtype)])
+    s_dtype= np.dtype([('rank', np.int64), ('dim', np.uint16), ('value', value_dtype)])
     if is_complex_like(simplices):
       if isinstance(f, Callable):
         self.simplices = np.array([(comb_to_rank(s), len(s)-1, f(s)) for s in simplices], dtype=s_dtype)
@@ -28,16 +27,41 @@ class RankFiltration(Filtration):
       else:
         self.simplices = np.array([(comb_to_rank(s), len(s)-1, k) for k, s in simplices], dtype=s_dtype)
     elif simplices is None:
-      pass # Allow default constructible for empty filtrations
+      # Allow default constructible for empty filtrations
+      self.simplices = np.empty(shape=(0,), dtype=s_dtype)
     else: 
       error_msg = "Invalid input; if filter 'f' is supplied, 'simplices' must be an iterable of simplex-like objects\n" 
       error_msg += "Otherwise, 'simplices' should be an iterable of pairs"
       raise ValueError(error_msg)
+    self._order = 'colex'
     self.reindex()
     
+  def comb_to_rank(self, combs, **kwargs):
+    assert 'order' not in kwargs, "Order is fixed by the filtration"
+    order = 'colex' if 'co' in self.order else 'lex'
+    n = np.max(self.simplices['rank'][self.simplices['dim'] == 0]) + 1
+    return comb_to_rank(combs, order=order, n=n, **kwargs)
+
+  @property
+  def order(self):
+    return self._order 
+  
+  @order.setter
+  def order(self, value):
+    assert value in ['colex', 'lex', 'reverse colex', 'reverse lex']
+    order = 'colex' if 'co' in value else 'lex'
+    stored_colex, request_colex = 'co' in self._order, 'co' in value
+    if stored_colex != request_colex:
+      n = int(np.max(self.simplices['rank'][self.simplices['dim'] == 0])) + 1
+      self.simplices['rank'] = np.array([comb_to_rank(s, order=order, n = n) for i,s in iter(self)], dtype=np.int64) 
+    self._order = value
+    self.reindex()
+
   def __iter__(self) -> Iterable:
     """Enumerates the faces of the complex."""
-    simplices = rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, order='colex')
+    order = 'colex' if 'co' in self.order else 'lex'
+    n = np.max(self.simplices['rank'][self.simplices['dim'] == 0]) + 1
+    simplices = rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, n = n, order=order)
     # yield from zip(self.simplices['value'], simplices)
     return zip(self.simplices['value'], simplices)
 
@@ -45,21 +69,28 @@ class RankFiltration(Filtration):
     return len(self.simplices)
 
   def __contains__(self, k: SimplexConvertible) -> bool:
+    order = 'colex' if 'co' in self.order else 'lex'
     s = np.array(Simplex(k))
-    r = comb_to_rank(s)
+    n = np.max(self.simplices['rank'][self.simplices['dim'] == 0]) + 1
+    r = comb_to_rank(s, order=order, n=n)
     ind = np.flatnonzero(self.simplices['rank'] == r)
     return (len(k)-1) in self.simplices['dim'][ind]
   
   ## --- Sequence requirements ---
   def __getitem__(self, key: Any) -> Simplex: 
-    s = rank_to_comb(self.simplices['rank'][key], k=self.simplices['dim'][key]+1, order='colex')
+    order = 'colex' if 'co' in self.order else 'lex'
+    s = rank_to_comb(self.simplices['rank'][key], k=self.simplices['dim'][key]+1, order=order)
     return self.simplices['value'][key], s
 
   def reindex(self, f: Callable['SimplexLike', Any] = None) -> None:
     if f is not None:
       assert isinstance(f, Callable), "f must be a callable filter function"
       self.simplices['value'] = f(faces(self))
+    if 'reverse' in self.order:
+      np.negative(self.simplices['rank'], self.simplices['rank'])
     ind = np.argsort(self.simplices, order=('value', 'dim', 'rank'))
+    if 'reverse' in self.order:
+      np.negative(self.simplices['rank'], self.simplices['rank'])
     self.simplices = self.simplices[ind]
 
   ## --- splex generics support --- 
@@ -73,7 +104,10 @@ class RankFiltration(Filtration):
       return iter(simplices_map)
     else:
       p_ind = self.simplices['dim'] == p
-      return rank_to_comb(self.simplices['rank'][p_ind], k=p+1, order='colex')
+      order = 'colex' if 'co' in self.order else 'lex'
+      if np.sum(p_ind) == 0: 
+        return np.empty(shape=(0,), dtype=np.int64)
+      return rank_to_comb(self.simplices['rank'][p_ind], k=p+1, order=order)
     
   def indices(self, p: int = None) -> Iterable[Any]:
     if p is None:

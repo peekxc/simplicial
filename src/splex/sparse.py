@@ -24,18 +24,22 @@ from more_itertools import flatten, collapse, chunked, unique_everseen
 def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertible], dtype) -> spmatrix:
   assert len(dtype) == 2
   from hirola import HashTable
-  S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(collapse(S), dtype=dtype[0])
+  # S_arr = np.fromiter(S, dtype=dtype) if dtype[1] > 1 else np.fromiter(collapse(S), dtype=dtype[0])
+  S_arr = np.atleast_2d(S).astype(np.uint32) if len(S) > 0 else np.empty((0,0)).astype(np.uint32)
+  F_arr = np.atleast_2d(F).astype(np.uint32) if len(F) > 0 else np.empty((0,0)).astype(np.uint32)
   if S_arr.ndim > 1:
-    S_arr.sort(axis=1) ## Ensure lexicographical order
-  if dtype[1] == 1:
-    return coo_array((0, len(S_arr)), dtype=dtype[0])
+    S_arr.sort(axis=1) ## Ensure lex order *on vertices*
+    F_arr.sort(axis=1) ## Ensure lex order *on vertices*
+  m, q = S_arr.shape
+  n, p = F_arr.shape
+  # F_arr = np.fromiter(F, dtype=(S_arr.dtype, d-1)) if d > 2 else np.fromiter(collapse(F), dtype=S_arr.dtype)
+  if m == 0 or n == 0:
+    return coo_array((n, m), dtype=dtype[0])
+    # return coo_array((S_arr.shape[0], S_arr.shape[0]), dtype=dtype[0])
   else:
-    m, d = S_arr.shape
-    F_arr = np.fromiter(F, dtype=(S_arr.dtype, d-1)) if d > 2 else np.fromiter(collapse(F), dtype=S_arr.dtype)
-    if m == 0:
-      return coo_array((F_arr.shape[0], 0), dtype=dtype[0])
     ## Use euler characteristic bound
-    tbl_sz = max(max((3*m)*1.25, 3), F_arr.shape[0]*1.25)
+    d = q
+    tbl_sz = max(max((3*m)*1.35, 16), F_arr.shape[0]*1.25) + 16
     h = HashTable(tbl_sz, dtype=(S_arr.dtype, d-1)) if d > 2 else HashTable(tbl_sz, dtype=S_arr.dtype)
     h.add(F_arr)
     ind = np.arange(d).astype(int)
@@ -43,8 +47,6 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
     J = np.empty(m*d, dtype=S_arr.dtype)
     X = np.empty(m*d, dtype=int)
     CI = np.fromiter(range(m), dtype=int).astype(S_arr.dtype)
-    
-    # from collections import Counter
 
     ## Column-wise assignnment
     for i, idx in enumerate(combinations(ind, len(ind)-1)):
@@ -108,7 +110,7 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
   if isinstance(p, tuple):
     return (boundary_matrix(K, pi) for pi in p)
   else: 
-    assert p is None or isinstance(p, Integral) and p >= 0, "p must be non-negative integer, or None"
+    assert p is None or isinstance(p, Integral), "p must be non-negative integer, or None"
     assert isinstance(K, ComplexLike) or isinstance(K, FiltrationLike), f"Unknown input type '{type(K)}'"
     if p is None:
       simplices = list(faces(K)) # to ensure repeatable
@@ -116,26 +118,10 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
     else:
       p_simplices = list(map(Simplex, faces(K, p=p)))
       p_faces = list(map(Simplex, faces(K, p=p-1)))
-      # D = _boundary(p_simplices, p_faces)
       D = _fast_boundary(p_simplices, p_faces, dtype=(np.uint32, p+1))
-      # face_gen = list(unique_everseen(chunked(collapse([s.boundary() for s in faces(K, p)]), p)))
-      # face_ranks = rank_combs(face_gen, n=card(K,0), order="lex")
-      # if p == 1:
-      #   face_gen = collapse(face_gen)
-      #   p_faces = np.fromiter(face_gen, dtype=np.uint16)
-      #   p_faces = p_faces[np.argsort(face_ranks)] # lex order
-      # elif p > 1: 
-      #   p_faces = np.fromiter(face_gen, dtype=(np.uint16, p))
-      #   p_faces = p_faces[np.argsort(face_ranks)] # lex order
-      # else: 
-      #   p_faces = face_ranks
-      # D = _fast_boundary(faces(K, p=p), p_faces, dtype=(np.uint16, p+1))
-      # K_shape = card(K,p-1), card(K,p)
-      # if D.shape != K_shape:
-      #   D = D.reshape(K_shape) # handles degenerate cases, otherwise should error
     return D
 
-## It's enough to 
+## It's enough to just manipulate the row, col, indices of a coo array from the boundary matrix
 def coboundary_matrix():
   pass 
   # D1.shape[1]-np.flip(D1.col)-1, D1.shape[0]-np.flip(D1.row)-1

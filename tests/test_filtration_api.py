@@ -18,6 +18,21 @@ def test_set_filtration_simple():
   assert np.all([K.index(s[1]) == i for i,s in enumerate(K)]), "indexing working properly"
   # K.discard([0,1,2,3])
 
+def test_rank_filtration_order():
+  F = RankFiltration(zip([0,0,0,0,1,1,1], [[3], [2], [1], [0], [0,1], [1,2], [3,1]]))
+  assert F[0] == (0.0, (0,))
+  assert F[3] == (0.0, (3,))
+  F.order = 'reverse colex'
+  assert F[3] == (0.0, (0,))
+  assert F[0] == (0.0, (3,))
+  assert np.all(F.simplices['rank'] == np.array([3,2,1,0,4,2,0]))
+  F.order = 'colex'
+  assert np.all(F.simplices['rank'] == np.array([0,1,2,3,0,2,4]))
+  F.order = 'lex'
+  assert np.all(F.simplices['rank'] == np.array([0,1,2,3,0,3,4]))
+  F.order = 'reverse lex'
+  assert np.all(F.simplices['rank'] == np.array([3,2,1,0,4,3,0]))
+
 def test_rank_filtration_simple():
   S = RankComplex([[0,1,2,3]])
   K = RankFiltration(enumerate(S))

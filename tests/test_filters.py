@@ -27,6 +27,7 @@ def test_hirola():
 		S = sx.simplicial_complex([[0, 1, 2, 3, 4]], form=form)
 		filter_f = sx.filters.HirolaFilter(S, np.arange(len(S)))
 		ind = np.take([i for i, s in enumerate(S) if sx.Simplex(s) == (0,1,2)], 0)
+		v_ind = np.array([i for i, s in enumerate(S) if sx.dim(s) == 0])
 		quad_ind = np.array([i for i, s in enumerate(S) if sx.dim(s) == 3])
 		assert isinstance(filter_f, Callable)
 		assert filter_f([0,1,2]) == ind
@@ -34,3 +35,4 @@ def test_hirola():
 		assert filter_f(((0,1,2))) == ind
 		assert np.all(filter_f(sx.faces(S,3)) == quad_ind)
 		assert np.all(filter_f(S) == np.arange(len(S)))
+		assert np.all(filter_f(sx.faces(S,0)) == v_ind)
