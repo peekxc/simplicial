@@ -2,17 +2,18 @@ import numpy as np
 import splex as sx
 
 def test_boundary():
-  K = sx.filtration(zip([0,1,2,3,4,5], [0,1,2,[0,1],[0,2],[1,2]]))
+  K = sx.filtration(enumerate([[0],[1],[2],[0,1],[0,2],[1,2],[0,1,2]]))
   
   ## Test full boundary matrix 
   D_test = sx.boundary_matrix(K).todense()
   D_true = np.array([
-    [ 0,  0,  0,  1,  1,  0],
-    [ 0,  0,  0, -1,  0,  1],
-    [ 0,  0,  0,  0, -1, -1],
-    [ 0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0],
-    [ 0,  0,  0,  0,  0,  0]
+    [ 0,  0,  0,  1,  1,  0,  0],
+    [ 0,  0,  0, -1,  0,  1,  0],
+    [ 0,  0,  0,  0, -1, -1,  0],
+    [ 0,  0,  0,  0,  0,  0,  1],
+    [ 0,  0,  0,  0,  0,  0, -1],
+    [ 0,  0,  0,  0,  0,  0,  1],
+    [ 0,  0,  0,  0,  0,  0,  0]
   ])
   assert np.allclose(D_test - D_true, 0.0)
 

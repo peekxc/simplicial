@@ -14,15 +14,17 @@ def is_repeatable(x: Iterable) -> bool:
 	return not(iter(x) is x)
 
 def is_simplex_like(x: Any) -> bool:
+	"""An object 'x' is simplex like if it is a container of integral-types."""
 	is_collection = isinstance(x, SimplexConvertible) # is a Collection supporting __contains__, __iter__, and __len__
 	if is_collection: 
 		return is_repeatable(x) and all([isinstance(v, Integral) for v in x])
 	return False
 
 def is_complex_like(x: Any) -> bool: 
+	"""An object 'x' is complex like if it is iterable, sized, and it's first element is simplex like."""
 	if isinstance(x, ComplexLike): # is iterable + Sized 
-		item, iterable = spy(x)
-		return is_simplex_like(item[0])
+		(item,), iterable = spy(x, 1)
+		return is_simplex_like(item)
 	return False
 
 def is_filtration_like(x: Any) -> bool:

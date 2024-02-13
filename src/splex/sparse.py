@@ -62,19 +62,11 @@ def _fast_boundary(S: Iterable[SimplexConvertible], F: Iterable[SimplexConvertib
     return D
 
 
-def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConvertible]] = None):
-  ## Load faces. If not given, by definition, the given p-simplices contain their boundary faces.
-  if F is None: 
-    assert is_repeatable(S), "Simplex iterable must be repeatable (a generator is not sufficient!)"
-    F = list(faces(S))
-  
-  ## Ensure faces 'F' is indexable
-  assert isinstance(F, Sequence), "Faces must be a valid Sequence (supporting .index(*) with SimplexLike objects!)"
-
-  ## Build the boundary matrix from the sequence
+## Builds a boundary matrix from the sequence of simplices in the given order
+def _full_boundary(S: Iterable[SimplexConvertible]):
   m = 0
   I,J,X = [],[],[] # row, col, data 
-  face_dict = { s : i for i,s in enumerate(F) }
+  face_dict = { s : i for i,s in enumerate(S) }
   for (j,s) in enumerate(S):
     if dim(s) > 0:
       # I.extend([F.index(f) for f in faces(s, dim(s)-1)]) ## TODO: this is painfully slow
@@ -82,7 +74,7 @@ def _boundary(S: Iterable[SimplexConvertible], F: Optional[Sequence[SimplexConve
       J.extend(repeat(j, dim(s)+1))
       X.extend(islice(cycle([1,-1]), dim(s)+1))
     m += 1
-  D = coo_array((X, (I,J)), shape=(len(F), m)).tolil(copy=False)
+  D = coo_array((X, (I,J)), shape=(len(S), m)).tolil(copy=False)
   return D 
 
 ## TODO: investigate whether to make a 'ChainLike' for extension with 'BoundaryChain'?
@@ -113,8 +105,8 @@ def boundary_matrix(K: Union[ComplexLike, FiltrationLike], p: Optional[Union[int
     assert p is None or isinstance(p, Integral), "p must be non-negative integer, or None"
     assert isinstance(K, ComplexLike) or isinstance(K, FiltrationLike), f"Unknown input type '{type(K)}'"
     if p is None:
-      simplices = list(faces(K)) # to ensure repeatable
-      D = _boundary(simplices)
+      simplices = [Simplex(s) for i,s in K] if is_filtration_like(K) else list(map(Simplex, iter(K)))# to ensure repeatable
+      D = _full_boundary(simplices)
     else:
       p_simplices = list(map(Simplex, faces(K, p=p)))
       p_faces = list(map(Simplex, faces(K, p=p-1)))
