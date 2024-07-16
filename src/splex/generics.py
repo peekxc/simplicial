@@ -10,9 +10,8 @@ def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:
   if isinstance(data, bool):
     if data == False: 
       yield from g
-    extract_data = lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) }
     for el in g: 
-      yield el, extract_data(el)
+      yield (el, lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) })
     # return zip(g, (extract_data(e) for e in g))
   elif isinstance(data, str):
     for el in g: 

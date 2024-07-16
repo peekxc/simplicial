@@ -1,4 +1,5 @@
-from typing import * 
+import numpy as np
+from typing import Iterable
 from .meta import SimplexConvertible, SimplexLike
 from .generics import dim, faces
 from .complex_abcs import * 
@@ -17,7 +18,7 @@ def simplicial_complex(simplices: Iterable[SimplexConvertible] = None, form: str
     sc: a _ComplexLike_ structure whose structure depends on _form_.
   """ 
   if form is None or isinstance(form, str) and form == "default":
-    form = "set"
+    form = "rank"
   assert isinstance(form, str), f"Invalid form argument of type '{type(form)}'; must be string."
   form = form.strip().lower()
   if form == "tree":

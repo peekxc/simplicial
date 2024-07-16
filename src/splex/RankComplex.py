@@ -76,7 +76,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     if p is not None: ## Returns a simplexWrapper
       assert isinstance(p, numbers.Integral)
       p_ranks = self.simplices['rank'][self.simplices['dim'] == p]
-      return rank_to_comb(p_ranks, k=p+1, order='colex')
+      return rank_to_comb(p_ranks, k=p+1, order='colex') if len(p_ranks) > 0 else np.empty(shape=(0,), dtype=np.int64)
     else:
       return map(Simplex, rank_to_comb(self.simplices['rank'], k=self.simplices['dim']+1, order='colex'))
 
