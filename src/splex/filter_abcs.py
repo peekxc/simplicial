@@ -99,6 +99,7 @@ class Filtration(ComplexLike):
   def print(self, **kwargs) -> None:
     fv_s, fs_s = [], []
     for k, v in iter(self):
+      v = Simplex(v)
       ks = len(str(v))
       fv_s.append(f"{str(k):<{ks}.{ks}}")
       fs_s.append(f"{str(v): <{ks}}")
