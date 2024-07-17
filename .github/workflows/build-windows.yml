@@ -35,7 +35,8 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest tests/ --cov=splex --benchmark-skip
-        coverage run --source=. -m pytest tests/ --benchmark-skip
+    - name: Run coverage
+      run: |
         coverage json -o tests/test_results.json
         coverage report --fail-under=80
 

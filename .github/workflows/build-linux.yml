@@ -38,9 +38,10 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest tests/ --cov=splex --benchmark-skip
-        coverage run --source=./src -m pytest tests/ --benchmark-skip
+    - name: Run coverage
+      run: |
         coverage json -o tests/test_results.json
-        coverage report -m
+        coverage report
     - if: matrix.os == 'ubuntu-latest'
       run: |
         COV_RESULT=$(cat tests/test_results.json)
