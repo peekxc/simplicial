@@ -54,14 +54,14 @@ def test_boundary_colex():
   # D2 = sx.boundary_matrix(K,2).todense()
 
 
-def test_boundary_large():
+def test_boundary_medium():
   X = np.random.uniform(size=(30,2))
   K = sx.rips_filtration(X, p=2)
   for p in range(0, 5):
     D = sx.boundary_matrix(K, p=p)
     assert D.shape[0] == sx.card(K,p-1) and D.shape[1] == sx.card(K,p)
 
-def test_boundary2_large():
+def test_boundary_large():
   X = np.random.uniform(size=(150,2))
   K = sx.rips_complex(X, radius=0.25, p=2)
   D = sx.boundary_matrix(K, p=2)
@@ -75,3 +75,6 @@ def test_boundary2_large():
   assert D.nnz == int(sx.card(K, 2) * 3)
   col_counts = np.array(list(Counter(D.col).values()))
   assert np.all(col_counts == 3)
+
+  sgn_vals = D.tocsc().data
+  assert np.allclose(np.tile([1,-1,1], sx.card(S,2)), sgn_vals)

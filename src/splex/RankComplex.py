@@ -49,6 +49,7 @@ class RankComplex(Complex, Sequence, ComplexLike):
     # simplices = faces(simplices) if isinstance(simplices, ComplexLike) else simplices 
     self.s_dtype = np.dtype([('rank', np.uint64), ('dim', np.uint8)])
     if simplices is not None:
+      simplices = list(map(Simplex, simplices))
       sset = unique_everseen(faces(simplices))
       self.simplices = np.unique(np.array([RankComplex._str_rank(s) for s in sset], dtype=self.s_dtype))
     else:

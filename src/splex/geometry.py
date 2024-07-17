@@ -1,4 +1,5 @@
 import numpy as np
+import itertools as it
 from scipy.spatial.distance import pdist, squareform
 
 from .generics import *
@@ -63,7 +64,7 @@ def delaunay_complex(x: ArrayLike):
   dt = Delaunay(x)
   T = dt.simplices
   V = np.fromiter(range(x.shape[0]), dtype=np.int32)
-  S = simplicial_complex(chain(V, T))
+  S = simplicial_complex(it.chain(V, T))
   return(S)
 
 

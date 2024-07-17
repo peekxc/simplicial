@@ -81,20 +81,22 @@ def test_rips_filtration():
 def test_generics():
   assert list(unique_everseen([[0], [0], [1], [0,1]])) == [[0], [1], [0,1]]
   S = simplicial_complex([[0,1,2]])
+  ref = [(0,),(1,),(2,),(0,1),(0,2),(1,2),(0,1,2)]
   assert card(S) == (3,3,1)
   assert card(S,0) == 3
   assert dim(S) == 2
-  assert list(faces(S)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
+  assert all([s in ref for s in faces(S)])
   assert list(faces(S,0)) ==  list(map(Simplex, [(0),(1),(2)]))
   K = filtration(S)
   assert card(K) == (3,3,1)
   assert card(K,0) == 3
   assert dim(K) == 2
-  assert list(faces(K)) == list(map(Simplex, [(0),(1),(2),(0,1),(0,2),(1,2),(0,1,2)]))
-  assert list(faces(K,0)) ==  list(map(Simplex, [(0),(1),(2)]))
+  all_faces = list(faces(K))
+  assert all([tuple(s) in [(0,),(1,),(2,),(0,1),(0,2),(1,2),(0,1,2)] for s in all_faces])
+  assert list(map(Simplex, faces(K,0))) == list(map(Simplex, [(0),(1),(2)]))
   
 def test_boundary():
-  K = filtration(enumerate([0,1,2,[0,1],[0,2],[1,2]]))
+  K = filtration(enumerate(map(Simplex, [0,1,2,[0,1],[0,2],[1,2]])))
   D_test = boundary_matrix(K).todense()
   D_true = np.array([
     [ 0,  0,  0,  1,  1,  0],

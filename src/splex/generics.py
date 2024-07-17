@@ -1,23 +1,30 @@
 ## --- GENERICS --- 
 import numpy as np 
+import itertools as it
 from numbers import Integral
 from more_itertools import unique_everseen
+from collections.abc import Collection
 
 from .meta import _data_attributes
 from .predicates import *
 
-def handle_data(g: Iterable, data: Union[bool, dict, str]) -> Iterable:
+def zip_data(g: Iterable[SimplexConvertible], data: Union[bool, dict, str]) -> Iterable:
+  """Converts an iterable of data-attributed simplex-like objects into a sequence of tuples (s, s_data).
+  
+  This function decouples data attributes (stored in __slots__ or __dict__) from an iterable of simplex-like objects
+  via a zip operation, remapping key-value pairs to an dictionary per simplex. 
+  """
   if isinstance(data, bool):
     if data == False: 
       yield from g
     for el in g: 
-      yield (el, lambda e: { attr_name : getattr(e, attr_name) for attr_name in _data_attributes(e) })
+      yield (el, { attr_name : getattr(el, attr_name) for attr_name in _data_attributes(el) })
     # return zip(g, (extract_data(e) for e in g))
   elif isinstance(data, str):
     for el in g: 
       yield el, getattr(el, data) if hasattr(el, data) else None
-  elif isinstance(data, list):
-    raise NotImplementedError
+  elif isinstance(data, Collection):
+    yield from zip(g, data)
   else: 
     raise ValueError(f"Invalid data input of type '{type(data)}'")
 
@@ -76,7 +83,7 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
   if hasattr(s, "faces"):
     return s.faces(**kwargs)
   elif is_complex_like(s):
-    return unique_everseen(chain.from_iterable([faces(f, **kwargs) for f in s])) # handles data implicitly, though faces may not store data
+    return unique_everseen(it.chain.from_iterable([faces(f, **kwargs) for f in s])) # handles data implicitly, though faces may not store data
     # if p is None:
     #   g = iter(sset)
     # else: 
@@ -89,11 +96,11 @@ def faces(s: Union[SimplexConvertible, ComplexLike], p: int = None, data: bool =
   elif is_simplex_like(s): # is simplex convertible
     k = len(s)
     if p is None:
-      g = chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
+      g = it.chain.from_iterable([combinations(s, k-i) for i in reversed(range(0, k))])
     else:
       assert isinstance(p, Integral), f"Invalid type {type(p)}; dimension 'p' must be integral type"
       g = iter(combinations(s, p+1))
-    return handle_data(g, data)
+    return zip_data(g, data)
   else:
     raise ValueError(f"Unknown type supplied '{type(s)}'")
 

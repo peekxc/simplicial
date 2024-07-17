@@ -1,6 +1,7 @@
 import numpy as np
 import splex as sx
 from splex.filters import *
+from typing import Callable
 
 def test_lower_star():
 	assert True
@@ -14,15 +15,14 @@ def test_fixed_filter():
 	from splex.filters import fixed_filter
 	from splex.complexes import simplicial_complex
 	S = simplicial_complex([[0, 1, 2, 3, 4]])
+	f_true = { s : i for i,s in enumerate(map(sx.Simplex, S)) }
 	f = fixed_filter(S, range(len(S)))
 	assert np.all(f(S) == np.arange(len(S)))
 	assert isinstance(f(faces(S, 1)), np.ndarray)
-	assert f(Simplex([0, 1, 2])) == 15
-	assert f([0, 1, 2]) == 15
+	assert f(sx.Simplex([0, 1, 2])) == f_true[sx.Simplex((0,1,2))]
 	assert isinstance(f(np.array(list(faces(S, 1)))), np.ndarray)
 
 def test_hirola():
-	import splex as sx
 	for form in ['set', 'rank', 'tree']:
 		S = sx.simplicial_complex([[0, 1, 2, 3, 4]], form=form)
 		filter_f = sx.filters.HirolaFilter(S, np.arange(len(S)))

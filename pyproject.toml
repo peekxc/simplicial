@@ -8,7 +8,7 @@ name = "splex"
 authors = [
 	{ name = "Matt Piekenbrock", email = "matt.piekenbrock@gmail.com" }
 ]
-version = "0.3.1"
+version = "0.3.2"
 readme = "README.md"
 description = "Type-aware package for representing, constructing, and manipulating simplicial complexes and filtrations."
 license = { file = "LICENSE" }
@@ -21,8 +21,14 @@ dependencies = [
 	"more_itertools", 
 	"sortedcontainers",
 	"dataclassy", 
-	"combin", 
+	"combin >= 0.1.6", 
 	"simplextree"
+]
+
+[project.optional-dependencies]
+test = [
+	"pytest",
+  "pytest-benchmark"
 ]
 
 [tool.semantic_release]

@@ -12,7 +12,9 @@ import numpy as np
 class SimplexBase: # forget about hashable to make compatible as a data class 
   """Base class for comparable simplex-like classes with integer vertex labels."""
   vertices: Union[tuple[int], Tuple[()]] = ()
-
+  def __init__(self, v: SimplexConvertible):
+    object.__setattr__(self, 'vertices', tuple(unique_justseen(sorted(collapse(v)))))
+    
   def __eq__(self, other: object) -> bool: 
     if not isinstance(other, SimplexConvertible):
       return False
@@ -88,7 +90,7 @@ class SimplexBase: # forget about hashable to make compatible as a data class
     else: 
       g = map(Simplex, combinations(self.vertices, p+1))
       # g = filter(lambda s: len(s) == p+1, self.faces()) # type: ignore
-    return handle_data(g, data)
+    return zip_data(g, data)
     # g = g if data == False else handle_data(g, data)
   
   def boundary(self) -> Iterator[Simplex]: 
@@ -114,9 +116,10 @@ class Simplex(SimplexBase): # , Generic[IT]
 
   A simplex is a value type object supporting set-like behavior. Simplex instances are hashable, comparable, immutable, and homogenous. 
   """
-  def __init__(self, v: SimplexConvertible) -> None:
-    t = tuple(unique_justseen(sorted(collapse(v))))
-    object.__setattr__(self, 'vertices', t)
+  def __init__(self, v: SimplexConvertible):
+    # t = tuple(unique_justseen(sorted(collapse(v))))
+    super(Simplex, self).__init__(v)
+    # object.__setattr__(self, 'vertices', t)
 
 @dataclass(slots=False, frozen=False, init=False, repr=False, eq=False)
 class PropertySimplex(SimplexBase):
@@ -128,8 +131,7 @@ class PropertySimplex(SimplexBase):
   """
   def __init__(self, v: SimplexConvertible, **kwargs) -> None:
     # super(SimplexBase, self).__init__()
-    t = tuple(unique_justseen(sorted(collapse(v))))
-    object.__setattr__(self, 'vertices', t)
+    super(PropertySimplex, self).__init__(v)
     self.__dict__.update(kwargs)
     # object.__setattr__(self, )
   def __setattr__(self, key: str, value: Any) -> None:
