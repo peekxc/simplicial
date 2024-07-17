@@ -81,7 +81,7 @@ class SimplexBase: # forget about hashable to make compatible as a data class
 
   def __repr__(self) -> str:
     """ Default str representation prints the vertex labels delimited by commas """
-    return str(self.vertices).replace(',','') if self.dim() == 0 else str(self.vertices).replace(' ','')
+    return str(tuple(self.vertices)).replace(',','') if self.dim() == 0 else str(tuple(self.vertices)).replace(' ','')
 
   def faces(self, p: Optional[int] = None, data: bool = False, **kwargs) -> Iterator[Simplex]: 
     dim: int = len(self.vertices)
@@ -108,7 +108,7 @@ class SimplexBase: # forget about hashable to make compatible as a data class
 
   def __int__(self) -> int:
     if len(self.vertices) != 1: raise ValueError(f"Invalid conversion of simplex {str(self)} to integer")
-    return self.vertices[0]
+    return int(self.vertices[0])
 
 @dataclass(slots=True, frozen=True, init=False, repr=False, eq=False)
 class Simplex(SimplexBase): # , Generic[IT]
