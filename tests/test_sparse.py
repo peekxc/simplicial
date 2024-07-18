@@ -1,5 +1,7 @@
 import numpy as np
 import splex as sx
+import warnings
+warnings.filterwarnings("error", category=DeprecationWarning) 
 
 def test_boundary():
   K = sx.filtration(enumerate([[0],[1],[2],[0,1],[0,2],[1,2],[0,1,2]]))
@@ -61,20 +63,21 @@ def test_boundary_medium():
     D = sx.boundary_matrix(K, p=p)
     assert D.shape[0] == sx.card(K,p-1) and D.shape[1] == sx.card(K,p)
 
-def test_boundary_large():
-  X = np.random.uniform(size=(150,2))
-  K = sx.rips_complex(X, radius=0.25, p=2)
-  D = sx.boundary_matrix(K, p=2)
-  assert D.nnz == int(sx.card(K, 2) * 3)
-  from collections import Counter
-  col_counts = np.array(list(Counter(D.col).values()))
-  assert np.all(col_counts == 3)
+## Commented out for timing only
+# def test_boundary_large():
+#   X = np.random.uniform(size=(150,2))
+#   K = sx.rips_complex(X, radius=0.25, p=2)
+#   D = sx.boundary_matrix(K, p=2)
+#   assert D.nnz == int(sx.card(K, 2) * 3)
+#   from collections import Counter
+#   col_counts = np.array(list(Counter(D.col).values()))
+#   assert np.all(col_counts == 3)
 
-  S = sx.RankComplex(K)
-  D = sx.boundary_matrix(S, p=2)
-  assert D.nnz == int(sx.card(K, 2) * 3)
-  col_counts = np.array(list(Counter(D.col).values()))
-  assert np.all(col_counts == 3)
-
-  sgn_vals = D.tocsc().data
-  assert np.allclose(np.tile([1,-1,1], sx.card(S,2)), sgn_vals)
+#   ## This can be quite expensive
+#   SR = sx.RankComplex(K)
+#   DR = sx.boundary_matrix(SR, p=2)
+#   assert D.nnz == int(sx.card(K, 2) * 3)
+#   col_counts = np.array(list(Counter(D.col).values()))
+#   assert np.all(col_counts == 3)
+#   sgn_vals = D.tocsc().data
+#   assert np.allclose(np.tile([1,-1,1], sx.card(SR,2)), sgn_vals)

@@ -12,6 +12,7 @@ from .predicates import is_complex_like
 from .generics import faces
 from .Simplex import Simplex
 from .filter_abcs import Filtration
+DEBUG = {}
 
 class RankFiltration(Filtration):
   def __init__(self, simplices: Union[ComplexLike, Iterable], f: Callable = None, value_dtype = np.float64):
@@ -25,7 +26,10 @@ class RankFiltration(Filtration):
       if isinstance(f, Callable):
         self.simplices = np.array([(comb_to_rank(s), len(s)-1, f(s)) for s in simplices], dtype=s_dtype)
       else:
-        self.simplices = np.array([(comb_to_rank(s), len(s)-1, k) for k, s in simplices], dtype=s_dtype)
+        global DEBUG 
+        # DEBUG['s_dtype'] = s_dtype
+        # DEBUG['simplices'] = list(simplices)
+        self.simplices = np.array([(comb_to_rank(s), len(s)-1, np.ravel(k).item()) for k, s in simplices], dtype=s_dtype)
     elif simplices is None:
       # Allow default constructible for empty filtrations
       self.simplices = np.empty(shape=(0,), dtype=s_dtype)

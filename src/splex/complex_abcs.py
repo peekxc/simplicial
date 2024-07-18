@@ -1,12 +1,11 @@
+import numpy as np
 from collections.abc import Set
-import sys
-from .meta import * 
-from .generics import * 
-from .Simplex import * 
+from io import StringIO
+from .meta import ComplexLike
+from .Simplex import Simplex
 
 class Complex(Set, ComplexLike):
   def __format__(self, format_spec = "default") -> str:
-    from io import StringIO
     s = StringIO()
     self.print(file=s)
     res = s.getvalue()

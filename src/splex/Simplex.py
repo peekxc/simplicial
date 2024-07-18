@@ -81,7 +81,8 @@ class SimplexBase: # forget about hashable to make compatible as a data class
 
   def __repr__(self) -> str:
     """ Default str representation prints the vertex labels delimited by commas """
-    return str(tuple(self.vertices)).replace(',','') if self.dim() == 0 else str(tuple(self.vertices)).replace(' ','')
+    s = tuple(map(int, self.vertices))
+    return str(s).replace(',','') if self.dim() == 0 else str(s).replace(' ','')
 
   def faces(self, p: Optional[int] = None, data: bool = False, **kwargs) -> Iterator[Simplex]: 
     dim: int = len(self.vertices)
