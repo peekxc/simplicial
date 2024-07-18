@@ -16,6 +16,13 @@ def test_set_filtration_simple():
   assert K.n_simplices == (4,6,4,1), "simplex cardinality tracking not working properly"
   assert [0,1,2,3] in K, "contains not working properly"
   assert np.all([K.index(s[1]) == i for i,s in enumerate(K)]), "indexing working properly"
+  assert K.reindex(index_set = np.arange(len(K))) is None, "reindexing failed"
+  assert list(K.indices()) == list(range(len(K))), "invalid index set"
+  f = fixed_filter(S, np.arange(len(K))+1)
+  assert K.reindex(f) is None, "function indexing failed"
+  assert list(K.indices()) == list(range(1, len(K)+1)), "function indexing failed"
+
+
   # K.discard([0,1,2,3])
 
 def test_rank_filtration_order():

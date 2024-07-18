@@ -41,24 +41,6 @@ jobs:
       run: |
         coverage json -o tests/test_results.json
         coverage report -m
-    - if: matrix.os == 'ubuntu-latest'
-      run: |
-        COV_RESULT=$(cat tests/test_results.json)
-        COV_PERCENT=$(echo $COV_RESULT | python3 -c 'import json,sys;obj=json.load(sys.stdin);print(obj["totals"]["percent_covered_display"])')
-        echo "COV_PERCENT=$COV_PERCENT" >> $GITHUB_ENV
-    - if: matrix.os == 'ubuntu-latest'  
-      name: Create coverage badge
-      uses: schneegans/dynamic-badges-action@v1.6.0
-      with:
-        auth: ${{ secrets.GIST_SECRET }}
-        gistID: ef42349965f40edf4232737026690c5f
-        filename: coverage_info.json
-        label: coverage
-        message: ${{ env.COV_PERCENT }}%
-        valColorRange: ${{ env.COV_PERCENT }}
-        maxColorRange: 100
-        minColorRange: 0
-        namedLogo: Pytest
     - name: Send coverage report
       run: |
         coveralls --service=github
@@ -106,7 +88,7 @@ jobs:
   #     - uses: actions/checkout@v3
   #     - uses: actions/setup-python@v4
   #     - name: Install cibuildwheel
-  #       run: python -m pip install cibuildwheel==2.12.0
+  #       run: python -m pip install cibuildwheel 
   #     - name: Build wheels
   #       run: python -m cibuildwheel --output-dir wheelhouse
   #     - uses: actions/upload-artifact@v3

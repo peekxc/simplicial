@@ -8,7 +8,7 @@ name = "splex"
 authors = [
 	{ name = "Matt Piekenbrock", email = "matt.piekenbrock@gmail.com" }
 ]
-version = "0.3.2"
+version = "0.3.3"
 readme = "README.md"
 description = "Type-aware package for representing, constructing, and manipulating simplicial complexes and filtrations."
 license = { file = "LICENSE" }
@@ -28,7 +28,8 @@ dependencies = [
 [project.optional-dependencies]
 test = [
 	"pytest",
-  "pytest-benchmark"
+  "pytest-benchmark", 
+	"pytest-cov"
 ]
 
 [tool.semantic_release]
